@@ -1,134 +1,155 @@
-# We Scale
+# ğŸ® We Scale
 
-## Resum conceptual
-**We Scale** és un joc per torns en què un equip de **X jugadors** ha d’escalar els nivells d’una torre plena d’enemics fins arribar al final.  
-L’objectiu és superar cada pis mitjançant estratègia, cooperació i una millora progressiva dels personatges.
+**We Scale** Ã©s un joc per torns cooperatiu en quÃ¨ un equip de jugadors ha dâ€™escalar els nivells dâ€™una torre plena dâ€™enemics fins arribar al cim.  
+Lâ€™estratÃ¨gia, la cooperaciÃ³ i la progressiÃ³ dels personatges sÃ³n clau per sobreviure.
 
-Els components del joc (personatges, enemics, habilitats, objectes i armes) són dissenyats pels desenvolupadors mitjançant una **interfície gràfica d’edició**.
-
----
-
-## Regles
-Aquest apartat defineix les normes generals que regeixen el funcionament del joc i el comportament dels jugadors durant la partida.
+Tot el contingut del joc (personatges, enemics, armes, habilitats i objectes) es crea i gestiona mitjanÃ§ant una **interfÃ­cie grÃ fica dâ€™ediciÃ³** pensada per als desenvolupadors.
 
 ---
 
-## Informació detallada
-Descripció més profunda dels diferents sistemes del joc i de com interactuen entre ells al llarg d’una partida.
+## ğŸ§  Concepte del joc
+- Joc **per torns**
+- Equip de **X jugadors**
+- ProgressiÃ³ per nivells dins dâ€™una torre
+- Recompenses basades en cartes
+- PersonalitzaciÃ³ i evoluciÃ³ constant dels personatges
+
+Lâ€™objectiu final Ã©s arribar al darrer nivell de la torre superant enemics cada cop mÃ©s forts.
 
 ---
 
-## Rondes
-El joc es desenvolupa en rondes. A cada ronda, tant els jugadors com els enemics seleccionen les seves accions abans que aquestes es resolguin.
+## âš™ï¸ Funcionament general
 
-Si s’esgota el temps límit i un jugador no ha seleccionat cap acció, no podrà actuar en aquella ronda i quedarà afectat per l’estat **“T’has encantat”**.
+### ğŸ” Rondes
+El joc avanÃ§a per rondes.  
+A cada ronda, jugadors i enemics seleccionen una acciÃ³ abans que el torn es resolgui.
 
----
-
-## Temps
-Cada jugador disposa d’un **temps límit** per escollir l’acció que vol realitzar. Quan tots els jugadors han confirmat la seva elecció, el torn es resol automàticament.
-
-L’ordre d’execució de les accions es determina segons la **velocitat** dels personatges i enemics, actuant primer aquells que en tenen més.
+Si un jugador no selecciona cap acciÃ³ abans que sâ€™acabi el temps, **no actuarÃ  en aquella ronda**.
 
 ---
 
-## Recompenses
-Entre rondes, els jugadors poden escollir entre **4 cartes aleatòries**.
+### â±ï¸ Temps
+Cada jugador disposa dâ€™un temps lÃ­mit per escollir la seva acciÃ³.  
+Quan tots els jugadors han confirmat, el torn es resol automÃ ticament.
 
-- A les **rondes imparells** (1, 3, 5…), les cartes estan orientades a **millorar les estadístiques del personatge**.
-- A les **rondes parells** (2, 4, 6…), les cartes poden ser **habilitats, objectes o armes**.
-
-La qualitat de les recompenses depèn del nombre de torns que l’equip trigui a completar la ronda.  
-Per exemple, si el cap enemic és derrotat en **3 torns o menys**, les cartes següents seran de **major raresa**.  
-Entre **3 i 5 torns**, la raresa serà inferior, fins a arribar a cartes **bàsiques** si es necessiten més torns.
+Lâ€™ordre dâ€™execuciÃ³ de les accions depÃ¨n de la **velocitat** de cada personatge i enemic.
 
 ---
 
-## Accions (Atac / Defensa)
-Durant el combat hi ha **quatre tipus principals d’accions**.
+## ğŸ Recompenses
+DesprÃ©s de cada ronda, lâ€™equip pot escollir entre **4 cartes aleatÃ²ries**:
 
-### Habilitats
-Al començar la partida, cada personatge disposa d’**una habilitat inicial**, amb un màxim de **X habilitats equipades**. Aquest límit pot augmentar mitjançant determinats objectes o habilitats.
+- **Rondes imparells (1, 3, 5â€¦)**  
+  Millores dâ€™estadÃ­stiques del personatge.
+- **Rondes parells (2, 4, 6â€¦)**  
+  Habilitats, armes o objectes.
 
-Algunes habilitats requereixen **requisits previs** per poder ser obtingudes, com ara assolir un valor mínim en una estadística concreta.
+La qualitat de les cartes depÃ¨n del rendiment de lâ€™equip:
+- Caps derrotats rÃ pid â†’ recompenses de major raresa
+- Combats llargs â†’ recompenses mÃ©s bÃ siques
+
+---
+
+## âš”ï¸ Accions
+
+### ğŸ§© Habilitats
+- Cada personatge comenÃ§a amb **1 habilitat**
+- Existeix un lÃ­mit mÃ xim dâ€™habilitats equipades
+- Aquest lÃ­mit pot augmentar mitjanÃ§ant objectes o habilitats
+
+Algunes habilitats requereixen **condicions prÃ¨vies**:
+- EstadÃ­stiques mÃ­nimes
+- Altres habilitats desbloquejades
 
 **Exemple:**  
-La habilitat *MEDITAR* només es pot adquirir si el personatge té com a mínim **15 punts en Healing**.
-
-**Exemple general:**  
-*Explosió de foc*: infligeix dany a tots els enemics i aplica una reducció de vida constant durant **X torns**.
+*MEDITAR* nomÃ©s es pot obtenir amb **15 punts en CuraciÃ³**.
 
 ---
 
-### Atacar
-L’acció d’atacar utilitza les estadístiques del personatge juntament amb l’arma equipada per infligir dany a un enemic seleccionat o a un rang d’enemics.
+### ğŸ—¡ï¸ Atacar
+Lâ€™atac utilitza les estadÃ­stiques del personatge i lâ€™arma equipada per fer dany a:
+- Un enemic concret
+- Un grup dâ€™enemics segons el rang
 
 ---
 
-### Defensa
-La defensa és una habilitat disponible per defecte per a tots els personatges. En utilitzar-la, augmenta temporalment les estadístiques de **defensa física i màgica** durant la ronda actual.
+### ğŸ›¡ï¸ Defensa
+AcciÃ³ disponible per defecte per a tots els personatges.  
+Augmenta temporalment la defensa fÃ­sica i mÃ gica durant la ronda actual.
 
 ---
 
-## Estadístiques
-Les estadístiques inicials són les mateixes per a tots els jugadors. En funció de les decisions preses, aquestes estadístiques augmenten mitjançant diferents opcions de millora organitzades en **branques de cartes**.
+## ğŸ“Š EstadÃ­stiques
+Tots els personatges comencen amb les mateixes estadÃ­stiques base.  
+La progressiÃ³ depÃ¨n de les decisions del jugador.
 
-Sempre apareixen **4 cartes amb estadístiques aleatòries**, una de cada tipus:
-- Atac físic  
-- Atac màgic  
-- Defensa (física i/o màgica)  
-- Intel·ligència (curació i/o invocació)
+Sempre apareixen **4 cartes de millora**, una de cada branca:
+- âš”ï¸ Atac fÃ­sic
+- âœ¨ Atac mÃ gic
+- ğŸ›¡ï¸ Defensa (fÃ­sica i/o mÃ gica)
+- ğŸ§  IntelÂ·ligÃ¨ncia (curaciÃ³ i/o invocaciÃ³)
 
 ---
 
-## Objectes
-Els objectes són elements que poden afectar la partida de manera **passiva o activa**, aportant avantatges estratègics.
+## ğŸ’ Objectes
 
-### Passius
-Objectes que aporten efectes constants des del moment en què s’obtenen fins al final de la partida.
+### ğŸ”¹ Passius
+Objectes que proporcionen efectes constants durant tota la partida.
 
 **Exemples:**
-- Augmentar +15 la força  
-- Incrementar el nombre màxim d’habilitats disponibles  
-- Fer que tots els atacs siguin de múltiple objectiu  
+- +15 a una estadÃ­stica
+- Augmentar el nombre mÃ xim dâ€™habilitats
+- Convertir atacs en dany mÃºltiple
 
-### Actius
-Objectes amb un **ús limitat** que s’activen manualment en moments concrets.
+---
+
+### ğŸ”¸ Actius
+Objectes amb un nombre limitat dâ€™usos.
 
 **Exemples:**
-- Pòcions  
-- Objectes per reviure personatges  
+- PÃ²cions
+- Objectes de resurrecciÃ³
 
 ---
 
-## Estats
-Els estats són **condicions temporals** que poden afectar els personatges, alterant el seu comportament o les seves estadístiques.
+## ğŸŒ€ Estats
 
-### Mort
-La mort és un estat crític que s’aplica quan la vida d’un personatge arriba a **0 o menys**.  
-Un personatge mort no pot realitzar cap acció ni participar en la pujada de nivells.
+Els estats sÃ³n condicions temporals que afecten el comportament o les estadÃ­stiques dels personatges.
 
-Si **tots els jugadors** es troben en estat Mort, la partida finalitza.
+### â˜ ï¸ Mort
+Quan la vida arriba a 0:
+- El personatge no pot actuar
+- No participa en la progressiÃ³
 
-Aquest estat es pot eliminar mitjançant determinades habilitats o objectes:
-- Algunes opcions permeten tornar al joc amb poca vida i amb penalitzacions.
-- Altres opcions més potents poden revifar el personatge amb tot el seu potencial.
+Si **tots els jugadors moren**, la partida finalitza.
 
-Un personatge en estat Mort també pot ser **invocat com a zombi** durant **tres torns**, recuperant progressivament les seves estadístiques normals.
+La mort es pot revertir mitjanÃ§ant habilitats o objectes, amb diferents efectes segons la potÃ¨ncia.
+
+Un personatge mort pot ser **invocat com a zombi** durant 3 torns, recuperant les estadÃ­stiques progressivament.
 
 ---
 
-### Estats negatius
-Efectes perjudicials que dificulten l’acció del personatge durant un temps determinat:
-- Cremat  
-- Enverinat  
-- Atordiment  
-- Confusió  
+### âŒ Estats negatius
+- Cremat
+- Enverinat
+- Atordiment
+- ConfusiÃ³
 
-### Estats positius
-Efectes beneficiosos que milloren el rendiment del personatge o permeten eliminar estats negatius:
-- Curació  
-- Millores d’estadístiques  
-- Eliminació d’estats negatius  
+---
 
-Cal tenir en compte que hi ha **estats negatius que no es poden eliminar**, com ara l’estat **Mort**.
+### âœ… Estats positius
+- CuraciÃ³
+- Millores dâ€™estadÃ­stiques
+- EliminaciÃ³ dâ€™estats negatius
+
+> Alguns estats negatius **no es poden eliminar**, com ara la Mort.
+
+---
+
+## ğŸ§© Notes finals
+- El joc estÃ  pensat per ser **escalable**
+- Tot el contingut Ã©s **editable**
+- El sistema permet afegir fÃ cilment noves mecÃ niques
+
+---
+
