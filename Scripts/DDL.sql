@@ -1,3 +1,27 @@
+-- =========================================
+-- ELIMINAR TAULES 
+-- =========================================
+
+DROP TABLE EFECTE_MOD_ESTADISTICA;
+
+DROP TABLE EFECTE_INVOCACIO;
+
+DROP TABLE EFECTE_ESTAT;
+
+DROP TABLE ESTAT;
+
+DROP TABLE EFECTE;
+
+DROP TABLE TIPUS_EFECTE;
+
+DROP TABLE PERSONATGE_ACCIO;
+
+DROP TABLE ACCIO;
+
+DROP TABLE JUGADOR;
+
+DROP TABLE PERSONATGE;
+
 CREATE TABLE PERSONATGE (
     id_personatge INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -6,7 +30,7 @@ CREATE TABLE PERSONATGE (
     icona VARCHAR(500) NOT NULL,
 
     hp_base FLOAT NOT NULL CHECK (hp_base >= 0),
-    dany_fisic_base FLOAT NOT NULL CHECK (dany_fisic_ base >= 0),
+    dany_fisic_base FLOAT NOT NULL CHECK (dany_fisic_base >= 0),
     dany_magic_base FLOAT NOT NULL CHECK (dany_magic_base >= 0),
     defensa_fisica_base FLOAT NOT NULL CHECK (defensa_fisica_base >= 0),
     defensa_magica_base FLOAT NOT NULL CHECK (defensa_magica_base >= 0),
@@ -110,11 +134,11 @@ CREATE TABLE EFECTE_MOD_ESTADISTICA (
     id_efecte_mod INT AUTO_INCREMENT PRIMARY KEY,
     id_efecte INT NOT NULL,
     nom_stat INT NOT NULL,   -- identificador de l’estadística
-    operacio INT NOT NULL,  -- 1 = add | 2 = multiply | 3 = set
+    operacio INT NOT NULL,  -- 1 = add | 2 = multiply | 3 = set | 4 = Percentatge 30 = +30% / -20 = -20%
     valor FLOAT NOT NULL,
 
     FOREIGN KEY (id_efecte)
         REFERENCES EFECTE(id_efecte),
 
-    CHECK (operacio IN (1, 2, 3))
+    CHECK (operacio IN (1, 2, 3, 4))
 );
