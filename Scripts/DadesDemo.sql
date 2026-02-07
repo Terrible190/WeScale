@@ -1,3 +1,22 @@
+-- =====================================================
+-- ACCIO INTERNA DEL SISTEMA
+-- Serveix com a placeholder per a EFECTES d'estat
+-- =====================================================
+
+INSERT INTO ACCIO (nom, tipus, imatge, icona, usos)
+SELECT 'ESTAT_INTERNAL', 2, 'internal.png', 'internal.ico', NULL
+WHERE NOT EXISTS (
+    SELECT 1 FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'
+);
+
+SET @id_accio_estat_internal :=
+(
+    SELECT id_obj_actiu
+    FROM ACCIO
+    WHERE nom = 'ESTAT_INTERNAL'
+    LIMIT 1
+);
+
 -- ============================================================
 -- DEFINICIÓ DE L'EFECTE "CREMAT" ASSOCIAT A LA HABILITAT
 -- ============================================================
@@ -386,39 +405,10 @@ VALUES
 -- ZOMBI AND SEMIZOMBI
 -- =====================================================
 
--- -----------------------------------------------------
--- VARIABLES DE TIPUS D'EFECTE
--- -----------------------------------------------------
-
-SET @id_tipus_efecte_estat :=
-(
-  SELECT id_tipus_efecte
-  FROM TIPUS_EFECTE
-  WHERE tipus_efecte = 2
-  LIMIT 1
-);
-
-SET @id_tipus_efecte_mod :=
-(
-  SELECT id_tipus_efecte
-  FROM TIPUS_EFECTE
-  WHERE tipus_efecte = 3
-  LIMIT 1
-);
-
-
 -- =====================================================
 -- ZOMBI (-70%)
 -- =====================================================
 
--- Estat Zombi
-SET @id_estat_zombi :=
-(
-  SELECT id_estat
-  FROM ESTAT
-  WHERE nom = 'Zombi'
-  LIMIT 1
-);
 
 -- ---------- EFECTE ZOMBI (ESTAT) ----------
 INSERT INTO EFECTE
@@ -426,27 +416,31 @@ INSERT INTO EFECTE
  id_obj_arm_hab_actiu, imatge, icona)
 VALUES
 (
-  @id_tipus_efecte_estat,
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1),
   NULL,
-  1,      -- self
-  NULL,   -- indefinit
-  @id_accio_placeholder,
-  'https://example.com/img/estat_zombi.png',
-  'https://example.com/icon/estat_zombi.ico'
+  1,
+  NULL,
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1),
+  'estat_zombi.png',
+  'estat_zombi.ico'
 );
 
-SET @id_efecte_zombi_estat :=
+INSERT INTO EFECTE_ESTAT
+(id_efecte, id_estat)
+VALUES
 (
-  SELECT id_efecte
-  FROM EFECTE
-  WHERE id_tipus_efecte = @id_tipus_efecte_estat
-    AND id_obj_arm_hab_actiu = @id_accio_placeholder
-  ORDER BY id_efecte DESC
-  LIMIT 1
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN TIPUS_EFECTE t ON t.id_tipus_efecte = e.id_tipus_efecte
+    WHERE t.tipus_efecte = 2
+      AND e.id_obj_arm_hab_actiu =
+          (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1)
+    ORDER BY e.id_efecte DESC
+    LIMIT 1
+  ),
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Zombi' LIMIT 1)
 );
-
-INSERT INTO EFECTE_ESTAT (id_efecte, id_estat)
-VALUES (@id_efecte_zombi_estat, @id_estat_zombi);
 
 
 -- ---------- EFECTE ZOMBI (DEBUFF -70%) ----------
@@ -455,104 +449,233 @@ INSERT INTO EFECTE
  id_obj_arm_hab_actiu, imatge, icona)
 VALUES
 (
-  @id_tipus_efecte_mod,
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3 LIMIT 1),
   NULL,
   1,
   NULL,
-  @id_accio_placeholder,
-  'https://example.com/img/estat_zombi_debuff.png',
-  'https://example.com/icon/estat_zombi_debuff.ico'
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1),
+  'estat_zombi_debuff.png',
+  'estat_zombi_debuff.ico'
 );
 
-SET @id_efecte_zombi_mod :=
-(
-  SELECT id_efecte
-  FROM EFECTE
-  WHERE id_tipus_efecte = @id_tipus_efecte_mod
-    AND id_obj_arm_hab_actiu = @id_accio_placeholder
-  ORDER BY id_efecte DESC
-  LIMIT 1
-);
 
 INSERT INTO EFECTE_MOD_ESTADISTICA
 (id_efecte, nom_stat, operacio, valor)
 VALUES
-(@id_efecte_zombi_mod, 2, 4, -70),
-(@id_efecte_zombi_mod, 3, 4, -70),
-(@id_efecte_zombi_mod, 4, 4, -70),
-(@id_efecte_zombi_mod, 5, 4, -70);
+(
+  (SELECT e.id_efecte FROM EFECTE e JOIN TIPUS_EFECTE t ON t.id_tipus_efecte = e.id_tipus_efecte WHERE t.tipus_efecte = 3 AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  2, 4, -70
+),
+(
+  (SELECT e.id_efecte FROM EFECTE e JOIN TIPUS_EFECTE t ON t.id_tipus_efecte = e.id_tipus_efecte WHERE t.tipus_efecte = 3 AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  3, 4, -70
+),
+(
+  (SELECT e.id_efecte FROM EFECTE e JOIN TIPUS_EFECTE t ON t.id_tipus_efecte = e.id_tipus_efecte WHERE t.tipus_efecte = 3 AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  4, 4, -70
+),
+(
+  (SELECT e.id_efecte FROM EFECTE e JOIN TIPUS_EFECTE t ON t.id_tipus_efecte = e.id_tipus_efecte WHERE t.tipus_efecte = 3 AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  5, 4, -70
+);
 
 
 -- =====================================================
 -- SEMIZOMBI (-40%)
 -- =====================================================
 
-SET @id_estat_semizombi :=
-(
-  SELECT id_estat
-  FROM ESTAT
-  WHERE nom = 'Semizombi'
-  LIMIT 1
-);
-
 -- ---------- EFECTE SEMIZOMBI (ESTAT) ----------
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio,
- id_obj_arm_hab_actiu, imatge, icona)
+(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, imatge, icona)
 VALUES
 (
-  @id_tipus_efecte_estat,
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1),
   NULL,
   1,
   NULL,
-  @id_accio_placeholder,
-  'https://example.com/img/estat_semizombi.png',
-  'https://example.com/icon/estat_semizombi.ico'
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1),
+  'estat_semizombi.png',
+  'estat_semizombi.ico'
 );
 
-SET @id_efecte_semizombi_estat :=
-(
-  SELECT id_efecte
-  FROM EFECTE
-  WHERE id_tipus_efecte = @id_tipus_efecte_estat
-    AND id_obj_arm_hab_actiu = @id_accio_placeholder
-  ORDER BY id_efecte DESC
-  LIMIT 1
-);
-
+-- Vincular EFECTE ↔ ESTAT Semizombi
 INSERT INTO EFECTE_ESTAT (id_efecte, id_estat)
-VALUES (@id_efecte_semizombi_estat, @id_estat_semizombi);
-
+VALUES
+(
+  (SELECT e.id_efecte FROM EFECTE e WHERE e.id_tipus_efecte = (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1) AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Semizombi' LIMIT 1)
+);
 
 -- ---------- EFECTE SEMIZOMBI (DEBUFF -40%) ----------
 INSERT INTO EFECTE
+(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, imatge, icona)
+VALUES
+(
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3 LIMIT 1),
+  NULL,
+  1,
+  NULL,
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1),
+  'estat_semizombi_debuff.png',
+  'estat_semizombi_debuff.ico'
+);
+
+-- Debuff global -40%
+INSERT INTO EFECTE_MOD_ESTADISTICA
+(id_efecte, nom_stat, operacio, valor)
+VALUES
+(
+  (SELECT e.id_efecte FROM EFECTE e WHERE e.id_tipus_efecte = (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3 LIMIT 1) AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  2, 4, -40
+),
+(
+  (SELECT e.id_efecte FROM EFECTE e WHERE e.id_tipus_efecte = (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3 LIMIT 1) AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  3, 4, -40
+),
+(
+  (SELECT e.id_efecte FROM EFECTE e WHERE e.id_tipus_efecte = (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3 LIMIT 1) AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  4, 4, -40
+),
+(
+  (SELECT e.id_efecte FROM EFECTE e WHERE e.id_tipus_efecte = (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3 LIMIT 1) AND e.id_obj_arm_hab_actiu = (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL' LIMIT 1) ORDER BY e.id_efecte DESC LIMIT 1),
+  5, 4, -40
+);
+
+
+-- =====================================================
+-- ACCIO Angel Custodi - Objecte
+-- =====================================================
+
+
+INSERT INTO ACCIO
+(nom, tipus, imatge, icona, usos)
+VALUES
+(
+  'Àngel Custodi',
+  3, -- 3 = objecte actiu
+  'https://example.com/img/angel_custodi.png',
+  'https://example.com/icon/angel_custodi.ico',
+  1  -- ús únic
+);
+
+
+INSERT INTO EFECTE
 (id_tipus_efecte, tipus_dany, rang, duracio,
  id_obj_arm_hab_actiu, imatge, icona)
 VALUES
 (
-  @id_tipus_efecte_mod,
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1), -- Estat
   NULL,
-  1,
+  3,      -- self
   NULL,
-  @id_accio_placeholder,
-  'https://example.com/img/estat_semizombi_debuff.png',
-  'https://example.com/icon/estat_semizombi_debuff.ico'
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Àngel Custodi' LIMIT 1),
+  'angel_custodi_effect.png',
+  'angel_custodi_effect.ico'
 );
 
-SET @id_efecte_semizombi_mod :=
-(
-  SELECT id_efecte
-  FROM EFECTE
-  WHERE id_tipus_efecte = @id_tipus_efecte_mod
-    AND id_obj_arm_hab_actiu = @id_accio_placeholder
-  ORDER BY id_efecte DESC
-  LIMIT 1
-);
-
-INSERT INTO EFECTE_MOD_ESTADISTICA
-(id_efecte, nom_stat, operacio, valor)
+INSERT INTO EFECTE_INTERACCIO
+(id_efecte_origen, id_estat_objectiu, accio)
 VALUES
-(@id_efecte_semizombi_mod, 2, 4, -40),
-(@id_efecte_semizombi_mod, 3, 4, -40),
-(@id_efecte_semizombi_mod, 4, 4, -40),
-(@id_efecte_semizombi_mod, 5, 4, -40);
+(
+  (SELECT id_efecte
+   FROM EFECTE e
+   JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+   WHERE a.nom = 'Àngel Custodi'
+   LIMIT 1),
+
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Mort' LIMIT 1),
+
+  1 -- eliminar estat
+);
+
+INSERT INTO EFECTE_INTERACCIO
+(
+  id_efecte_origen,
+  id_estat_objectiu,
+  accio,
+  id_estat_resultat,
+  delay_torns
+)
+VALUES
+(
+  -- EFECTE que aplica l'estat Zombi
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN EFECTE_ESTAT ee ON ee.id_efecte = e.id_efecte
+    JOIN ESTAT s ON s.id_estat = ee.id_estat
+    WHERE s.nom = 'Zombi'
+    LIMIT 1
+  ),
+
+  NULL, -- no actua sobre un estat concret, sinó sobre el temps
+
+  2,    -- 2 = afegir estat
+
+  -- Estat que s’afegirà
+  (
+    SELECT id_estat
+    FROM ESTAT
+    WHERE nom = 'Semizombi'
+    LIMIT 1
+  ),
+
+  3     -- després de 3 torns
+);
+
+
+-- =====================================================
+-- ACCIO Resurrecio - Habilitat
+-- =====================================================
+INSERT INTO ACCIO
+(nom, tipus, imatge, icona, usos)
+VALUES
+(
+  'Resurrecció',
+  2, -- habilitat
+  'https://example.com/img/resurreccio.png',
+  'https://example.com/icon/resurreccio.ico',
+  NULL
+);
+INSERT INTO EFECTE
+(id_tipus_efecte, tipus_dany, rang, duracio,
+ id_obj_arm_hab_actiu, imatge, icona)
+VALUES
+(
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1), -- Estat
+  NULL,
+  3,      -- seleccionat (aliat mort)
+  NULL,
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Resurrecció' LIMIT 1),
+  'resurreccio_effect.png',
+  'resurreccio_effect.ico'
+);
+INSERT INTO EFECTE_INTERACCIO
+(id_efecte_origen, id_estat_objectiu, accio)
+VALUES
+(
+  (SELECT id_efecte
+   FROM EFECTE e
+   JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+   WHERE a.nom = 'Resurrecció'
+   LIMIT 1),
+
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Mort' LIMIT 1),
+
+  1 -- eliminar
+);
+INSERT INTO EFECTE_INTERACCIO
+(id_efecte_origen, id_estat_objectiu, accio, id_estat_resultat)
+VALUES
+(
+  (SELECT id_efecte
+   FROM EFECTE e
+   JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+   WHERE a.nom = 'Resurrecció'
+   LIMIT 1),
+
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Mort' LIMIT 1),
+
+  2, -- afegir
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Zombi' LIMIT 1)
+);

@@ -2,6 +2,8 @@
 -- ELIMINAR TAULES 
 -- =========================================
 
+DROP TABLE EFECTE_INTERACCIO;
+
 DROP TABLE EFECTE_MOD_ESTADISTICA;
 
 DROP TABLE EFECTE_INVOCACIO;
@@ -73,11 +75,11 @@ CREATE TABLE PERSONATGE_ACCIO (
 
 CREATE TABLE TIPUS_EFECTE (
     id_tipus_efecte INT AUTO_INCREMENT PRIMARY KEY,
-    tipus_efecte INT NOT NULL, -- 1 = Invocacio | 2 = Estat | 3 = Mod Estadistica
+    tipus_efecte INT NOT NULL, -- 1 = Invocacio | 2 = Estat | 3 = Mod Estadistica | 4 = Interaccio
     imatge VARCHAR(500),
     icona VARCHAR(500),
 
-    CHECK (tipus_efecte IN (1, 2, 3))
+    CHECK (tipus_efecte IN (1, 2, 3, 4))
 );
 
 CREATE TABLE EFECTE (
@@ -141,4 +143,37 @@ CREATE TABLE EFECTE_MOD_ESTADISTICA (
         REFERENCES EFECTE(id_efecte),
 
     CHECK (operacio IN (1, 2, 3, 4))
+);
+
+CREATE TABLE EFECTE_INTERACCIO (
+    id_efecte_interaccio INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- EFECTE que provoca la interacció
+    id_efecte_origen INT NOT NULL,
+
+    -- Estat sobre el qual s’actua (pot ser NULL si aplica a tots)
+    id_estat_objectiu INT NULL,
+
+    -- Acció a realitzar:
+    -- 1 = eliminar estat
+    -- 2 = afegir estat
+    -- 3 = reemplaçar estat
+    accio INT NOT NULL,
+
+    -- Estat resultant (només per afegir o reemplaçar)
+    id_estat_resultat INT NULL,
+
+    -- Retard en torns (ex: Zombi → Semizombi després de X torns)
+    delay_torns INT DEFAULT 0 CHECK (delay_torns >= 0),
+
+    FOREIGN KEY (id_efecte_origen)
+        REFERENCES EFECTE(id_efecte),
+
+    FOREIGN KEY (id_estat_objectiu)
+        REFERENCES ESTAT(id_estat),
+
+    FOREIGN KEY (id_estat_resultat)
+        REFERENCES ESTAT(id_estat),
+
+    CHECK (accio IN (1, 2, 3))
 );
