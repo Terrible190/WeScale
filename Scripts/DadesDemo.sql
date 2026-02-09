@@ -4,18 +4,7 @@
 -- =====================================================
 
 INSERT INTO ACCIO (nom, tipus, imatge, icona, usos)
-SELECT 'ESTAT_INTERNAL', 2, 'internal.png', 'internal.ico', NULL
-WHERE NOT EXISTS (
-    SELECT 1 FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'
-);
-
-SET @id_accio_estat_internal :=
-(
-    SELECT id_obj_actiu
-    FROM ACCIO
-    WHERE nom = 'ESTAT_INTERNAL'
-    LIMIT 1
-);
+VALUES ('ESTAT_INTERNAL', 2, 'internal.png', 'internal.ico', NULL);
 
 -- ============================================================
 -- DEFINICIÓ DE L'EFECTE "CREMAT" ASSOCIAT A LA HABILITAT
@@ -35,9 +24,9 @@ SET @id_accio_estat_internal :=
 
 
 -- ------------------------------------------------------------
--- 1️⃣ CATÀLEG D'ESTATS DISPONIBLES AL JOC
+-- CATÀLEG D'ESTATS DISPONIBLES AL JOC
 -- ------------------------------------------------------------
--- Taula de tipus enum "soft"
+-- Taula de tipus enum
 -- Conté tots els estats que poden aplicar-se als personatges
 INSERT INTO ESTAT (nom) VALUES
 ('Cremat'),
@@ -46,8 +35,9 @@ INSERT INTO ESTAT (nom) VALUES
 ('Confusió'),
 ('Mort'),
 ('Zombi'),
-('Semizombi');
-
+('Semizombi'),
+('T''has encantat'),
+('Black Flash Mark');
 
 -- =====================================================
 -- ACCIO: Habilitat màgica "Bola de Foc"
@@ -72,7 +62,6 @@ VALUES
   NULL -- NULL = usos il·limitats
 );
 
-
 -- =====================================================
 -- ACCIO: Ballesta Enverinada (ARMA)
 -- Arma que aplica Enverinat a múltiples enemics
@@ -91,7 +80,7 @@ VALUES
 
 
 -- ------------------------------------------------------------
--- 2️⃣ TIPUS_EFECTE
+-- TIPUS_EFECTE
 -- ------------------------------------------------------------
 -- Taula enum "dur" que defineix el tipus d'un EFECTE
 -- 1 = Invocació
@@ -103,9 +92,8 @@ VALUES
 (2, 'https://example.com/img/estat.png',     'https://example.com/icon/estat.ico'),
 (3, 'https://example.com/img/mod.png',       'https://example.com/icon/mod.ico');
 
-
 -- ------------------------------------------------------------
--- 3️⃣ EFECTE
+-- EFECTE
 -- ------------------------------------------------------------
 -- Defineix l'efecte general associat a la habilitat "Bola de Foc"
 -- En aquest cas:
@@ -118,17 +106,17 @@ INSERT INTO EFECTE
  id_obj_arm_hab_actiu, imatge, icona)
 VALUES
 (
-  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1),
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2),
   2,
   2,
   3,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Bola de Foc' LIMIT 1),
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Bola de Foc'),
   'https://example.com/img/efecte_cremat.png',
   'https://example.com/icon/efecte_cremat.ico'
 );
 
 -- =====================================================
--- EFECTE: Estat Enverinat (origen físic)
+-- EFECTE: Estat Enverinat (físic)
 -- =====================================================
 
 INSERT INTO EFECTE
@@ -145,9 +133,8 @@ VALUES
   'https://example.com/icon/estat_enverinat.ico'
 );
 
-
 -- ------------------------------------------------------------
--- 4️⃣ EFECTE_ESTAT
+-- EFECTE_ESTAT
 -- ------------------------------------------------------------
 -- Vincula l'EFECTE de "Bola de Foc" amb l'estat "Cremat"
 INSERT INTO EFECTE_ESTAT
@@ -158,10 +145,13 @@ VALUES
    FROM EFECTE e
    JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
    WHERE a.nom = 'Bola de Foc'
-     AND e.id_tipus_efecte = (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1)
-   LIMIT 1),
-  (SELECT id_estat FROM ESTAT WHERE nom = 'Cremat' LIMIT 1)
+     AND e.id_tipus_efecte = (
+       SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 
+     )	
+	),
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Cremat')
 );
+
 -- =====================================================
 -- EFECTE_ESTAT: l'arma aplica l'estat Enverinat
 -- =====================================================
@@ -175,14 +165,13 @@ VALUES
     FROM EFECTE e
     JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
     WHERE a.nom = 'Ballesta Enverinada'
-    LIMIT 1
   ),
   (SELECT id_estat FROM ESTAT WHERE nom = 'Enverinat')
 );
 
 
 -- ------------------------------------------------------------
--- 5️⃣ EFECTE_MOD_ESTADISTICA
+-- EFECTE_MOD_ESTADISTICA
 -- ------------------------------------------------------------
 -- Defineix el dany per torn de l'estat "Cremat"
 -- - HP
@@ -220,7 +209,6 @@ VALUES
   1,  -- suma
   -4
 );
-
 
 -- =====================================================
 -- ACCIO: Habilitat base "Defensa"
@@ -292,9 +280,6 @@ VALUES
   70
 );
 
-
-
-
 -- =====================================================
 -- PERSONATGE: Guerrer (jugable)
 -- =====================================================
@@ -364,7 +349,42 @@ VALUES
 );
 
 -- =====================================================
--- Defensa per defecte: Guerrer
+-- PERSONATGE: Esquelet (invocació)
+-- =====================================================
+
+INSERT INTO PERSONATGE
+(
+  nom,
+  seleccionable,
+  imatge,
+  icona,
+  hp_base,
+  dany_fisic_base,
+  dany_magic_base,
+  defensa_fisica_base,
+  defensa_magica_base,
+  critic_base,
+  critic_multiplicador_base
+)
+VALUES
+(
+  'Esquelet',
+  FALSE,
+  'https://example.com/img/personatge_esquelet.png',
+  'https://example.com/icon/personatge_esquelet.ico',
+  35,   -- HP
+  8,    -- dany físic
+  0,    -- dany màgic
+  3,    -- defensa física
+  1,    -- defensa màgica
+  0.05, -- crític
+  1.2
+);
+
+
+
+-- =====================================================
+-- Defensa: Guerrer
 -- =====================================================
 
 INSERT INTO PERSONATGE_ACCIO
@@ -377,7 +397,7 @@ VALUES
 );
 
 -- =====================================================
--- Defensa per defecte: Goblin
+-- Defensa: Goblin
 -- =====================================================
 
 INSERT INTO PERSONATGE_ACCIO
@@ -396,7 +416,7 @@ INSERT INTO PERSONATGE_ACCIO
 VALUES
 (
   (SELECT id_personatge FROM PERSONATGE WHERE nom = 'Goblin'),
-  3,     -- id_obj_actiu de la Ballesta Enverinada
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Ballesta Enverinada' LIMIT 1),   -- id_obj_actiu de la Ballesta Enverinada
   TRUE   -- equipada
 );
 
@@ -650,6 +670,7 @@ VALUES
   'resurreccio_effect.png',
   'resurreccio_effect.ico'
 );
+
 INSERT INTO EFECTE_INTERACCIO
 (id_efecte_origen, id_estat_objectiu, accio)
 VALUES
@@ -678,4 +699,138 @@ VALUES
 
   2, -- afegir
   (SELECT id_estat FROM ESTAT WHERE nom = 'Zombi' LIMIT 1)
+);
+
+-- =====================================================
+-- ACCIO: Habilitat d'invocació "Invocar Esquelet"
+-- =====================================================
+
+INSERT INTO ACCIO
+(nom, tipus, imatge, icona, usos)
+VALUES
+(
+  'Invocar Esquelet',
+  2, -- 2 = habilitat
+  'https://example.com/img/invocar_esquelet.png',
+  'https://example.com/icon/invocar_esquelet.ico',
+  1 -- usos
+);
+-- =====================================================
+-- EFECTE: Invocació d'Esquelet
+-- =====================================================
+
+INSERT INTO EFECTE
+(id_tipus_efecte, tipus_dany, rang, duracio,
+ id_obj_arm_hab_actiu, imatge, icona)
+VALUES
+(
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 1), -- Invocació
+  NULL,
+  1,    -- self
+  NULL, -- instantani
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Invocar Esquelet'),
+  'invocar_esquelet_effect.png',
+  'invocar_esquelet_effect.ico'
+);
+
+-- =====================================================
+-- EFECTE_INVOCACIO: invoca un Esquelet
+-- =====================================================
+
+INSERT INTO EFECTE_INVOCACIO
+(id_efecte, id_invocacio, id_personatge)
+VALUES
+(
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+    WHERE a.nom = 'Invocar Esquelet'
+      AND e.id_tipus_efecte = (
+        SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 1
+      )
+  ),
+  (SELECT id_personatge FROM PERSONATGE WHERE nom = 'Esquelet'),
+  (SELECT id_personatge FROM PERSONATGE WHERE nom = 'Guerrer')
+);
+
+
+
+-- =====================================================
+-- ACCIO: Black Flash
+-- =====================================================
+INSERT INTO ACCIO (nom, tipus, usos)
+VALUES ('Black Flash', 2, NULL);
+INSERT INTO EFECTE
+(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu)
+VALUES
+(
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2),
+  NULL,
+  3, -- seleccionat
+  1, -- dura 1 torn
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash')
+);
+INSERT INTO EFECTE_ESTAT (id_efecte, id_estat)
+VALUES
+(
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+    WHERE a.nom = 'Black Flash'
+      AND e.id_tipus_efecte =
+          (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2)
+    ORDER BY e.id_efecte DESC
+    LIMIT 1
+  ),
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Black Flash Mark')
+);
+
+INSERT INTO EFECTE
+(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu)
+VALUES
+(
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3),
+  1, -- dany físic
+  2, -- enemic
+  0, -- immediat
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash')
+);
+
+INSERT INTO EFECTE_MOD_ESTADISTICA
+(id_efecte, nom_stat, operacio, valor)
+VALUES
+(
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN TIPUS_EFECTE t ON t.id_tipus_efecte = e.id_tipus_efecte
+    JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+    WHERE a.nom = 'Black Flash'
+      AND t.tipus_efecte = 3
+    ORDER BY e.id_efecte DESC
+    LIMIT 1
+  ),
+  2, -- dany físic
+  1, -- suma
+  10 -- EXTRA de dany (ajusta’l com vulguis)
+);
+
+INSERT INTO EFECTE_INTERACCIO
+(id_efecte_origen, id_estat_objectiu, accio, id_estat_resultat, delay_torns)
+VALUES
+(
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN EFECTE_ESTAT ee ON ee.id_efecte = e.id_efecte
+    JOIN ESTAT s ON s.id_estat = ee.id_estat
+    WHERE s.nom = 'Black Flash Mark'
+    LIMIT 1
+  ),
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Black Flash Mark'),
+  3, -- reemplaçar / trigger especial
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Black Flash Mark'),
+  1  -- al següent torn
 );

@@ -51,7 +51,7 @@ CREATE TABLE JUGADOR (
 
 CREATE TABLE ACCIO (
     id_obj_actiu INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
+    nom VARCHAR(100) NOT NULL UNIQUE,
     tipus INT NOT NULL, -- 1 = arma | 2 = habilitat | 3 = objecte_actiu
     imatge VARCHAR(500),
     icona VARCHAR(500),
@@ -75,7 +75,7 @@ CREATE TABLE PERSONATGE_ACCIO (
 
 CREATE TABLE TIPUS_EFECTE (
     id_tipus_efecte INT AUTO_INCREMENT PRIMARY KEY,
-    tipus_efecte INT NOT NULL, -- 1 = Invocacio | 2 = Estat | 3 = Mod Estadistica | 4 = Interaccio
+    tipus_efecte INT NOT NULL UNIQUE, -- 1 = Invocacio | 2 = Estat | 3 = Mod Estadistica | 4 = Interaccio
     imatge VARCHAR(500),
     icona VARCHAR(500),
 
@@ -104,7 +104,7 @@ CREATE TABLE EFECTE (
 
 CREATE TABLE ESTAT (
     id_estat INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL
+    nom VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE EFECTE_ESTAT (
