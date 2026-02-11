@@ -37,7 +37,10 @@ INSERT INTO ESTAT (nom) VALUES
 ('Zombi'),
 ('Semizombi'),
 ('T''has encantat'),
-('Black Flash Mark');
+('Black Flash Mark'),
+('Sobrecàrrega Obscura'),
+('Congelat');
+
 
 -- =====================================================
 -- ACCIO: Habilitat màgica "Bola de Foc"
@@ -78,7 +81,35 @@ VALUES
   NULL
 );
 
+-- =====================================================
+-- ACCIO: Ballesta Enverinada (ARMA)
+-- Arma que aplica Enverinat a múltiples enemics
+-- =====================================================
 
+INSERT INTO ACCIO
+(nom, tipus, imatge, icona, usos)
+VALUES
+(
+  'Ballesta Enverinada',
+  1, -- 1 = arma
+  'https://example.com/img/ballesta_veri.png',
+  'https://example.com/icon/ballesta_veri.ico',
+  NULL
+);
+-- =====================================================
+-- ACCIO: Bastó Glacial (ARMA)
+-- Arma que aplica Congelament a un enemic
+-- =====================================================
+INSERT INTO ACCIO
+(nom, tipus, imatge, icona, usos)
+VALUES
+(
+  'Bastó Glacial',
+  1, -- 1 = arma
+  'https://example.com/img/ballesta_veri.png',
+  'https://example.com/icon/ballesta_veri.ico',
+  NULL
+);
 -- ------------------------------------------------------------
 -- TIPUS_EFECTE
 -- ------------------------------------------------------------
@@ -114,6 +145,22 @@ VALUES
   'https://example.com/img/efecte_cremat.png',
   'https://example.com/icon/efecte_cremat.ico'
 );
+
+
+-- =====================================================
+-- EFECTE: Estat Congelat (magic)
+-- =====================================================
+INSERT INTO EFECTE
+(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu)
+VALUES
+(
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2), -- Estat
+  2,  -- dany màgic
+  2,  -- enemic
+  3,  -- 3 torns
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Bastó Glacial')
+);
+
 
 -- =====================================================
 -- EFECTE: Estat Enverinat (físic)
@@ -153,6 +200,27 @@ VALUES
 );
 
 -- =====================================================
+-- EFECTE_ESTAT: l'arma aplica l'estat Glacial
+-- =====================================================
+INSERT INTO EFECTE_ESTAT (id_efecte, id_estat)
+VALUES
+(
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+    WHERE a.nom = 'Bastó Glacial'
+      AND e.id_tipus_efecte =
+        (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2)
+    ORDER BY e.id_efecte DESC
+    LIMIT 1
+  ),
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Congelat')
+);
+
+
+
+-- =====================================================
 -- EFECTE_ESTAT: l'arma aplica l'estat Enverinat
 -- =====================================================
 
@@ -169,6 +237,27 @@ VALUES
   (SELECT id_estat FROM ESTAT WHERE nom = 'Enverinat')
 );
 
+-- ------------------------------------------------------------
+-- EFECTE_MOD_ESTADISTICA Arma - Basto Glacial
+-- ------------------------------------------------------------
+INSERT INTO EFECTE_MOD_ESTADISTICA
+(id_efecte, nom_stat, operacio, valor)
+VALUES
+(
+  (
+    SELECT e.id_efecte
+    FROM EFECTE e
+    JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+    JOIN TIPUS_EFECTE t ON t.id_tipus_efecte = e.id_tipus_efecte
+    WHERE a.nom = 'Bastó Glacial'
+      AND t.tipus_efecte = 2
+    ORDER BY e.id_efecte DESC
+    LIMIT 1
+  ),
+  6,   -- velocitat
+  4,   -- percentatge
+  -30  -- -30%
+);
 
 -- ------------------------------------------------------------
 -- EFECTE_MOD_ESTADISTICA
@@ -296,7 +385,8 @@ INSERT INTO PERSONATGE
   defensa_fisica_base,
   defensa_magica_base,
   critic_base,
-  critic_multiplicador_base
+  critic_multiplicador_base,
+  velocitat
 )
 VALUES
 (
@@ -310,7 +400,8 @@ VALUES
   12,  -- defensa física
   8,   -- defensa màgica
   0.1, -- crític base
-  1.5  -- multiplicador crític
+  1.5, -- multiplicador crític
+  3.5  -- velocitat
 );
 
 -- =====================================================
@@ -331,7 +422,8 @@ INSERT INTO PERSONATGE
   defensa_fisica_base,
   defensa_magica_base,
   critic_base,
-  critic_multiplicador_base
+  critic_multiplicador_base,
+  velocitat
 )
 VALUES
 (
@@ -345,7 +437,8 @@ VALUES
   5,   -- defensa física
   2,   -- defensa màgica
   0.05,-- crític base
-  1.3  -- multiplicador crític
+  1.3,  -- multiplicador crític
+  3.5  -- velocitat
 );
 
 -- =====================================================
@@ -364,7 +457,8 @@ INSERT INTO PERSONATGE
   defensa_fisica_base,
   defensa_magica_base,
   critic_base,
-  critic_multiplicador_base
+  critic_multiplicador_base,
+  velocitat
 )
 VALUES
 (
@@ -378,7 +472,8 @@ VALUES
   3,    -- defensa física
   1,    -- defensa màgica
   0.05, -- crític
-  1.2
+  1.2, 
+  3.5  -- velocitat
 );
 
 
@@ -593,57 +688,6 @@ VALUES
   'angel_custodi_effect.ico'
 );
 
-INSERT INTO EFECTE_INTERACCIO
-(id_efecte_origen, id_estat_objectiu, accio)
-VALUES
-(
-  (SELECT id_efecte
-   FROM EFECTE e
-   JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
-   WHERE a.nom = 'Àngel Custodi'
-   LIMIT 1),
-
-  (SELECT id_estat FROM ESTAT WHERE nom = 'Mort' LIMIT 1),
-
-  1 -- eliminar estat
-);
-
-INSERT INTO EFECTE_INTERACCIO
-(
-  id_efecte_origen,
-  id_estat_objectiu,
-  accio,
-  id_estat_resultat,
-  delay_torns
-)
-VALUES
-(
-  -- EFECTE que aplica l'estat Zombi
-  (
-    SELECT e.id_efecte
-    FROM EFECTE e
-    JOIN EFECTE_ESTAT ee ON ee.id_efecte = e.id_efecte
-    JOIN ESTAT s ON s.id_estat = ee.id_estat
-    WHERE s.nom = 'Zombi'
-    LIMIT 1
-  ),
-
-  NULL, -- no actua sobre un estat concret, sinó sobre el temps
-
-  2,    -- 2 = afegir estat
-
-  -- Estat que s’afegirà
-  (
-    SELECT id_estat
-    FROM ESTAT
-    WHERE nom = 'Semizombi'
-    LIMIT 1
-  ),
-
-  3     -- després de 3 torns
-);
-
-
 -- =====================================================
 -- ACCIO Resurrecio - Habilitat
 -- =====================================================
@@ -671,35 +715,6 @@ VALUES
   'resurreccio_effect.ico'
 );
 
-INSERT INTO EFECTE_INTERACCIO
-(id_efecte_origen, id_estat_objectiu, accio)
-VALUES
-(
-  (SELECT id_efecte
-   FROM EFECTE e
-   JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
-   WHERE a.nom = 'Resurrecció'
-   LIMIT 1),
-
-  (SELECT id_estat FROM ESTAT WHERE nom = 'Mort' LIMIT 1),
-
-  1 -- eliminar
-);
-INSERT INTO EFECTE_INTERACCIO
-(id_efecte_origen, id_estat_objectiu, accio, id_estat_resultat)
-VALUES
-(
-  (SELECT id_efecte
-   FROM EFECTE e
-   JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
-   WHERE a.nom = 'Resurrecció'
-   LIMIT 1),
-
-  (SELECT id_estat FROM ESTAT WHERE nom = 'Mort' LIMIT 1),
-
-  2, -- afegir
-  (SELECT id_estat FROM ESTAT WHERE nom = 'Zombi' LIMIT 1)
-);
 
 -- =====================================================
 -- ACCIO: Habilitat d'invocació "Invocar Esquelet"
@@ -817,20 +832,36 @@ VALUES
   10 -- EXTRA de dany (ajusta’l com vulguis)
 );
 
-INSERT INTO EFECTE_INTERACCIO
-(id_efecte_origen, id_estat_objectiu, accio, id_estat_resultat, delay_torns)
+
+-- =====================================================
+-- ACCIO: Sobrecàrrega Obscura
+-- =====================================================
+INSERT INTO ACCIO (nom, tipus, usos)
+VALUES ('Sobrecàrrega Obscura', 2, NULL);
+
+INSERT INTO EFECTE
+(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu)
+VALUES
+(
+  (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2), -- Estat
+  NULL,
+  3,  -- seleccionat (normalment self)
+  1,  -- dura 1 torn
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Sobrecàrrega Obscura')
+);
+INSERT INTO EFECTE_ESTAT (id_efecte, id_estat)
 VALUES
 (
   (
     SELECT e.id_efecte
     FROM EFECTE e
-    JOIN EFECTE_ESTAT ee ON ee.id_efecte = e.id_efecte
-    JOIN ESTAT s ON s.id_estat = ee.id_estat
-    WHERE s.nom = 'Black Flash Mark'
-    LIMIT 1
+    JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
+    WHERE a.nom = 'Sobrecàrrega Obscura'
+      AND e.id_tipus_efecte =
+          (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2)
+    ORDER BY e.id_efecte DESC
   ),
-  (SELECT id_estat FROM ESTAT WHERE nom = 'Black Flash Mark'),
-  3, -- reemplaçar / trigger especial
-  (SELECT id_estat FROM ESTAT WHERE nom = 'Black Flash Mark'),
-  1  -- al següent torn
+  (SELECT id_estat FROM ESTAT WHERE nom = 'Sobrecàrrega Obscura')
 );
+
+
