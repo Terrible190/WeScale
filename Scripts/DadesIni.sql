@@ -64,7 +64,7 @@ SET @id_estat_zombi :=
 -- ---------- EFECTE ZOMBI (ESTAT) ----------
 INSERT INTO EFECTE
 (id_tipus_efecte, tipus_dany, rang, duracio,
- id_obj_arm_hab_actiu, imatge, icona)
+ id_obj_arm_hab_actiu)
 VALUES
 (
   @id_tipus_efecte_estat,
@@ -72,8 +72,6 @@ VALUES
   1,      -- self
   NULL,   -- indefinit
   @id_accio_placeholder,
-  'https://example.com/img/estat_zombi.png',
-  'https://example.com/icon/estat_zombi.ico'
 );
 
 SET @id_efecte_zombi_estat :=
@@ -93,7 +91,7 @@ VALUES (@id_efecte_zombi_estat, @id_estat_zombi);
 -- ---------- EFECTE ZOMBI (DEBUFF -70%) ----------
 INSERT INTO EFECTE
 (id_tipus_efecte, tipus_dany, rang, duracio,
- id_obj_arm_hab_actiu, imatge, icona)
+ id_obj_arm_hab_actiu)
 VALUES
 (
   @id_tipus_efecte_mod,
@@ -101,8 +99,6 @@ VALUES
   1,
   NULL,
   @id_accio_placeholder,
-  'https://example.com/img/estat_zombi_debuff.png',
-  'https://example.com/icon/estat_zombi_debuff.ico'
 );
 
 SET @id_efecte_zombi_mod :=
@@ -139,7 +135,7 @@ SET @id_estat_semizombi :=
 -- ---------- EFECTE SEMIZOMBI (ESTAT) ----------
 INSERT INTO EFECTE
 (id_tipus_efecte, tipus_dany, rang, duracio,
- id_obj_arm_hab_actiu, imatge, icona)
+ id_obj_arm_hab_actiu)
 VALUES
 (
   @id_tipus_efecte_estat,
@@ -147,8 +143,6 @@ VALUES
   1,
   NULL,
   @id_accio_placeholder,
-  'https://example.com/img/estat_semizombi.png',
-  'https://example.com/icon/estat_semizombi.ico'
 );
 
 SET @id_efecte_semizombi_estat :=
@@ -168,7 +162,7 @@ VALUES (@id_efecte_semizombi_estat, @id_estat_semizombi);
 -- ---------- EFECTE SEMIZOMBI (DEBUFF -40%) ----------
 INSERT INTO EFECTE
 (id_tipus_efecte, tipus_dany, rang, duracio,
- id_obj_arm_hab_actiu, imatge, icona)
+ id_obj_arm_hab_actiu)
 VALUES
 (
   @id_tipus_efecte_mod,
@@ -176,8 +170,6 @@ VALUES
   1,
   NULL,
   @id_accio_placeholder,
-  'https://example.com/img/estat_semizombi_debuff.png',
-  'https://example.com/icon/estat_semizombi_debuff.ico'
 );
 
 SET @id_efecte_semizombi_mod :=

@@ -28,8 +28,8 @@ CREATE TABLE PERSONATGE (
     seleccionable BOOLEAN NOT NULL,
     imatge VARCHAR(500) NOT NULL,
     icona VARCHAR(500) NOT NULL,
-    
-    velocitat FLOAT NOT NULL, 
+
+    velocitat FLOAT NOT NULL CHECK (velocitat >= 0),
     hp_base FLOAT NOT NULL CHECK (hp_base >= 0),
     dany_fisic_base FLOAT NOT NULL CHECK (dany_fisic_base >= 0),
     dany_magic_base FLOAT NOT NULL CHECK (dany_magic_base >= 0),
@@ -50,14 +50,45 @@ CREATE TABLE JUGADOR (
 
 CREATE TABLE ACCIO (
     id_obj_actiu INT AUTO_INCREMENT PRIMARY KEY,
+
     nom VARCHAR(100) NOT NULL UNIQUE,
-    tipus INT NOT NULL, -- 1 = arma | 2 = habilitat | 3 = objecte_actiu
-    imatge VARCHAR(500),
-    icona VARCHAR(500),
-    usos INT CHECK (usos IS NULL OR usos >= 0),
+
+    tipus INT NOT NULL,
+    -- 1 = Arma 
+    -- 2 = Habilitat 
+    -- 3 = Objecte
+
+    cooldown INT DEFAULT 0 CHECK (cooldown >= 0),
+    -- Nombre de torns que han de passar abans de poder reutilitzar l'acció.
+    -- 0 = sense temps de reutilització
+
     descripcio VARCHAR(1000),
-    CHECK (tipus IN (1, 2, 3))
+
+    imatge VARCHAR(500),
+	
+    icona VARCHAR(500),
+
+    usos INT DEFAULT NULL CHECK (usos IS NULL OR usos >= -1),
+
+    estadistica INT DEFAULT NULL,
+    -- 1 = HP
+    -- 2 = Dany Físic
+    -- 3 = Defensa Física
+    -- 4 = Defensa Màgica
+    -- 5 = Dany Màgic
+    -- 6 = Velocitat
+    -- 7 = Defensa Total (Defensa Física + Defensa Màgica)
+    -- 8 = Crític
+    -- 9 = Multiplicador Crític
+    -- NULL = sense requisit
+
+    nivell_minim INT DEFAULT NULL CHECK (nivell_minim IS NULL OR nivell_minim >= 0),
+
+    tier INT DEFAULT NULL CHECK (tier IS NULL OR tier >= 0),
+
+    CHECK (tipus IN (1,2,3))
 );
+
 
 CREATE TABLE PERSONATGE_ACCIO (
     id_personatge_accio INT AUTO_INCREMENT PRIMARY KEY,
@@ -78,18 +109,21 @@ CREATE TABLE TIPUS_EFECTE (
     imatge VARCHAR(500),
     icona VARCHAR(500),
 
-    CHECK (tipus_efecte IN (1, 2, 3, 4))
+    CHECK (tipus_efecte IN (1, 2, 3))
 );
 
 CREATE TABLE EFECTE (
     id_efecte INT AUTO_INCREMENT PRIMARY KEY,
     id_tipus_efecte INT NOT NULL,
-    tipus_dany INT, -- 1 = fisic | 2 = magic
-    rang INT,       -- 1 = jo | 2 = enemic | 3 = seleccionat | 4 = all_enemies | 5 = all_allies
-    duracio INT CHECK (duracio IS NULL OR duracio >= 0),
+
+    tipus_dany INT DEFAULT NULL, -- 1=fisic 2=magic
+    rang INT DEFAULT NULL,       -- 1=self 2=enemy 3=seleccionat 4=all_enemies 5=all_allies
+
+    duracio INT DEFAULT NULL CHECK (duracio IS NULL OR duracio >= 0),
+
     id_obj_arm_hab_actiu INT NOT NULL,
-	imatge varchar(500) NOT NULL,
-	icona varchar(500) NOT NULL,
+
+    descripcio VARCHAR(1000),
 
     FOREIGN KEY (id_tipus_efecte)
         REFERENCES TIPUS_EFECTE(id_tipus_efecte),
@@ -103,8 +137,11 @@ CREATE TABLE EFECTE (
 
 CREATE TABLE ESTAT (
     id_estat INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL UNIQUE
+    nom VARCHAR(100) NOT NULL UNIQUE,
+    imatge VARCHAR(500),
+    icona VARCHAR(500)
 );
+
 
 CREATE TABLE EFECTE_ESTAT (
     id_efecte_estat INT AUTO_INCREMENT PRIMARY KEY,
@@ -121,7 +158,6 @@ CREATE TABLE EFECTE_ESTAT (
 CREATE TABLE EFECTE_INVOCACIO (
     id_efecte_invo INT AUTO_INCREMENT PRIMARY KEY,
     id_efecte INT NOT NULL,
-    id_invocacio INT NOT NULL,
     id_personatge INT NOT NULL,
 
     FOREIGN KEY (id_efecte)
@@ -133,14 +169,35 @@ CREATE TABLE EFECTE_INVOCACIO (
 
 CREATE TABLE EFECTE_MOD_ESTADISTICA (
     id_efecte_mod INT AUTO_INCREMENT PRIMARY KEY,
+
     id_efecte INT NOT NULL,
-    nom_stat INT NOT NULL,   -- identificador de l’estadística
-    operacio INT NOT NULL,  -- 1 = add | 2 = multiply | 3 = set | 4 = Percentatge 30 = +30% / -20 = -20%
+
+    nom_stat INT NOT NULL,
+    -- 1=HP
+    -- 2=Dany Físic
+    -- 3=Defensa Física
+    -- 4=Defensa Màgica
+    -- 5=Dany Màgic
+    -- 6=Velocitat
+ 
+
+    operacio INT NOT NULL,
+    -- 1=ADD                 → Sumar valor directe
+    -- 2=MULTIPLY            → Multiplicar valor
+    -- 3=SET                 → Fixar valor exacte
+    -- 4=PERCENT_CURRENT     → Percentatge sobre valor actual
+    -- 5=PERCENT_BASE        → Percentatge sobre valor base
+    -- 6=PERCENT_DAMAGE_DONE → Percentatge sobre dany causat
+    -- 7=PERCENT_DAMAGE_TAKEN→ Percentatge sobre dany rebut
+    -- 8=DIVIDE              → Dividir valor
+    -- 9=CLAMP_MIN           → Forçar valor mínim
+    -- 10=CLAMP_MAX          → Forçar valor màxim
+	-- 11=PERCENT_MAX_HP	 → Percentatge sobre vida màxima
     valor FLOAT NOT NULL,
+    -- Valor utilitzat en l'operació (pot ser positiu o negatiu segons el cas)
 
     FOREIGN KEY (id_efecte)
         REFERENCES EFECTE(id_efecte),
 
-    CHECK (operacio IN (1, 2, 3, 4))
+    CHECK (operacio IN (1,2,3,4,5,6,7,8,9,10,11))
 );
-
