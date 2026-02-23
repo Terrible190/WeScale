@@ -5,12 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeScale"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1335">
-    <Grid Margin="0,0,10,0">
+        Title="MainWindow" Height="650" Width="1135">
+
+    <Window.Resources>
+
+        <Style x:Key="BigCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <!-- QUADRADET GRAN -->
+                            <Border x:Name="Box"
+                                Width="26"
+                                Height="26"
+                                BorderThickness="2"
+                                BorderBrush="Black"
+                                Background="White"
+                                Margin="0,0,8,0"/>
+
+                            <!-- CONTINGUT (icona + text) -->
+                            <ContentPresenter VerticalAlignment="Center"/>
+
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Box" Property="Background" Value="Red"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+
+
+
+
+    <Grid Margin="0,0,10,0" >
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
+
+        <!-- 🔹 IMATGE FONS DIFUMINADA -->
+        <Image Source="/Imatges/ChatGPT Image 23 feb 2026, 20_32_19.png"
+           Stretch="UniformToFill"
+           Grid.RowSpan="2"
+           Panel.ZIndex="0">
+            <Image.Effect>
+                <BlurEffect Radius="12"/>
+            </Image.Effect>
+        </Image>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -54,98 +105,75 @@
                     </Grid>
                 </Border>
             </Grid>
-            <Grid Grid.Column="1">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+            <Grid Grid.Column="1" Grid.Row="0">
 
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                <!-- 🔥 BACKGROUND -->
+                <Border Background="#666B2B2B" CornerRadius="10" Margin="15" Height="60" VerticalAlignment="Top"/>
+
+                <StackPanel Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+                            Height="90"
+            Margin="0,0,0,30">
+
+                    <!-- PERSONATGE -->
+                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+              Margin="30,0"
+              VerticalContentAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon1.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Personatge"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
+                            <Image Source="/Imatges/personatges-removebg-preview.png"
+                   Width="100"
+                   Height="100"
+                   Margin="0,0,10,0"/>
+
                         </StackPanel>
                     </CheckBox>
 
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                    <!-- OBJECTES -->
+                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+              Margin="30,0"
+              VerticalContentAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon2.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Objectes"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
+                            <Image Source="/Imatges/objectes-removebg-preview.png"
+                   Width="100"
+                   Height="100"
+                   Margin="0,0,10,0"/>
+
                         </StackPanel>
                     </CheckBox>
 
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                    <!-- HABILITATS -->
+                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+              Margin="30,0"
+              VerticalContentAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon3.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Habilitats"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
+                            <Image Source="/Imatges/habilitats-removebg-preview.png"
+                   Width="100"
+                   Height="100"
+                   Margin="0,0,10,0"/>
+
                         </StackPanel>
                     </CheckBox>
 
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                    <!-- ARMES -->
+                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+              Margin="30,0"
+              VerticalContentAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon4.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Armes"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
-                        </StackPanel>
-                    </CheckBox>
+                            <Image Source="/Imatges/armes-removebg-preview.png"
+                   Width="100"
+                   Height="100"
+                   Margin="0,0,10,0"/>
 
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon5.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Efecte estat"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
-                        </StackPanel>
-                    </CheckBox>
-
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon6.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Efecte invoca"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
-                        </StackPanel>
-                    </CheckBox>
-
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon7.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Efecte mod"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
                         </StackPanel>
                     </CheckBox>
 
                 </StackPanel>
             </Grid>
+
         </Grid>
         <Grid Grid.Row="1">
-
+            <Border Background="#666B2B2B" CornerRadius="10" Margin="15"/>
         </Grid>
     </Grid>
 </Window>
