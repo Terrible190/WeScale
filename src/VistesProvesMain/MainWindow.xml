@@ -1,0 +1,151 @@
+<Window x:Class="Pruebas.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pruebas"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="1335">
+    <Grid Margin="0,0,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0">
+                <Border 
+                Margin="20"
+                CornerRadius="15"
+                Background="White"
+                BorderBrush="#DDDDDD"
+                BorderThickness="1"
+                Height="30"
+                VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock 
+                            Text="🔍"
+                            FontSize="18"
+                            VerticalAlignment="Center"
+                            Margin="10,0"/>
+
+
+                        <TextBox 
+                            Grid.Column="1"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            VerticalContentAlignment="Center"
+                            FontSize="14"
+                            Foreground="#333333"
+                            Padding="5"
+                            Text="Buscar..."
+                            />
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+
+                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/icon1.png"
+                   Width="24"
+                   Height="24"
+                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Personatge"
+                       VerticalAlignment="Center"
+                       FontSize="14"/>
+                        </StackPanel>
+                    </CheckBox>
+
+                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/icon2.png"
+                   Width="24"
+                   Height="24"
+                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Objectes"
+                       VerticalAlignment="Center"
+                       FontSize="14"/>
+                        </StackPanel>
+                    </CheckBox>
+
+                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/icon3.png"
+                   Width="24"
+                   Height="24"
+                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Habilitats"
+                       VerticalAlignment="Center"
+                       FontSize="14"/>
+                        </StackPanel>
+                    </CheckBox>
+
+                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/icon4.png"
+                   Width="24"
+                   Height="24"
+                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Armes"
+                       VerticalAlignment="Center"
+                       FontSize="14"/>
+                        </StackPanel>
+                    </CheckBox>
+
+                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/icon5.png"
+                   Width="24"
+                   Height="24"
+                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Efecte estat"
+                       VerticalAlignment="Center"
+                       FontSize="14"/>
+                        </StackPanel>
+                    </CheckBox>
+
+                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/icon6.png"
+                   Width="24"
+                   Height="24"
+                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Efecte invoca"
+                       VerticalAlignment="Center"
+                       FontSize="14"/>
+                        </StackPanel>
+                    </CheckBox>
+
+                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/icon7.png"
+                   Width="24"
+                   Height="24"
+                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Efecte mod"
+                       VerticalAlignment="Center"
+                       FontSize="14"/>
+                        </StackPanel>
+                    </CheckBox>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            
+        </Grid>
+    </Grid>
+</Window>
