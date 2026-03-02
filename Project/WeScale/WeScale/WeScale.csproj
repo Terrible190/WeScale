@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MainViewModel\MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -93,6 +94,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imatges\ChatGPT Image 23 feb 2026, 20_32_19.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imatges\armes-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imatges\habilitats-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imatges\objectes-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imatges\personatges-removebg-preview.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
