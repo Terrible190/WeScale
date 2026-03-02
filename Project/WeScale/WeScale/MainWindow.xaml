@@ -8,30 +8,35 @@
         Title="MainWindow" Height="650" Width="1135">
 
     <Window.Resources>
-
         <Style x:Key="BigCheckBoxStyle" TargetType="CheckBox">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                            <!-- QUADRADET GRAN -->
-                            <Border x:Name="Box"
-                                Width="26"
-                                Height="26"
+                            <Grid Width="26" Height="26" Margin="0,0,8,0">
+                                <Border x:Name="Box"
                                 BorderThickness="2"
                                 BorderBrush="Black"
-                                Background="White"
-                                Margin="0,0,8,0"/>
+                                Background="White"/>
 
-                            <!-- CONTINGUT (icona + text) -->
+                                <Path x:Name="CheckMark"
+                              Visibility="Collapsed"
+                              Stroke="Green"
+                              StrokeThickness="3"
+                              Data="M 2 12 L 8 18 L 18 4"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                            </Grid>
+
                             <ContentPresenter VerticalAlignment="Center"/>
 
                         </StackPanel>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Box" Property="Background" Value="Red"/>
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                
+                                <Setter TargetName="Box" Property="Background" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
 
@@ -39,14 +44,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Window.Resources>
 
 
 
 
 
-    <Grid Margin="0,0,10,0" >
+    <Grid Margin="0,0,10,0"  >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -68,7 +72,7 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" VerticalAlignment="Center">
                 <Border 
                 Margin="20"
                 CornerRadius="15"
