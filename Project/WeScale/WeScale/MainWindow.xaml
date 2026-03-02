@@ -178,6 +178,23 @@
         </Grid>
         <Grid Grid.Row="1">
             <Border Background="#666B2B2B" CornerRadius="10" Margin="15"/>
+            <ListView 
+                ItemsSource="{Binding LlistaCartes}"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.CanContentScroll="True">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True"></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                       <!-- <local:Carta></local:Carta> -->
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
         </Grid>
     </Grid>
 </Window>
