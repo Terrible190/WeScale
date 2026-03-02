@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeScale"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1335">
+        Title="MainWindow" Height="450" Width="931">
     <Grid Margin="0,0,10,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
@@ -14,7 +14,7 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0">
@@ -55,6 +55,10 @@
                 </Border>
             </Grid>
             <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="79*"/>
+                    <RowDefinition Height="29*"/>
+                </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
 
                     <CheckBox Margin="15,0" VerticalContentAlignment="Center">
@@ -104,43 +108,6 @@
                        FontSize="14"/>
                         </StackPanel>
                     </CheckBox>
-
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon5.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Efecte estat"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
-                        </StackPanel>
-                    </CheckBox>
-
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon6.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Efecte invoca"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
-                        </StackPanel>
-                    </CheckBox>
-
-                    <CheckBox Margin="15,0" VerticalContentAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Source="Images/icon7.png"
-                   Width="24"
-                   Height="24"
-                   Margin="0,0,5,0"/>
-                            <TextBlock Text="Efecte mod"
-                       VerticalAlignment="Center"
-                       FontSize="14"/>
-                        </StackPanel>
-                    </CheckBox>
-
                 </StackPanel>
             </Grid>
         </Grid>
