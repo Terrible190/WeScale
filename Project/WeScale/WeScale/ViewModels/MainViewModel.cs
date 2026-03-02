@@ -8,11 +8,6 @@ namespace WeScale.ViewModels
 {
     internal class MainViewModel
     {
-        
-        public MainViewModel()
-        {
 
-
-        }
     }
 }

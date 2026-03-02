@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WeScale.ViewModels;
 
-namespace WeScale
+namespace WeScale.UserContr
 {
     /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
+    /// Lógica de interacción para CartaGeneric.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CartaGeneric : UserControl
     {
-        public MainWindow()
+        public CartaGeneric()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }

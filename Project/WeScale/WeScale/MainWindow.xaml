@@ -3,35 +3,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WeScale"
+        xmlns:usco="clr-namespace:WeScale.UserContr"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1135">
 
     <Window.Resources>
-
         <Style x:Key="BigCheckBoxStyle" TargetType="CheckBox">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                            <!-- QUADRADET GRAN -->
-                            <Border x:Name="Box"
-                                Width="26"
-                                Height="26"
+                            <Grid Width="26" Height="26" Margin="0,0,8,0">
+                                <Border x:Name="Box"
                                 BorderThickness="2"
                                 BorderBrush="Black"
-                                Background="White"
-                                Margin="0,0,8,0"/>
+                                Background="White"/>
 
-                            <!-- CONTINGUT (icona + text) -->
+                                <Path x:Name="CheckMark"
+                              Visibility="Collapsed"
+                              Stroke="Green"
+                              StrokeThickness="3"
+                              Data="M 2 12 L 8 18 L 18 4"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                            </Grid>
+
                             <ContentPresenter VerticalAlignment="Center"/>
 
                         </StackPanel>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Box" Property="Background" Value="Red"/>
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                
+                                <Setter TargetName="Box" Property="Background" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
 
@@ -39,14 +44,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Window.Resources>
 
 
 
 
 
-    <Grid Margin="0,0,10,0" >
+    <Grid Margin="0,0,10,0"  >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -68,7 +72,7 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" VerticalAlignment="Center">
                 <Border 
                 Margin="20"
                 CornerRadius="15"
@@ -173,7 +177,24 @@
 
         </Grid>
         <Grid Grid.Row="1">
-            <Border Background="#666B2B2B" CornerRadius="10" Margin="15"/>
+            <Border Background="#666B2B2B"
+                    CornerRadius="10"
+                    Margin="15"/>
+
+            <ListView ItemsSource="{Binding ListaCartas}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.CanContentScroll="True"
+                      Margin="15">
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+               
+
+            </ListView>
         </Grid>
     </Grid>
 </Window>
