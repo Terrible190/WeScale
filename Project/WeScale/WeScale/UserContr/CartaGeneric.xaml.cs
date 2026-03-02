@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WeScale.UsCo
+namespace WeScale.UserContr
 {
     /// <summary>
-    /// Lógica de interacción para Carta.xaml
+    /// Lógica de interacción para CartaGeneric.xaml
     /// </summary>
-    public partial class Carta : UserControl
+    public partial class CartaGeneric : UserControl
     {
-        public Carta()
+        public CartaGeneric()
         {
             InitializeComponent();
         }

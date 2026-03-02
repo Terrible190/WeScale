@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WeScale.MainViewModel
+namespace WeScale.ViewModels
 {
     internal class MainViewModel
     {
+
     }
 }
