@@ -110,5 +110,8 @@
   <ItemGroup>
     <Resource Include="Imatges\personatges-removebg-preview.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControl\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
