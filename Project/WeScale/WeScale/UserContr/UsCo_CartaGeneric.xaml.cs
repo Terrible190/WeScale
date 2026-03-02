@@ -18,9 +18,9 @@ namespace WeScale.UserContr
     /// <summary>
     /// Lógica de interacción para CartaGeneric.xaml
     /// </summary>
-    public partial class CartaGeneric : UserControl
+    public partial class UsCo_CartaGeneric : UserControl
     {
-        public CartaGeneric()
+        public UsCo_CartaGeneric()
         {
             InitializeComponent();
         }
