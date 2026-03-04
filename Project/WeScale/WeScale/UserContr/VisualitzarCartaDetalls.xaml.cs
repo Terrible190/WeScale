@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WeScale.UserContr
 {
     /// <summary>
-    /// Interaction logic for EliminarCarta.xaml
+    /// Lógica de interacción para VisualitzarCartaDetalls.xaml
     /// </summary>
-    public partial class EliminarCarta : UserControl
+    public partial class VisualitzarCartaDetalls : UserControl
     {
-        public EliminarCarta()
+        public VisualitzarCartaDetalls()
         {
             InitializeComponent();
         }
