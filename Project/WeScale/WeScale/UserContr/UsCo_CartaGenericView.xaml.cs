@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WeScale.UserContr
 {
     /// <summary>
-    /// Lógica de interacción para CartaGeneric.xaml
+    /// Lógica de interacción para UsCo_CartaGenericView.xaml
     /// </summary>
-    public partial class UsCo_CartaGeneric : UserControl
+    public partial class UsCo_CartaGenericView : UserControl
     {
-        public UsCo_CartaGeneric()
+        public UsCo_CartaGenericView()
         {
             InitializeComponent();
         }

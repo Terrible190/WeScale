@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WeScale.UserContr
+namespace WeScale.UsersContr
 {
     /// <summary>
     /// Lógica de interacción para CartaGeneric.xaml
