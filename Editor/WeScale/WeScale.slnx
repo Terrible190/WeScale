@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="Model/Model.csproj" />
-  <Project Path="WeScale/WeScale.csproj" />
-</Solution>

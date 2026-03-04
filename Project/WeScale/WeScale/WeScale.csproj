@@ -55,9 +55,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FinestraCartes.xaml.cs">
+      <DependentUpon>FinestraCartes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserContr\AfegirCarta.xaml.cs">
+      <DependentUpon>AfegirCarta.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserContr\CartaGeneric.xaml.cs">
       <DependentUpon>CartaGeneric.xaml</DependentUpon>
     </Compile>
+    <Page Include="FinestraCartes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -66,12 +76,30 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UserContr\EliminarCarta.xaml.cs">
+      <DependentUpon>EliminarCarta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserContr\ModficiaCarta.xaml.cs">
+      <DependentUpon>ModficiaCarta.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserContr\AfegirCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserContr\CartaGeneric.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserContr\EliminarCarta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserContr\ModficiaCarta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
