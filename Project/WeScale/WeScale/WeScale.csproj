@@ -132,6 +132,11 @@
   <ItemGroup>
     <Resource Include="Imatges\personatges-removebg-preview.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BD\BD.csproj">
+      <Project>{354216bd-b533-4459-b951-11ba3653a059}</Project>
+      <Name>BD</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
