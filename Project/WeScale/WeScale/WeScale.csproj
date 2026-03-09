@@ -56,6 +56,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\CartaPersonatge.cs" />
+    <Compile Include="UserContr\Cartes\UsCo_Carta_Arma.xaml.cs">
+      <DependentUpon>UsCo_Carta_Arma.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserContr\Cartes\UsCo_Carta_Objecte.xaml.cs">
+      <DependentUpon>UsCo_Carta_Objecte.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserContr\Cartes\UsCo_Carta_Personatge.xaml.cs">
+      <DependentUpon>UsCo_Carta_Personatge.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserContr\UsCo_AfegirCarta.xaml.cs">
       <DependentUpon>UsCo_AfegirCarta.xaml</DependentUpon>
     </Compile>
@@ -78,6 +87,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserContr\Cartes\UsCo_Carta_Arma.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserContr\Cartes\UsCo_Carta_Objecte.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserContr\Cartes\UsCo_Carta_Personatge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserContr\UsCo_AfegirCarta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
