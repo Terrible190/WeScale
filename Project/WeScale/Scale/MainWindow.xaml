@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:usco="clr-namespace:WeScale.UserContr"
+        xmlns:carta="clr-namespace:WeScale.UserContr.Cartes"
         xmlns:models="clr-namespace:BD.Models;assembly=BD"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1135">
@@ -48,11 +49,7 @@
         </Style>
 
         <DataTemplate DataType="{x:Type models:Personatge}">
-            <usco:CartaPersonatge/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type models:Accio}">
-            <usco:CartaAccio/>
+            <carta:UsCo_Carta_Personatge/>
         </DataTemplate>
 
     </Window.Resources>

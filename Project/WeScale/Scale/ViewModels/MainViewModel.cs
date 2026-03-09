@@ -25,8 +25,8 @@ namespace WeScale.ViewModels
         public MainViewModel()
         {
             _context = new AppDbContext();
-
-           LoadData();
+            Cartes = new ObservableCollection<object>();
+            LoadData();
 
         }
 
