@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BD\BD.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Imatges\armes-removebg-preview.png" />
+    <Resource Include="Imatges\ChatGPT Image 23 feb 2026, 20_32_19.png" />
+    <Resource Include="Imatges\habilitats-removebg-preview.png" />
+    <Resource Include="Imatges\objectes-removebg-preview.png" />
+    <Resource Include="Imatges\personatges-removebg-preview.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="MainWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

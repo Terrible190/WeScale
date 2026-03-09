@@ -55,62 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\CartaPersonatge.cs" />
-    <Compile Include="UserContr\Cartes\UsCo_Carta_Arma.xaml.cs">
-      <DependentUpon>UsCo_Carta_Arma.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserContr\Cartes\UsCo_Carta_Objecte.xaml.cs">
-      <DependentUpon>UsCo_Carta_Objecte.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserContr\Cartes\UsCo_Carta_Personatge.xaml.cs">
-      <DependentUpon>UsCo_Carta_Personatge.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserContr\UsCo_AfegirCarta.xaml.cs">
-      <DependentUpon>UsCo_AfegirCarta.xaml</DependentUpon>
-    </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UserContr\UsCo_CartaGenericView.xaml.cs">
-      <DependentUpon>UsCo_CartaGenericView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserContr\UsCo_VisualitzarCartaDetalls.xaml.cs">
-      <DependentUpon>UsCo_VisualitzarCartaDetalls.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="UserContr\Cartes\UsCo_Carta_Arma.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserContr\Cartes\UsCo_Carta_Objecte.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserContr\Cartes\UsCo_Carta_Personatge.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserContr\UsCo_AfegirCarta.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserContr\UsCo_CartaGenericView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserContr\UsCo_VisualitzarCartaDetalls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -137,21 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Imatges\ChatGPT Image 23 feb 2026, 20_32_19.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Imatges\armes-removebg-preview.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Imatges\habilitats-removebg-preview.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Imatges\objectes-removebg-preview.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Imatges\personatges-removebg-preview.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BD\BD.csproj">

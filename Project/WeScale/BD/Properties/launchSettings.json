@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "BD": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "Executable"
+    },
+    "Profile 2": {
+      "commandName": "Project"
+    }
+  }
+}
