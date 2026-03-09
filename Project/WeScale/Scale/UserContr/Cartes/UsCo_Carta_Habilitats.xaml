@@ -1,5 +1,5 @@
-﻿<UserControl x:Class="WeScale.UserContr.Cartes.UsCo_Carta_Arma"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl x:Class="WeScale.UserContr.Cartes.UsCo_Carta_Habilitats"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid Width="220" Height="320">
@@ -35,17 +35,17 @@
             <!-- CONTENIDO -->
             <StackPanel Grid.Row="2">
 
-                <TextBlock Text="Arma"
+                <TextBlock Text="Habilitat"
            FontWeight="Bold"
            Margin="0,0,0,5"/>
 
-                <TextBlock Text="Dany:"/>
-                <TextBlock Text="{Binding Dany}"/>
+                <TextBlock Text="Cooldown:"/>
+                <TextBlock Text="{Binding Cooldown}"/>
 
-                <TextBlock Text="Cooldown:"
+                <TextBlock Text="Tier:"
            Margin="0,5,0,0"/>
 
-                <TextBlock Text="{Binding Cooldown}"/>
+                <TextBlock Text="{Binding Tier}"/>
 
                 <TextBlock Text="{Binding Descripcio}"
            TextWrapping="Wrap"
