@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:usco="clr-namespace:WeScale.UserContr"
+        xmlns:models="clr-namespace:BD.Models;assembly=BD"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1135">
-
+        
+    
     <Window.Resources>
         <Style x:Key="BigCheckBoxStyle" TargetType="CheckBox">
             <Setter Property="Template">
@@ -44,6 +46,15 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <DataTemplate DataType="{x:Type models:Personatge}">
+            <usco:CartaPersonatge/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:Accio}">
+            <usco:CartaAccio/>
+        </DataTemplate>
+
     </Window.Resources>
 
 
@@ -181,7 +192,7 @@
                     CornerRadius="10"
                     Margin="15"/>
 
-            <ListView ItemsSource="{Binding ListaCartas}"
+            <ListView ItemsSource="{Binding Cartes}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.CanContentScroll="True"
                       Margin="15">

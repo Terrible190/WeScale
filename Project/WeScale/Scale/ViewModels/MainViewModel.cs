@@ -14,6 +14,8 @@ namespace WeScale.ViewModels
     {
         private readonly AppDbContext _context;
 
+        public ObservableCollection<object> Cartes { get; set; }
+
         public ObservableCollection<Personatge> Personatges { get; set; }
 
         public ObservableCollection<Accio> Armes { get; set; }
@@ -24,6 +26,12 @@ namespace WeScale.ViewModels
         {
             _context = new AppDbContext();
 
+           LoadData();
+
+        }
+
+        public void LoadData()
+        {
             // Personatges
             Personatges = new ObservableCollection<Personatge>(
                 _context.Personatges.ToList()
@@ -43,6 +51,28 @@ namespace WeScale.ViewModels
             Objectes = new ObservableCollection<Accio>(
                 accions.Where(a => a.Tipus == 3)
             );
+
+            foreach (var personatge in Personatges)
+            {
+                Cartes.Add(personatge);
+            }
+
+            foreach (var arma in Armes)
+            {
+                Cartes.Add(arma);
+            }
+
+            foreach (var habilitat in Habilitats)
+            {
+                Cartes.Add(habilitat);
+            }
+
+            foreach (var obj in Objectes)
+            {
+                Cartes.Add(obj);
+
+            }
         }
     }
+
 }
