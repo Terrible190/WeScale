@@ -4,12 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:usco="clr-namespace:WeScale.UserContr"
+        xmlns:cartes="clr-namespace:WeScale.UserContr.Cartes"
         xmlns:models="clr-namespace:BD.Models;assembly=BD"
-        mc:Ignorable="d"
+        xmlns:local="clr-namespace:WeScale"        mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1135">
-        
-    
+
+
     <Window.Resources>
+
+
         <Style x:Key="BigCheckBoxStyle" TargetType="CheckBox">
             <Setter Property="Template">
                 <Setter.Value>
@@ -37,7 +40,7 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
-                                
+
                                 <Setter TargetName="Box" Property="Background" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -47,13 +50,27 @@
             </Setter>
         </Style>
 
-        <DataTemplate DataType="{x:Type models:Personatge}">
-            <usco:CartaPersonatge/>
+        <DataTemplate x:Key="PersonatgeTemplate">
+            <cartes:UsCo_Carta_Personatge/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type models:Accio}">
-            <usco:CartaAccio/>
+        <DataTemplate x:Key="ArmaTemplate">
+            <cartes:UsCo_Carta_Arma/>
         </DataTemplate>
+
+        <DataTemplate x:Key="HabilitatTemplate">
+            <cartes:UsCo_Carta_Habilitats/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ObjecteTemplate">
+            <cartes:UsCo_Carta_Objecte/>
+        </DataTemplate>
+
+        <local:CartaTemplateSelector x:Key="CartaSelector"
+                                 PersonatgeTemplate="{StaticResource PersonatgeTemplate}"
+                                 ArmaTemplate="{StaticResource ArmaTemplate}"
+                                 HabilitatTemplate="{StaticResource HabilitatTemplate}"
+                                 ObjecteTemplate="{StaticResource ObjecteTemplate}"/>
 
     </Window.Resources>
 
@@ -77,7 +94,7 @@
                 <BlurEffect Radius="12"/>
             </Image.Effect>
         </Image>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0"  VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -92,10 +109,11 @@
                 BorderThickness="1"
                 Height="30"
                 VerticalAlignment="Top">
-                    <Grid>
+                    <Grid  VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="37*"/>
+                            <ColumnDefinition Width="157*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
@@ -104,10 +122,11 @@
                             Text="🔍"
                             FontSize="18"
                             VerticalAlignment="Center"
-                            Margin="10,0"/>
+                            Margin="10,0,10,0"/>
 
 
                         <TextBox 
+                            x:Name="TxtBuscar"
                             Grid.Column="1"
                             BorderThickness="0"
                             Background="Transparent"
@@ -115,12 +134,12 @@
                             FontSize="14"
                             Foreground="#333333"
                             Padding="5"
-                            Text="Buscar..."
-                            />
+                            TextChanged="BuscarCanvis" Grid.ColumnSpan="2"
+                        />
                     </Grid>
                 </Border>
             </Grid>
-            <Grid Grid.Column="1" Grid.Row="0">
+            <Grid Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
 
                 <!-- 🔥 BACKGROUND -->
                 <Border Background="#666B2B2B" CornerRadius="10" Margin="15" Height="60" VerticalAlignment="Top"/>
@@ -133,8 +152,11 @@
 
                     <!-- PERSONATGE -->
                     <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-              Margin="30,0"
-              VerticalContentAlignment="Center">
+          Margin="30,0"
+          VerticalContentAlignment="Center"
+          x:Name="ChkPersonatges"
+          Checked="FiltreCanvis"
+          Unchecked="FiltreCanvis">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Image Source="/Imatges/personatges-removebg-preview.png"
                    Width="100"
@@ -146,8 +168,11 @@
 
                     <!-- OBJECTES -->
                     <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-              Margin="30,0"
-              VerticalContentAlignment="Center">
+          Margin="30,0"
+          VerticalContentAlignment="Center"
+          x:Name="ChkObjectes"
+          Checked="FiltreCanvis"
+          Unchecked="FiltreCanvis">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Image Source="/Imatges/objectes-removebg-preview.png"
                    Width="100"
@@ -159,8 +184,11 @@
 
                     <!-- HABILITATS -->
                     <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-              Margin="30,0"
-              VerticalContentAlignment="Center">
+          Margin="30,0"
+          VerticalContentAlignment="Center"
+          x:Name="ChkHabilitats"
+          Checked="FiltreCanvis"
+          Unchecked="FiltreCanvis">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Image Source="/Imatges/habilitats-removebg-preview.png"
                    Width="100"
@@ -172,8 +200,11 @@
 
                     <!-- ARMES -->
                     <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-              Margin="30,0"
-              VerticalContentAlignment="Center">
+          Margin="30,0"
+          VerticalContentAlignment="Center"
+          x:Name="ChkArmes"
+          Checked="FiltreCanvis"
+          Unchecked="FiltreCanvis">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Image Source="/Imatges/armes-removebg-preview.png"
                    Width="100"
@@ -191,19 +222,22 @@
             <Border Background="#666B2B2B"
                     CornerRadius="10"
                     Margin="15"/>
-
             <ListView ItemsSource="{Binding Cartes}"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      ScrollViewer.CanContentScroll="True"
-                      Margin="15">
+          ItemTemplateSelector="{StaticResource CartaSelector}"
+          ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="3"/>
+                        <UniformGrid Columns="5"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
-
-               
 
             </ListView>
         </Grid>
