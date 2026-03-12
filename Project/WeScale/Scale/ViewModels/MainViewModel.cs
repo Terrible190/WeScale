@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using WeScale.UserContr;
 using BD.Models;
 
 namespace WeScale.ViewModels
@@ -26,8 +20,9 @@ namespace WeScale.ViewModels
         {
             _context = new AppDbContext();
 
-           LoadData();
+            Cartes = new ObservableCollection<object>(); // ← faltava això
 
+            LoadData();
         }
 
         public void LoadData()
@@ -53,26 +48,16 @@ namespace WeScale.ViewModels
             );
 
             foreach (var personatge in Personatges)
-            {
                 Cartes.Add(personatge);
-            }
 
             foreach (var arma in Armes)
-            {
                 Cartes.Add(arma);
-            }
 
             foreach (var habilitat in Habilitats)
-            {
                 Cartes.Add(habilitat);
-            }
 
             foreach (var obj in Objectes)
-            {
                 Cartes.Add(obj);
-
-            }
         }
     }
-
 }
