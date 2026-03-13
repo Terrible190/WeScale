@@ -17,13 +17,13 @@
                 <Image Height="223" Margin="20" />
                 <StackPanel Orientation="Horizontal" >
                     <Label Content="Imatge" Margin="20 0 20 0"/>
-                    <TextBlock Text="Text..."></TextBlock>
+                    <TextBox Text="Text..."></TextBox>
                 </StackPanel>
                 <Image HorizontalAlignment="Left" Height="74" Width="71" Margin="20" />
 
                 <StackPanel Orientation="Horizontal" >
                     <Label Content="Icona" Margin="20 0 20 0"/>
-                    <TextBlock Text="Text..."  ></TextBlock>
+                    <TextBox Text="Text..."  ></TextBox>
                 </StackPanel>
                 <Button Content="Calcelar" Width="70" Margin="20 30 10 10" Padding="10 5 10 5" HorizontalAlignment="Left"/>
             </StackPanel>
@@ -32,20 +32,20 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 20 20 0" >
                     <Label Content="Nom:" Margin="0 0 20 0"/>
-                    <TextBlock Text="Text..."  ></TextBlock>
+                    <TextBox Text="Text..."  ></TextBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
                     <Label Content="ID:" Margin="0 0 20 0"/>
-                    <TextBlock Text="Text..."  ></TextBlock>
+                    <TextBox Text="Text..."  ></TextBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
                     <Label Content="Tipus:" Margin="0 0 20 0"/>
-                    <ComboBox Width="100"></ComboBox>
+                    <ComboBox x:Name="Tipus" Width="100" SelectionChanged="Tipus_SelectionChanged"></ComboBox>
                 </StackPanel>
                 <ContentControl Height="185" x:Name="ContentArea" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 <CheckBox Content="Sel·leccionable" Margin="20 10 20 0"></CheckBox>
                 <Label Content="Descripcio: " Margin="20 10 20 0"></Label>
-                <TextBlock Height="80" Margin="20 10 20 0"></TextBlock>
+                <TextBox Height="80" Margin="20 10 20 0"></TextBox>
 
                 <Button Content="Guardar" Width="70" Margin="20 10 10 10" Padding="10 5 10 5" HorizontalAlignment="Right"/>
             </StackPanel>

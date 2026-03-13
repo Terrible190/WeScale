@@ -13,19 +13,19 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
                 <Label Content="Nivel min. est:" Margin="0 0 20 0"/>
-                <TextBlock Text="Text..."  ></TextBlock>
+                <TextBox Text="Text..."  ></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
                 <Label Content="Estadistica min" Margin="0 0 20 0"/>
-                <TextBlock Text="Text..."  ></TextBlock>
+                <TextBox Text="Text..."  ></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
                 <Label Content="Usos" Margin="0 0 20 0"/>
-                <TextBlock Text="Text..."  ></TextBlock>
+                <TextBox Text="Text..."  ></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
                 <Label Content="Cooldown" Margin="0 0 20 0"/>
-                <TextBlock Text="Text..."  ></TextBlock>
+                <TextBox Text="Text..."  ></TextBox>
             </StackPanel>
         </StackPanel>
     </Grid>
