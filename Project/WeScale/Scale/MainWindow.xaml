@@ -224,8 +224,8 @@
                     Margin="15"/>
             <ListView ItemsSource="{Binding Cartes}"
           ItemTemplateSelector="{StaticResource CartaSelector}"
-          ScrollViewer.VerticalScrollBarVisibility="Auto">
-
+          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      >
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

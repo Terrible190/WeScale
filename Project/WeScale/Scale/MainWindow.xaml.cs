@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WeScale.UserContr.Cartes;
 using WeScale.ViewModels;
+using WeScale.UserContr;
 
 namespace WeScale
 {
@@ -29,10 +31,47 @@ namespace WeScale
             ChkArmes.IsChecked = true;
             ChkHabilitats.IsChecked = true;
             ChkObjectes.IsChecked = true;
-
-
+           
             DataContext = new MainViewModel();
         }
+
+        public void CartaEditar(object sender, object carta)
+        {
+            var vista = new AfegirCarta();
+
+            vista.DataContext = carta;
+
+            Window finestra = new Window();
+            finestra.Title = "Editar Carta";
+            finestra.Content = vista;
+            finestra.Width = 600;
+            finestra.Height = 500;
+            finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            finestra.ShowDialog();
+        }
+
+        public void CartaVisualitzar(object sender, object carta)
+        {
+            var vista = new VisualitzarCartaDetalls();
+
+            vista.DataContext = carta;
+
+            Window finestra = new Window();
+            finestra.Title = "Visualitzar Carta";
+            finestra.Content = vista;
+            finestra.Width = 600;
+            finestra.Height = 500;
+            finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            finestra.ShowDialog();
+        }
+
+        public void CartaEliminar(object sender, object carta)
+        {
+            MessageBox.Show($"Eliminar: {carta}");
+        }
+
         private void FiltreCanvis(object sender, RoutedEventArgs e)
         {
             AplicarFiltres();
@@ -99,5 +138,6 @@ namespace WeScale
                 }
             }
         }
+
     }
 }

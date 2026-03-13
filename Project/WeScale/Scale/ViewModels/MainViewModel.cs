@@ -10,6 +10,8 @@ namespace WeScale.ViewModels
 
         public ObservableCollection<object> Cartes { get; set; }
 
+        public int finestraCartes { get; set; } = 0;
+
         public ObservableCollection<Personatge> Personatges { get; set; }
 
         public ObservableCollection<Accio> Armes { get; set; }
