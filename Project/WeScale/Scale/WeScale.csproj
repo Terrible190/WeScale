@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Compile Remove="ImageNullConverter.cs" />
+    <Compile Remove="UserContr\UsCo_AfegirCarta.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>

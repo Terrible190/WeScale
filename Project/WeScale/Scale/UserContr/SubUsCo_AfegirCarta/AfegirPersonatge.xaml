@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="WeScale.UserContr.SubUsCo_AfegirCarta.AfegirPersonatge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WeScale.UserContr.SubUsCo_AfegirCarta"
+             mc:Ignorable="d" d:DesignWidth="800" Height="196">
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
+                <Label Content="Tier:" Margin="0 0 20 0"/>
+                <ComboBox Width="100"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
+                <Label Content="Nivel min. est:" Margin="0 0 20 0"/>
+                <TextBlock Text="Text..."  ></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
+                <Label Content="Estadistica min" Margin="0 0 20 0"/>
+                <TextBlock Text="Text..."  ></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
+                <Label Content="Usos" Margin="0 0 20 0"/>
+                <TextBlock Text="Text..."  ></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
+                <Label Content="Cooldown" Margin="0 0 20 0"/>
+                <TextBlock Text="Text..."  ></TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
