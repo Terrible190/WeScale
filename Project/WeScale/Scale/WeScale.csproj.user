@@ -14,5 +14,11 @@
     <Compile Update="UserContr\SubUsCo_AfegirCarta\AfegirItem.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserContr\SubUsCo_AfegirCarta\AfegirPersonatge.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserContr\SubUsCo_AfegirCarta\InventariPersonatges.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

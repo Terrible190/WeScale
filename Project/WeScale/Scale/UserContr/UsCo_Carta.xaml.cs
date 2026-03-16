@@ -8,13 +8,13 @@ namespace WeScale.UserContr
     /// <summary>
     /// Interaction logic for AfegirCarta.xaml
     /// </summary>
-    public partial class UsCo_AfegirCarta : UserControl
+    public partial class UsCo_Carta : UserControl
     {
         public object CartaActual { get; set; }
 
         public ModeCarta Mode { get; set; }
 
-        public UsCo_AfegirCarta(object carta, ModeCarta mode)
+        public UsCo_Carta(object carta, ModeCarta mode)
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace WeScale.UserContr
 
             Loaded += UsCo_AfegirCarta_Loaded;
         }
-
+  
         private void UsCo_AfegirCarta_Loaded(object sender, RoutedEventArgs e)
         {
             // detectar tipo automaticamente si hay carta
@@ -89,15 +89,15 @@ namespace WeScale.UserContr
                     break;
 
                 case "Arma":
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirArma();
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
                     break;
 
                 case "Habilitat":
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirHabilitat();
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
                     break;
 
                 case "Item":
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItem();
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
                     break;
 
                 default:

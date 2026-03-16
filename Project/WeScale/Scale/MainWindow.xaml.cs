@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using WeScale.UserContr.Cartes;
 using WeScale.ViewModels;
 using WeScale.UserContr;
+using WeScale.Model;
 
 namespace WeScale
 {
@@ -37,7 +38,7 @@ namespace WeScale
 
         public void CartaEditar(object sender, object carta)
         {
-            var vista = new UsCo_AfegirCarta(carta, ModeCarta.Editar);
+            var vista = new UsCo_Carta(carta, ModeCarta.Editar);
 
             Window finestra = new Window();
             finestra.Title = "Editar Carta";
@@ -49,9 +50,23 @@ namespace WeScale
             finestra.ShowDialog();
         }
 
+        private void BtnAfegirCarta_Click(object sender, RoutedEventArgs e)
+        {
+            var vista = new UsCo_Carta(null, ModeCarta.Afegir);
+
+            Window finestra = new Window();
+            finestra.Title = "Afegir Carta";
+            finestra.Content = vista;
+            finestra.Width = 600;
+            finestra.Height = 500;
+            finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            finestra.ShowDialog();
+        }
+
         public void CartaVisualitzar(object sender, object carta)
         {
-            var vista = new UsCo_AfegirCarta(carta, ModeCarta.Visualitzar);
+            var vista = new UsCo_Carta(carta, ModeCarta.Visualitzar);
 
             Window finestra = new Window();
             finestra.Title = "Visualitzar Carta";
