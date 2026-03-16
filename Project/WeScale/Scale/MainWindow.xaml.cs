@@ -37,9 +37,7 @@ namespace WeScale
 
         public void CartaEditar(object sender, object carta)
         {
-            var vista = new AfegirCarta();
-
-            vista.DataContext = carta;
+            var vista = new UsCo_AfegirCarta(carta, ModeCarta.Editar);
 
             Window finestra = new Window();
             finestra.Title = "Editar Carta";
@@ -53,9 +51,7 @@ namespace WeScale
 
         public void CartaVisualitzar(object sender, object carta)
         {
-            var vista = new VisualitzarCartaDetalls();
-
-            vista.DataContext = carta;
+            var vista = new UsCo_AfegirCarta(carta, ModeCarta.Visualitzar);
 
             Window finestra = new Window();
             finestra.Title = "Visualitzar Carta";
