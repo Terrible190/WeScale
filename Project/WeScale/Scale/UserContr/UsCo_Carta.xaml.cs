@@ -2,6 +2,8 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using WeScale.UserContr.Cartes.UnificarCartes;
 
 namespace WeScale.UserContr
 {
@@ -21,7 +23,7 @@ namespace WeScale.UserContr
             CartaActual = carta;
             Mode = mode;
 
-            DataContext = carta;
+            this.DataContext = new CartaVM(carta);
 
             string[] opciones = { "Personatge", "Arma", "Habilitat", "Item" };
 
@@ -85,18 +87,22 @@ namespace WeScale.UserContr
             switch (valor)
             {
                 case "Personatge":
+                    Atributs.Content =CrearUI_Personatge() ;
                     ContentArea.Content = new SubUsCo_AfegirCarta.AfegirPersonatge();
                     break;
 
                 case "Arma":
+                    Atributs.Content = CrearUI_Arma();
                     ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
                     break;
 
                 case "Habilitat":
+                    Atributs.Content=CrearUI_Habilitat();
                     ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
                     break;
 
                 case "Item":
+                    Atributs.Content=CrearUI_Item();
                     ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
                     break;
 
@@ -124,5 +130,103 @@ namespace WeScale.UserContr
                     BloquearControles(dep);
             }
         }
+
+        private StackPanel CrearUI_Personatge()
+        {
+            StackPanel panel = new StackPanel();
+
+            panel.Children.Add(CrearAtributBinding("Carta.HpBase", "Vida"));
+            panel.Children.Add(CrearAtributBinding("Carta.DanyFisicBase", "Atq Fisic"));
+            panel.Children.Add(CrearAtributBinding("Carta.DefensaFisicaBase", "Def Fisica"));
+
+            panel.Children.Add(CrearAtributBinding("Carta.DanyMagicBase", "Atq Magic"));
+            panel.Children.Add(CrearAtributBinding("Carta.DefensaMagicaBase", "Def Magic"));
+
+            return panel;
+        }
+
+        private StackPanel CrearUI_Arma()
+        {
+            StackPanel panel = new StackPanel();
+
+            panel.Children.Add(CrearAtributBinding("Carta", "Dany"));
+            
+
+            return panel;
+        }
+
+        private StackPanel CrearUI_Habilitat()
+        {
+            StackPanel panel = new StackPanel();
+
+            panel.Children.Add(CrearAtributBinding("Cooldown", "Cooldown"));
+
+           
+            return panel;
+        }
+
+        private StackPanel CrearUI_Item()
+        {
+            StackPanel panel = new StackPanel();
+
+            panel.Children.Add(CrearAtributBinding("Usos","Usos"));
+            panel.Children.Add(CrearAtributBinding("Coldown","Coldown"));
+
+            return panel;
+        }
+
+        private StackPanel CrearAtributBinding(string nomPropietat, string labelText)
+        {
+            StackPanel fila = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(5)
+            };
+
+            Label label = new Label
+            {
+                Content = labelText,
+                Width = 80,
+                Background=System.Windows.Media.Brushes.White,
+            };
+
+            TextBox txt = new TextBox
+            {
+                Width = 50,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            };
+
+            // 🔥 BINDING AQUÍ
+            Binding binding = new Binding(nomPropietat)
+            {
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+
+            txt.SetBinding(TextBox.TextProperty, binding);
+
+            Button up = new Button { Content = "▲", Width = 20 };
+            Button down = new Button { Content = "▼", Width = 20 };
+
+            up.Click += (s, e) =>
+            {
+                if (int.TryParse(txt.Text, out int val))
+                    txt.Text = (val + 1).ToString();
+            };
+
+            down.Click += (s, e) =>
+            {
+                if (int.TryParse(txt.Text, out int val))
+                    txt.Text = (val - 1).ToString();
+            };
+
+            fila.Children.Add(label);
+            fila.Children.Add(txt);
+            fila.Children.Add(up);
+            fila.Children.Add(down);
+
+            return fila;
+        }
+
     }
 }
