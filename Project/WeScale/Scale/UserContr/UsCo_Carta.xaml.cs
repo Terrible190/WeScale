@@ -37,7 +37,6 @@ namespace WeScale.UserContr
   
         private void UsCo_AfegirCarta_Loaded(object sender, RoutedEventArgs e)
         {
-            // detectar tipo automaticamente si hay carta
             if (CartaActual != null)
             {
                 if (CartaActual is Personatge)
@@ -64,11 +63,9 @@ namespace WeScale.UserContr
             }
             else
             {
-                // si es afegir sin carta
                 Tipus.SelectedIndex = 0;
             }
 
-            // modo visualizacion
             if (Mode == ModeCarta.Visualitzar)
             {
                 BloquearControles(this);
@@ -112,7 +109,6 @@ namespace WeScale.UserContr
             }
         }
 
-        // bloquea todos los controles en modo visualizar
         private void BloquearControles(DependencyObject parent)
         {
             foreach (var child in LogicalTreeHelper.GetChildren(parent))
@@ -196,7 +192,6 @@ namespace WeScale.UserContr
                 HorizontalContentAlignment = HorizontalAlignment.Center
             };
 
-            // 🔥 BINDING AQUÍ
             Binding binding = new Binding(nomPropietat)
             {
                 Mode = BindingMode.TwoWay,
