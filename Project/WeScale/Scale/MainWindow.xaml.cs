@@ -12,7 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WeScale.UserContr.Cartes;
 using WeScale.ViewModels;
+using WeScale.UserContr;
+using WeScale.Model;
 
 namespace WeScale
 {
@@ -29,10 +32,57 @@ namespace WeScale
             ChkArmes.IsChecked = true;
             ChkHabilitats.IsChecked = true;
             ChkObjectes.IsChecked = true;
-
-
+           
             DataContext = new MainViewModel();
         }
+
+        public void CartaEditar(object sender, object carta)
+        {
+            var vista = new UsCo_Carta(carta, ModeCarta.Editar);
+
+            Window finestra = new Window();
+            finestra.Title = "Editar Carta";
+            finestra.Content = vista;
+            finestra.Width = 800;
+            finestra.Height = 600;
+            finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            finestra.ShowDialog();
+        }
+
+        private void BtnAfegirCarta_Click(object sender, RoutedEventArgs e)
+        {
+            var vista = new UsCo_Carta(null, ModeCarta.Afegir);
+
+            Window finestra = new Window();
+            finestra.Title = "Afegir Carta";
+            finestra.Content = vista;
+            finestra.Width = 800;
+            finestra.Height = 600;
+            finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            finestra.ShowDialog();
+        }
+
+        public void CartaVisualitzar(object sender, object carta)
+        {
+            var vista = new UsCo_Carta(carta, ModeCarta.Visualitzar);
+
+            Window finestra = new Window();
+            finestra.Title = "Visualitzar Carta";
+            finestra.Content = vista;
+            finestra.Width = 800;
+            finestra.Height = 600;
+            finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            finestra.ShowDialog();
+        }
+
+        public void CartaEliminar(object sender, object carta)
+        {
+            MessageBox.Show($"Eliminar: {carta}");
+        }
+
         private void FiltreCanvis(object sender, RoutedEventArgs e)
         {
             AplicarFiltres();
@@ -99,5 +149,6 @@ namespace WeScale
                 }
             }
         }
+
     }
 }

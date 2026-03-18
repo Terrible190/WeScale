@@ -141,91 +141,108 @@
             </Grid>
             <Grid Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
 
-                <!-- 🔥 BACKGROUND -->
-                <Border Background="#666B2B2B" CornerRadius="10" Margin="15" Height="60" VerticalAlignment="Top"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-                            Height="90"
-            Margin="0,0,0,30">
+                <!-- BARRA MORADA -->
+                <Border Grid.Column="0"
+            Background="#666B2B2B"
+            CornerRadius="10"
+            Margin="15"
+            Height="60"
+            VerticalAlignment="Top">
 
-                    <!-- PERSONATGE -->
-                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-          Margin="30,0"
-          VerticalContentAlignment="Center"
-          x:Name="ChkPersonatges"
-          Checked="FiltreCanvis"
-          Unchecked="FiltreCanvis">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                        <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+                      Margin="30,0"
+                      x:Name="ChkPersonatges"
+                      Checked="FiltreCanvis"
+                      Unchecked="FiltreCanvis">
                             <Image Source="/Imatges/personatges-removebg-preview.png"
-                   Width="100"
-                   Height="100"
-                   Margin="0,0,10,0"/>
+                       Width="80"/>
+                        </CheckBox>
 
-                        </StackPanel>
-                    </CheckBox>
-
-                    <!-- OBJECTES -->
-                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-          Margin="30,0"
-          VerticalContentAlignment="Center"
-          x:Name="ChkObjectes"
-          Checked="FiltreCanvis"
-          Unchecked="FiltreCanvis">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+                      Margin="30,0"
+                      x:Name="ChkObjectes"
+                      Checked="FiltreCanvis"
+                      Unchecked="FiltreCanvis">
                             <Image Source="/Imatges/objectes-removebg-preview.png"
-                   Width="100"
-                   Height="100"
-                   Margin="0,0,10,0"/>
+                       Width="80"/>
+                        </CheckBox>
 
-                        </StackPanel>
-                    </CheckBox>
-
-                    <!-- HABILITATS -->
-                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-          Margin="30,0"
-          VerticalContentAlignment="Center"
-          x:Name="ChkHabilitats"
-          Checked="FiltreCanvis"
-          Unchecked="FiltreCanvis">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+                      Margin="30,0"
+                      x:Name="ChkHabilitats"
+                      Checked="FiltreCanvis"
+                      Unchecked="FiltreCanvis">
                             <Image Source="/Imatges/habilitats-removebg-preview.png"
-                   Width="100"
-                   Height="100"
-                   Margin="0,0,10,0"/>
+                       Width="80"/>
+                        </CheckBox>
 
-                        </StackPanel>
-                    </CheckBox>
-
-                    <!-- ARMES -->
-                    <CheckBox Style="{StaticResource BigCheckBoxStyle}"
-          Margin="30,0"
-          VerticalContentAlignment="Center"
-          x:Name="ChkArmes"
-          Checked="FiltreCanvis"
-          Unchecked="FiltreCanvis">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Style="{StaticResource BigCheckBoxStyle}"
+                      Margin="30,0"
+                      x:Name="ChkArmes"
+                      Checked="FiltreCanvis"
+                      Unchecked="FiltreCanvis">
                             <Image Source="/Imatges/armes-removebg-preview.png"
-                   Width="100"
-                   Height="100"
-                   Margin="0,0,10,0"/>
+                       Width="80"/>
+                        </CheckBox>
 
-                        </StackPanel>
-                    </CheckBox>
+                    </StackPanel>
 
-                </StackPanel>
+                </Border>
+
+                <!-- BOTÓN + -->
+                <Button Grid.Column="1"
+            Click="BtnAfegirCarta_Click"
+            Width="50"
+            Height="50"
+            Margin="10,0,20,0"
+            VerticalAlignment="Center"
+            Background="#444"
+            BorderBrush="#888"
+            BorderThickness="2"
+            Cursor="Hand">
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="25">
+
+                                <Grid>
+                                    <TextBlock Text="+"
+                           FontSize="26"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"/>
+                                </Grid>
+
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+
             </Grid>
-
         </Grid>
+
         <Grid Grid.Row="1">
             <Border Background="#666B2B2B"
                     CornerRadius="10"
                     Margin="15"/>
             <ListView ItemsSource="{Binding Cartes}"
           ItemTemplateSelector="{StaticResource CartaSelector}"
-          ScrollViewer.VerticalScrollBarVisibility="Auto">
-
+          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      >
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

@@ -2,10 +2,22 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="UserContr\Cartes\UsCo_Carta_Accio.xaml.cs">
+    <Compile Update="UserContr\Cartes\UsCo_Carta_Habilitats.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserContr\Cartes\UsCo_Carta_Habilitats.xaml.cs">
+    <Compile Update="UserContr\SubUsCo_AfegirCarta\AfegirArma.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserContr\SubUsCo_AfegirCarta\AfegirHabilitat.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserContr\SubUsCo_AfegirCarta\AfegirItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserContr\SubUsCo_AfegirCarta\AfegirPersonatge.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserContr\SubUsCo_AfegirCarta\InventariPersonatges.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

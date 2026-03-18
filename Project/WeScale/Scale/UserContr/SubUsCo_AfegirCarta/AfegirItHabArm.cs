@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WeScale.UserContr.Cartes
+namespace WeScale.UserContr.SubUsCo_AfegirCarta
 {
     /// <summary>
-    /// Interaction logic for UsCo_Carta_Accio.xaml
+    /// Lógica de interacción para AfegirPersonatge.xaml
     /// </summary>
-    public partial class UsCo_Carta_Accio : UserControl
+    public partial class AfegirItHabArm : UserControl
     {
-        public UsCo_Carta_Accio()
+        public AfegirItHabArm()
         {
             InitializeComponent();
         }

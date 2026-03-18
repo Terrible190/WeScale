@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ImageNullConverter.cs" />
-    <Compile Remove="UserContr\UsCo_AfegirCarta.xaml.cs" />
+    <Resource Include="Imatges\MaderaFondo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

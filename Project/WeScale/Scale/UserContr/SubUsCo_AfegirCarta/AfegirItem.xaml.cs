@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WeScale.UserContr.SubUsCo_AfegirCarta
 {
     /// <summary>
-    /// Interaction logic for AfegirPersonatge.xaml
+    /// Interaction logic for AfegirItem.xaml
     /// </summary>
-    public partial class AfegirPersonatge : UserControl
+    public partial class AfegirItem : UserControl
     {
-        public AfegirPersonatge()
+        public AfegirItem()
         {
             InitializeComponent();
         }

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WeScale.UserContr
+namespace WeScale.UserContr.SubUsCo_AfegirCarta
 {
     /// <summary>
-    /// Lógica de interacción para VisualitzarCartaDetalls.xaml
+    /// Interaction logic for InventariPersonatges.xaml
     /// </summary>
-    public partial class VisualitzarCartaDetalls : UserControl
+    public partial class InventariPersonatges : UserControl
     {
-        public VisualitzarCartaDetalls()
+        public InventariPersonatges()
         {
             InitializeComponent();
         }
