@@ -19,6 +19,13 @@ namespace WeScale.ViewModels
         public ObservableCollection<Accio> Habilitats { get; set; }
         public ObservableCollection<Accio> Objectes { get; set; }
 
+        public List<Accio> Accions =>
+            Armes.Concat(Habilitats).Concat(Objectes).ToList();
+
+        public AppDbContext getContext() { 
+            return _context;
+        }
+
         public MainViewModel()
         {
             _context = new AppDbContext();

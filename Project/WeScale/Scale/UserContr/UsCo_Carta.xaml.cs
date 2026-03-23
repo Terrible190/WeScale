@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using WeScale.UserContr.Cartes.UnificarCartes;
 
 namespace WeScale.UserContr
@@ -13,13 +14,16 @@ namespace WeScale.UserContr
     /// </summary>
     public partial class UsCo_Carta : UserControl
     {
+
+        private AppDbContext _context;
         public object CartaActual { get; set; }
 
         public ModeCarta Mode { get; set; }
 
-        public UsCo_Carta(object carta, ModeCarta mode)
+        public UsCo_Carta(object carta, ModeCarta mode, AppDbContext context)
         {
             InitializeComponent();
+            _context = context;
 
             CartaActual = carta;
             Mode = mode;
@@ -89,35 +93,25 @@ namespace WeScale.UserContr
         {
             var vm = (CartaVM)DataContext;
 
-            using (var context = new AppDbContext())
-            {
-                if (vm.Carta is Personatge p)
-                    AfegirPersonatge(context, p);
+            if (vm.Carta is Personatge p)
+                AfegirPersonatge(_context, p);
 
-                else if (vm.Carta is Accio a)
-                  //  AfegirAccio(context, a);
-
-                context.SaveChanges();
-            }
+            int cambios = _context.SaveChanges();
+            MessageBox.Show($"Cambios: {cambios}");
+            Window.GetWindow(this)?.Close();
         }
 
         private void GuardarEdicio()
         {
             var vm = (CartaVM)DataContext;
 
-            using (var context = new AppDbContext())
-            {
-                if (vm.Carta is Personatge p)
-                    EditarPersonatge(context, p);
+            if (vm.Carta is Personatge p)
+                EditarPersonatge(_context, p);
+            int cambios = _context.SaveChanges();
 
-                else if (vm.Carta is Accio a)
-                    EditarAccio(context, a);
-
-                context.SaveChanges();
-            }
+            MessageBox.Show($"Cambios guardados: {cambios}");
+            Window.GetWindow(this)?.Close();
         }
-
-
         private void AfegirPersonatge(AppDbContext context, Personatge p)
         {
             var nou = new Personatge
@@ -146,7 +140,7 @@ namespace WeScale.UserContr
                 });
             }
 
-            context.Personatges.Add(nou);
+            _context.Personatges.Add(nou);
         }
 
 
@@ -156,7 +150,7 @@ namespace WeScale.UserContr
                 .Include(x => x.PersonatgeAccios)
                 .First(x => x.IdPersonatge == p.IdPersonatge);
 
-            // 🔹 PROPIEDADES SIMPLES
+            // 🔹 PROPIEDADES
             original.Nom = p.Nom;
             original.Seleccionable = p.Seleccionable;
             original.Imatge = p.Imatge;
@@ -173,14 +167,39 @@ namespace WeScale.UserContr
             original.CriticBase = p.CriticBase;
             original.CriticMultiplicadorBase = p.CriticMultiplicadorBase;
 
-            // 🔥 RELACIONES (IMPORTANTE)
-            original.PersonatgeAccios.Clear();
+            // =========================
+            // 🔥 SINCRONIZAR RELACIONES
+            // =========================
 
-            foreach (var pa in p.PersonatgeAccios)
+            var idsNous = p.PersonatgeAccios
+                .Select(x => x.IdObjhabarmActiu)
+                .ToList();
+
+            // ❌ eliminar los que ya no están
+            var aEliminar = original.PersonatgeAccios
+                .Where(x => !idsNous.Contains(x.IdObjhabarmActiu))
+                .ToList();
+
+            foreach (var rel in aEliminar)
+            {
+                context.PersonatgeAccios.Remove(rel); // 🔥 CLAVE
+            }
+
+            // ➕ añadir nuevos
+            var idsActuals = original.PersonatgeAccios
+                .Select(x => x.IdObjhabarmActiu)
+                .ToList();
+
+            var aAfegir = idsNous
+                .Where(id => !idsActuals.Contains(id))
+                .ToList();
+
+            foreach (var id in aAfegir)
             {
                 original.PersonatgeAccios.Add(new PersonatgeAccio
                 {
-                    IdObjhabarmActiu = pa.IdObjhabarmActiu
+                    IdObjhabarmActiu = id,
+                    IdPersonatge = original.IdPersonatge
                 });
             }
         }
@@ -221,8 +240,10 @@ namespace WeScale.UserContr
             switch (valor)
             {
                 case "Personatge":
+                    var vm = (CartaVM)DataContext;
+
                     Atributs.Content =CrearUI_Personatge() ;
-                    ContentArea.Content = new SubUsCo_AfegirCarta.InventariPersonatges((Personatge)CartaActual);
+                    ContentArea.Content = new SubUsCo_AfegirCarta.InventariPersonatges((Personatge)vm.Carta);
                     break;
 
                 case "Arma":
@@ -259,8 +280,36 @@ namespace WeScale.UserContr
                 if (child is Button btn)
                     btn.IsEnabled = false;
 
+                // 🔥 CASO ESPECIAL: LISTVIEW
+                if (child is ListView lv)
+                {
+                    foreach (var item in lv.Items)
+                    {
+                        var container = lv.ItemContainerGenerator.ContainerFromItem(item) as ListViewItem;
+                        if (container != null)
+                        {
+                            BloquearVisualTree(container);
+                        }
+                    }
+                }
+
                 if (child is DependencyObject dep)
                     BloquearControles(dep);
+            }
+        }
+
+        private void BloquearVisualTree(DependencyObject parent)
+        {
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is Button btn)
+                    btn.IsEnabled = false;
+
+                BloquearVisualTree(child);
             }
         }
 

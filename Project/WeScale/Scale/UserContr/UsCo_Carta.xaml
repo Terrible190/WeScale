@@ -145,12 +145,14 @@
                 <Button Grid.Column="0"
                         Style="{StaticResource RPGImageButtonStyle1}"
                         Content="Cancelar"
-                        HorizontalAlignment="Left"/>
+                        HorizontalAlignment="Left"
+                         />
 
                 <!-- Botón derecha -->
                 <Button Grid.Column="1"
                         Style="{StaticResource RPGImageButtonStyle2}"
                         Content="Guardar"
+                        Click="BtnGuardar_Click" 
                         HorizontalAlignment="Right"/>
             </Grid>
 
