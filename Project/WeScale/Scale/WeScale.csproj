@@ -11,6 +11,8 @@
   <ItemGroup>
     <None Remove="Imatges\boton2.png" />
     <None Remove="Imatges\botonn.png" />
+    <None Remove="Imatges\putBigText.png" />
+    <None Remove="Imatges\putText.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +41,12 @@
     <Resource Include="Imatges\habilitats-removebg-preview.png" />
     <Resource Include="Imatges\objectes-removebg-preview.png" />
     <Resource Include="Imatges\personatges-removebg-preview.png" />
+    <Resource Include="Imatges\putBigText.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Imatges\putText.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

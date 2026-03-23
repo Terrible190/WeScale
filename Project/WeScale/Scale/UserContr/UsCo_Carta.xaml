@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WeScale.UserContr"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="800"
+             d:DesignHeight="800" d:DesignWidth="700"
              Loaded="UsCo_AfegirCarta_Loaded">
 
     <Grid>
@@ -41,9 +41,9 @@
 
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Imatge"
-                                   Background="White" Foreground="Black" Padding="3"
+                                   Style="{StaticResource RPGLabelStyle}"
                                    Margin="20 0 20 0"/>
-                            <TextBox Background="White" Foreground="Black"
+                            <TextBox Style="{StaticResource RPGTextBoxStyle}"
                                      Text="{Binding Imatge, Mode=TwoWay}" />
                         </StackPanel>
 
@@ -53,9 +53,9 @@
 
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Icona"
-                                   Background="White" Foreground="Black" Padding="3"
+                                   Style="{StaticResource RPGLabelStyle}"
                                    Margin="20 0 20 0"/>
-                            <TextBox Background="White" Foreground="Black"
+                            <TextBox Style="{StaticResource RPGTextBoxStyle}"
                                      Text="{Binding Icona, Mode=TwoWay}" />
                         </StackPanel>
 
@@ -73,31 +73,30 @@
                                 <!-- Nom -->
                                 <StackPanel Orientation="Horizontal" Margin="20 20 20 0">
                                     <Label Content="Nom:"
-                                           Background="White" Foreground="Black" Padding="3"
+                                           Style="{StaticResource RPGLabelStyle}"
                                            Margin="0 0 20 0"/>
-                                    <TextBox Width="150"
-                                             Background="White" Foreground="Black"
+                                    <TextBox 
+                                             Style="{StaticResource RPGTextBoxStyle}"
                                              Text="{Binding Nom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
 
                                 <!-- ID -->
                                 <StackPanel Orientation="Horizontal" Margin="20 10 20 0">
                                     <Label Content="ID:"
-                                           Background="White" Foreground="Black" Padding="3"
+                                           Style="{StaticResource RPGLabelStyle}"
                                            Margin="0 0 20 0"/>
-                                    <TextBox Width="100"
-                                             Background="White" Foreground="Black"
+                                    <TextBox 
+                                             Style="{StaticResource RPGTextBoxStyle}"
                                              Text="{Binding Id, Mode=TwoWay}" />
                                 </StackPanel>
 
                                 <!-- Tipus -->
                                 <StackPanel Orientation="Horizontal" Margin="20 10 20 0">
                                     <Label Content="Tipus:"
-                                           Background="White" Foreground="Black" Padding="3"
+                                           Style="{StaticResource RPGLabelStyle}"
                                            Margin="0 0 20 0"/>
-                                    <ComboBox x:Name="Tipus"
+                                    <ComboBox   x:Name="Tipus"
                                               Width="100"
-                                              Background="White"
                                               SelectionChanged="Tipus_SelectionChanged"/>
                                 </StackPanel>
 
@@ -118,13 +117,15 @@
 
                         <!-- Descripción -->
                         <Label Content="Descripció:"
-                               Background="White" Foreground="Black" Padding="3"
+                               Width="auto"
+                               Style="{StaticResource RPGLabelStyle}"
                                Margin="20 10 20 0"/>
 
-                        <TextBox Height="50"
+                        <TextBox 
                                  Margin="20 10 20 0"
-                                 Background="White" Foreground="Black"
+                                 Width="auto"
                                  AcceptsReturn="True"
+                                 Style="{StaticResource RPGTextAreaStyle}"
                                  Text="{Binding Descripcio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     </StackPanel>
@@ -145,15 +146,13 @@
                 <Button Grid.Column="0"
                         Style="{StaticResource RPGImageButtonStyle1}"
                         Content="Cancelar"
-                        HorizontalAlignment="Left"
-                         />
+                        HorizontalAlignment="Left"/>
 
                 <!-- Botón derecha -->
                 <Button Grid.Column="1"
                         Style="{StaticResource RPGImageButtonStyle2}"
                         Content="Guardar"
-                        Click="BtnGuardar_Click" 
-                        HorizontalAlignment="Right"/>
+                        HorizontalAlignment="Right" Click="BtnAfegir_Click"/>
             </Grid>
 
         </Grid>

@@ -364,18 +364,18 @@ namespace WeScale.UserContr
                 Orientation = Orientation.Horizontal,
                 Margin = new Thickness(5)
             };
-
             Label label = new Label
             {
                 Content = labelText,
                 Width = 80,
-                Background=System.Windows.Media.Brushes.White,
+                Style = (Style)Application.Current.Resources["RPGLabelStyle"], 
             };
 
             TextBox txt = new TextBox
             {
                 Width = 50,
-                HorizontalContentAlignment = HorizontalAlignment.Center
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                Style = (Style)Application.Current.Resources["RPGTextBoxStyle"], 
             };
 
             Binding binding = new Binding(nomPropietat)
@@ -386,8 +386,19 @@ namespace WeScale.UserContr
 
             txt.SetBinding(TextBox.TextProperty, binding);
 
-            Button up = new Button { Content = "▲", Width = 20 };
-            Button down = new Button { Content = "▼", Width = 20 };
+            Button up = new Button
+            {
+                Content = "▲",
+                Width = 20,
+                Style = (Style)Application.Current.Resources["RPGButtonStyle"],
+            };
+
+            Button down = new Button
+            {
+                Content = "▼",
+                Width = 20,
+                Style = (Style)Application.Current.Resources["RPGButtonStyle"],
+            };
 
             up.Click += (s, e) =>
             {
@@ -409,5 +420,9 @@ namespace WeScale.UserContr
             return fila;
         }
 
+        private void BtnAfegir_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
