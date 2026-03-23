@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WeScale.UserContr"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800"
+             d:DesignHeight="700" d:DesignWidth="800"
              Loaded="UsCo_AfegirCarta_Loaded">
 
     <Grid>
@@ -15,121 +15,143 @@
                Opacity="0.9"
                Stretch="Fill"/>
 
-        <!-- 🔥 CONTENIDO -->
+        <!-- 🔥 CONTENIDO PRINCIPAL -->
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1.5*"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <!-- Fila superior: contenido -->
+                <RowDefinition Height="Auto"/>
+                <!-- Fila inferior: botones -->
+            </Grid.RowDefinitions>
 
-            <!-- IZQUIERDA -->
-            <Grid Grid.Column="0">
-                <StackPanel>
+            <!-- FILA SUPERIOR: 2 columnas -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                </Grid.ColumnDefinitions>
 
-                    <!-- Imagen -->
-                    <Image Height="223" Margin="20"
-                           Source="{Binding Imatge}" />
+                <!-- IZQUIERDA -->
+                <Grid Grid.Column="0">
+                    <StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Imatge"
-                               Background="White" Foreground="Black" Padding="3"
-                               Margin="20 0 20 0"/>
-                        <TextBox Background="White" Foreground="Black"
-                                 Text="{Binding Imatge, Mode=TwoWay}" />
+                        <!-- Imagen -->
+                        <Image Height="223" Margin="20"
+                               Source="{Binding Imatge}" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Imatge"
+                                   Background="White" Foreground="Black" Padding="3"
+                                   Margin="20 0 20 0"/>
+                            <TextBox Background="White" Foreground="Black"
+                                     Text="{Binding Imatge, Mode=TwoWay}" />
+                        </StackPanel>
+
+                        <!-- Icono -->
+                        <Image Height="74" Width="71" Margin="20"
+                               Source="{Binding Icona}" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Icona"
+                                   Background="White" Foreground="Black" Padding="3"
+                                   Margin="20 0 20 0"/>
+                            <TextBox Background="White" Foreground="Black"
+                                     Text="{Binding Icona, Mode=TwoWay}" />
+                        </StackPanel>
+
                     </StackPanel>
+                </Grid>
 
-                    <!-- Icono -->
-                    <Image Height="74" Width="71" Margin="20"
-                           Source="{Binding Icona}" />
+                <!-- DERECHA -->
+                <Grid Grid.Column="1">
+                    <StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Icona"
+                        <StackPanel Orientation="Horizontal" Margin="20 20 20 0">
+
+                            <StackPanel>
+
+                                <!-- Nom -->
+                                <StackPanel Orientation="Horizontal" Margin="20 20 20 0">
+                                    <Label Content="Nom:"
+                                           Background="White" Foreground="Black" Padding="3"
+                                           Margin="0 0 20 0"/>
+                                    <TextBox Width="150"
+                                             Background="White" Foreground="Black"
+                                             Text="{Binding Nom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+
+                                <!-- ID -->
+                                <StackPanel Orientation="Horizontal" Margin="20 10 20 0">
+                                    <Label Content="ID:"
+                                           Background="White" Foreground="Black" Padding="3"
+                                           Margin="0 0 20 0"/>
+                                    <TextBox Width="100"
+                                             Background="White" Foreground="Black"
+                                             Text="{Binding Id, Mode=TwoWay}" />
+                                </StackPanel>
+
+                                <!-- Tipus -->
+                                <StackPanel Orientation="Horizontal" Margin="20 10 20 0">
+                                    <Label Content="Tipus:"
+                                           Background="White" Foreground="Black" Padding="3"
+                                           Margin="0 0 20 0"/>
+                                    <ComboBox x:Name="Tipus"
+                                              Width="100"
+                                              Background="White"
+                                              SelectionChanged="Tipus_SelectionChanged"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <!-- Atributos dinámicos -->
+                            <StackPanel>
+                                <ContentControl x:Name="Atributs"/>
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!-- Contenido dinámico -->
+                        <ContentControl Height="255"
+                                        x:Name="ContentArea"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"/>
+
+                        <!-- Descripción -->
+                        <Label Content="Descripció:"
                                Background="White" Foreground="Black" Padding="3"
-                               Margin="20 0 20 0"/>
-                        <TextBox Background="White" Foreground="Black"
-                                 Text="{Binding Icona, Mode=TwoWay}" />
-                    </StackPanel>
+                               Margin="20 10 20 0"/>
 
-                    <Button Content="Cancel·lar"
-                            Width="70"
-                            Margin="20 30 10 10"
-                            Padding="10 5 10 5"
-                            HorizontalAlignment="Left"/>
-                </StackPanel>
+                        <TextBox Height="50"
+                                 Margin="20 10 20 0"
+                                 Background="White" Foreground="Black"
+                                 AcceptsReturn="True"
+                                 Text="{Binding Descripcio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    </StackPanel>
+                </Grid>
+
             </Grid>
 
-            <!-- DERECHA -->
-            <Grid Grid.Column="1">
-                <StackPanel>
+            <!-- FILA INFERIOR: botones -->
+            <Grid Grid.Row="1" Margin="20 10 20 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!-- botón izquierda -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- botón derecha -->
+                </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Margin="20 20 20 0">
+                <!-- Botón izquierda -->
+                <Button Grid.Column="0"
+                        Style="{StaticResource RPGImageButtonStyle1}"
+                        Content="Cancelar"
+                        HorizontalAlignment="Left"/>
 
-                        <StackPanel>
-
-                            <!-- Nom -->
-                            <StackPanel Orientation="Horizontal" Margin="20 20 20 0">
-                                <Label Content="Nom:"
-                                       Background="White" Foreground="Black" Padding="3"
-                                       Margin="0 0 20 0"/>
-                                <TextBox Width="150"
-                                         Background="White" Foreground="Black"
-                                         Text="{Binding Nom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-
-                            <!-- ID -->
-                            <StackPanel Orientation="Horizontal" Margin="20 10 20 0">
-                                <Label Content="ID:"
-                                       Background="White" Foreground="Black" Padding="3"
-                                       Margin="0 0 20 0"/>
-                                <TextBox Width="100"
-                                         Background="White" Foreground="Black"
-                                         Text="{Binding Id, Mode=TwoWay}" />
-                            </StackPanel>
-
-                            <!-- Tipus -->
-                            <StackPanel Orientation="Horizontal" Margin="20 10 20 0">
-                                <Label Content="Tipus:"
-                                       Background="White" Foreground="Black" Padding="3"
-                                       Margin="0 0 20 0"/>
-                                <ComboBox x:Name="Tipus"
-                                          Width="100"
-                                          Background="White"
-                                          SelectionChanged="Tipus_SelectionChanged"/>
-                            </StackPanel>
-
-                        </StackPanel>
-
-                        <!-- Atributos dinámicos -->
-                        <StackPanel>
-                            <ContentControl x:Name="Atributs"/>
-                        </StackPanel>
-
-                    </StackPanel>
-
-                    <!-- Contenido dinámico -->
-                    <ContentControl Height="255"
-                                    x:Name="ContentArea"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"/>
-
-                    <!-- Descripción -->
-                    <Label Content="Descripció:"
-                           Background="White" Foreground="Black" Padding="3"
-                           Margin="20 10 20 0"/>
-
-                    <TextBox Height="50"
-                             Margin="20 10 20 0"
-                             Background="White" Foreground="Black"
-                             AcceptsReturn="True"
-                             Text="{Binding Descripcio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                    <Button Content="Guardar"
-                            Width="70"
-                            Margin="20 10 10 10"
-                            Padding="10 5 10 5"
-                            HorizontalAlignment="Right"/>
-
-                </StackPanel>
+                <!-- Botón derecha -->
+                <Button Grid.Column="1"
+                        Style="{StaticResource RPGImageButtonStyle2}"
+                        Content="Guardar"
+                        HorizontalAlignment="Right"/>
             </Grid>
 
         </Grid>

@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Imatges\boton2.png" />
+    <None Remove="Imatges\botonn.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Imatges\boton2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Imatges\botonn.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Imatges\MaderaFondo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
