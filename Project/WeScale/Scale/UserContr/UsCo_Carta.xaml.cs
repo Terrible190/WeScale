@@ -218,5 +218,9 @@ namespace WeScale.UserContr
             return fila;
         }
 
+        private void BtnAfegir_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

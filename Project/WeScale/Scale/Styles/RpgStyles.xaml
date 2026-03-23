@@ -47,4 +47,160 @@
         </Setter>
     </Style>
 
+    <Style x:Key="RPGTextBoxStyle" TargetType="TextBox">
+        <!-- Ancho por defecto -->
+        <Setter Property="Width" Value="180"/>
+        <Setter Property="Height" Value="30"/>
+
+        <!-- Color del texto -->
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Padding" Value="5,2"/>
+
+        <!-- Fondo con imagen -->
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush ImageSource="pack://application:,,,/imatges/putText.png" Stretch="Fill"/>
+            </Setter.Value>
+        </Setter>
+
+        <!-- Bordes sutiles -->
+        <Setter Property="BorderBrush" Value="#888888"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <!-- Opcional: hover effect -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="4" 
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" 
+                                      Margin="0" 
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RPGLabelStyle" TargetType="Label">
+        <!-- Tamaño por defecto -->
+        <Setter Property="Width" Value="80"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5"/>
+
+        <!-- Fondo degradado estilo pergamino/metal -->
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1C3B5C" Offset="0.0"/>
+                    <GradientStop Color="#0F2340" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+
+        <!-- Borde degradado dorado -->
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFD700" Offset="0"/>
+                    <GradientStop Color="#FFA500" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="3"/>
+
+        <!-- Sombra para dar profundidad -->
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#000000" BlurRadius="5" ShadowDepth="2" Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+
+        <!-- ControlTemplate para bordes redondeados -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
+                        <TextBlock Text="{TemplateBinding Content}" 
+                                   Foreground="{TemplateBinding Foreground}" 
+                                   FontWeight="{TemplateBinding FontWeight}" 
+                                   FontSize="{TemplateBinding FontSize}" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   FontFamily="Georgia"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+        <!-- Estilo RPG para TextBox tipo TextArea -->
+        <Style x:Key="RPGTextAreaStyle" TargetType="TextBox">
+            <!-- Tamaño por defecto (ajustable) -->
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="150"/>
+
+            <!-- Texto y fuente -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        <!-- Multilínea -->
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+
+            <!-- Fondo con imagen -->
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="pack://application:,,,/Imatges/putBigText.png" Stretch="Fill"/>
+                </Setter.Value>
+            </Setter>
+
+            <!-- Bordes sutiles o nulos -->
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#888888"/>
+
+            <!-- Alineación del texto -->
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+
+            <!-- ControlTemplate opcional para bordes redondeados -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="6" 
+                            Padding="{TemplateBinding Padding}">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                      Background="Transparent"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
 </ResourceDictionary>
