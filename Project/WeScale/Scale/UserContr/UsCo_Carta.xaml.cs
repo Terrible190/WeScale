@@ -52,11 +52,6 @@ namespace WeScale.UserContr
                             break;
 
                         case 2:
-                            Tipus.SelectedItem = "Habilitat";
-                            break;
-
-                        case 3:
-                            Tipus.SelectedItem = "Item";
                             break;
                     }
                 }
@@ -85,7 +80,7 @@ namespace WeScale.UserContr
             {
                 case "Personatge":
                     Atributs.Content =CrearUI_Personatge() ;
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirPersonatge();
+                    ContentArea.Content = new SubUsCo_AfegirCarta.InventariPersonatges((Personatge)CartaActual);
                     break;
 
                 case "Arma":
