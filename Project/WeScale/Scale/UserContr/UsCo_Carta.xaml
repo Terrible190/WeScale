@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WeScale.UserContr"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="800"
+             d:DesignHeight="800" d:DesignWidth="700"
              Loaded="UsCo_AfegirCarta_Loaded">
 
     <Grid>
@@ -95,9 +95,8 @@
                                     <Label Content="Tipus:"
                                            Style="{StaticResource RPGLabelStyle}"
                                            Margin="0 0 20 0"/>
-                                    <ComboBox x:Name="Tipus"
+                                    <ComboBox   x:Name="Tipus"
                                               Width="100"
-                                              Background="White"
                                               SelectionChanged="Tipus_SelectionChanged"/>
                                 </StackPanel>
 

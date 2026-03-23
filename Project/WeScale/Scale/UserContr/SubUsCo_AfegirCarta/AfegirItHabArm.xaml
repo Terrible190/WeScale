@@ -7,30 +7,30 @@
              mc:Ignorable="d" d:DesignWidth="500" Height="196">
     <Grid>
     
-        <StackPanel>
+        <StackPanel Margin="0,0,0,-7">
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label Content="Tier:" Margin="0 0 20 0"/>
-                <ComboBox Width="100"></ComboBox>
+                <Label Style="{StaticResource RPGLabelStyle}" Content="Tier:" Margin="0 0 20 0"/>
+                <ComboBox Style="{StaticResource RPGComboBoxStyle}"  Width="100"></ComboBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label Content="Nivel min. est:" Margin="0 0 20 0"/>
-                <TextBox Text="Text..."  ></TextBox>
+                <Label  Style="{StaticResource RPGLabelStyle}" Content="Nivel min. est:" Margin="0 0 20 0" Width="114"/>
+                <TextBox  Style="{StaticResource RPGTextBoxStyle}" Width="50" Text="Text..."  ></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label Content="Estadistica min" Margin="0 0 20 0"/>
-                <TextBox Text="Text..."  ></TextBox>
+                <Label  Style="{StaticResource RPGLabelStyle}" Content="Estadistica min" Margin="0 0 20 0" Width="116"/>
+                <TextBox Style="{StaticResource RPGTextBoxStyle}"  Width="50" Text="Text..."  ></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label Content="Usos" Margin="0 0 20 0"/>
-                <TextBox Text="Text..."  ></TextBox>
+                <Label  Style="{StaticResource RPGLabelStyle}" Content="Usos" Margin="0 0 20 0"/>
+                <TextBox Style="{StaticResource RPGTextBoxStyle}"  Width="50" Text="Text..."  ></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label Content="Cooldown" Margin="0 0 20 0"/>
-                <TextBox Text="Text..."  ></TextBox>
+                <Label  Style="{StaticResource RPGLabelStyle}" Content="Cooldown" Margin="0 0 20 0"/>
+                <TextBox Style="{StaticResource RPGTextBoxStyle}"  Width="50" Text="Text..."  ></TextBox>
             </StackPanel>
         </StackPanel>
             <StackPanel Margin="20 10 20 0" HorizontalAlignment="Right" Width="250">
-                <Label Content="Efectes:" Margin="0 0 0 10"/>
+            <Label  Style="{StaticResource RPGLabelStyle}"  Content="Efectes:" Margin="0 0 0 10"/>
             <ListView ItemsSource="{Binding Carta.Efectes}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

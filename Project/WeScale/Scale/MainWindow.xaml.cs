@@ -43,8 +43,8 @@ namespace WeScale
             Window finestra = new Window();
             finestra.Title = "Editar Carta";
             finestra.Content = vista;
-            finestra.Width = 800;
-            finestra.Height = 600;
+            finestra.Width = 900;
+            finestra.Height = 800;
             finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             finestra.ShowDialog();
@@ -57,8 +57,8 @@ namespace WeScale
             Window finestra = new Window();
             finestra.Title = "Afegir Carta";
             finestra.Content = vista;
-            finestra.Width = 800;
-            finestra.Height = 600;
+            finestra.Width = 900;
+            finestra.Height = 800;
             finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             finestra.ShowDialog();
@@ -71,8 +71,8 @@ namespace WeScale
             Window finestra = new Window();
             finestra.Title = "Visualitzar Carta";
             finestra.Content = vista;
-            finestra.Width = 800;
-            finestra.Height = 600;
+            finestra.Width = 900;
+            finestra.Height = 800;
             finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             finestra.ShowDialog();

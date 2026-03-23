@@ -1,23 +1,27 @@
 ﻿<UserControl x:Class="WeScale.UserContr.SubUsCo_AfegirCarta.InventariPersonatges"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WeScale.UserContr.SubUsCo_AfegirCarta">
 
-    <Grid Background="#2E2E2E" Margin="8">
-
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- ========================= -->
         <!-- TABS -->
+        <!-- ========================= -->
         <TabControl Grid.Row="0" Height="30" Margin="0,0,0,8">
             <TabItem Header="Set"/>
             <TabItem Header="General"/>
             <TabItem Header="Estadístiques"/>
         </TabControl>
 
+        <!-- ========================= -->
         <!-- CONTENIDO -->
+        <!-- ========================= -->
         <Grid Grid.Row="1">
 
             <Grid.ColumnDefinitions>
@@ -32,16 +36,18 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <!-- ========================= -->
             <!-- HABILITATS -->
-            <TextBlock Grid.Row="0"
-                       FontSize="14"
-                       Foreground="White"
-                       Margin="0,0,0,5"
-                       Text="Habilitats"/>
+            <!-- ========================= -->
+            <Label Grid.Row="0"
+                   Style="{StaticResource RPGLabelStyle}"
+                   Content="Habilitats"
+                   Margin="0,0,0,5"/>
 
             <ListView Grid.Row="1"
                       Margin="0,0,8,8"
-                      ItemsSource="{Binding Habilitats}">
+                      ItemsSource="{Binding Habilitats}"
+                      ItemContainerStyle="{StaticResource RPGListViewItemStyle}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -59,17 +65,19 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+            <!-- ========================= -->
             <!-- OBJECTES -->
-            <TextBlock Grid.Row="0" Grid.Column="1"
-                       FontSize="14"
-                       Foreground="White"
-                       Margin="0,0,0,5"
-                       Text="Objectes"/>
+            <!-- ========================= -->
+            <Label Grid.Row="0" Grid.Column="1"
+                   Style="{StaticResource RPGLabelStyle}"
+                   Content="Objectes"
+                   Margin="0,0,0,5"/>
 
             <ListView Grid.Row="1"
                       Grid.Column="1"
                       Margin="0,0,0,8"
-                      ItemsSource="{Binding PersonatgeAcciosObjectes}">
+                      ItemsSource="{Binding PersonatgeAcciosObjectes}"
+                      ItemContainerStyle="{StaticResource RPGListViewItemStyle}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -82,16 +90,18 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+            <!-- ========================= -->
             <!-- ARMES -->
-            <TextBlock Grid.Row="2"
-                       FontSize="14"
-                       Foreground="White"
-                       Margin="0,0,0,5"
-                       Text="Armes"/>
+            <!-- ========================= -->
+            <Label Grid.Row="2"
+                   Style="{StaticResource RPGLabelStyle}"
+                   Content="Armes"
+                   Margin="0,0,0,5"/>
 
             <ListView Grid.Row="3"
                       Margin="0,0,8,0"
-                      ItemsSource="{Binding PersonatgeAcciosArmes}">
+                      ItemsSource="{Binding PersonatgeAcciosArmes}"
+                      ItemContainerStyle="{StaticResource RPGListViewItemStyle}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -111,15 +121,20 @@
 
         </Grid>
 
+        <!-- ========================= -->
         <!-- BOTONES -->
+        <!-- ========================= -->
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0,8,0,0">
 
-            <Button Content="Afegir" Width="70" Margin="0,0,5,0"/>
-            <Button Content="Guardar" Width="70"/>
-
+            <Button Content="Afegir"
+                    Style="{StaticResource RPGImageButtonStyle1}"
+                     Margin="0,0,5,0"/>
+            <Button Content="Guardar"
+                    Style="{StaticResource RPGImageButtonStyle2}"
+                    />
         </StackPanel>
 
     </Grid>
