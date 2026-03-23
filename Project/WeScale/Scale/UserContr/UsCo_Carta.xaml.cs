@@ -1,4 +1,5 @@
 ﻿using BD.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,8 +65,149 @@ namespace WeScale.UserContr
             if (Mode == ModeCarta.Visualitzar)
             {
                 BloquearControles(this);
+            } 
+        }
+
+        private void BtnGuardar_Click(object sender, RoutedEventArgs e)
+        {
+            switch (Mode)
+            {
+                case ModeCarta.Afegir:
+                    GuardarNou();
+                    break;
+
+                case ModeCarta.Editar:
+                    GuardarEdicio();
+                    break;
+
+                case ModeCarta.Visualitzar:
+                    MessageBox.Show("No es pot guardar en mode visualització");
+                    break;
             }
         }
+        private void GuardarNou()
+        {
+            var vm = (CartaVM)DataContext;
+
+            using (var context = new AppDbContext())
+            {
+                if (vm.Carta is Personatge p)
+                    AfegirPersonatge(context, p);
+
+                else if (vm.Carta is Accio a)
+                  //  AfegirAccio(context, a);
+
+                context.SaveChanges();
+            }
+        }
+
+        private void GuardarEdicio()
+        {
+            var vm = (CartaVM)DataContext;
+
+            using (var context = new AppDbContext())
+            {
+                if (vm.Carta is Personatge p)
+                    EditarPersonatge(context, p);
+
+                else if (vm.Carta is Accio a)
+                    EditarAccio(context, a);
+
+                context.SaveChanges();
+            }
+        }
+
+
+        private void AfegirPersonatge(AppDbContext context, Personatge p)
+        {
+            var nou = new Personatge
+            {
+                Nom = p.Nom,
+                Seleccionable = p.Seleccionable,
+                Imatge = p.Imatge,
+                Icona = p.Icona,
+                Velocitat = p.Velocitat,
+                HpBase = p.HpBase,
+                DanyFisicBase = p.DanyFisicBase,
+                DanyMagicBase = p.DanyMagicBase,
+                DefensaFisicaBase = p.DefensaFisicaBase,
+                DefensaMagicaBase = p.DefensaMagicaBase,
+                CriticBase = p.CriticBase,
+                CriticMultiplicadorBase = p.CriticMultiplicadorBase,
+                PersonatgeAccios = new List<PersonatgeAccio>()
+            };
+
+            // 🔥 relaciones
+            foreach (var pa in p.PersonatgeAccios)
+            {
+                nou.PersonatgeAccios.Add(new PersonatgeAccio
+                {
+                    IdObjhabarmActiu = pa.IdObjhabarmActiu
+                });
+            }
+
+            context.Personatges.Add(nou);
+        }
+
+
+        private void EditarPersonatge(AppDbContext context, Personatge p)
+        {
+            var original = context.Personatges
+                .Include(x => x.PersonatgeAccios)
+                .First(x => x.IdPersonatge == p.IdPersonatge);
+
+            // 🔹 PROPIEDADES SIMPLES
+            original.Nom = p.Nom;
+            original.Seleccionable = p.Seleccionable;
+            original.Imatge = p.Imatge;
+            original.Icona = p.Icona;
+            original.Velocitat = p.Velocitat;
+
+            original.HpBase = p.HpBase;
+            original.DanyFisicBase = p.DanyFisicBase;
+            original.DanyMagicBase = p.DanyMagicBase;
+
+            original.DefensaFisicaBase = p.DefensaFisicaBase;
+            original.DefensaMagicaBase = p.DefensaMagicaBase;
+
+            original.CriticBase = p.CriticBase;
+            original.CriticMultiplicadorBase = p.CriticMultiplicadorBase;
+
+            // 🔥 RELACIONES (IMPORTANTE)
+            original.PersonatgeAccios.Clear();
+
+            foreach (var pa in p.PersonatgeAccios)
+            {
+                original.PersonatgeAccios.Add(new PersonatgeAccio
+                {
+                    IdObjhabarmActiu = pa.IdObjhabarmActiu
+                });
+            }
+        }
+
+
+        private void EditarAccio(AppDbContext context, Accio a)
+        {
+            var original = context.Accios
+                .Include(x => x.Efectes)
+                .First(x => x.IdObjActiu == a.IdObjActiu);
+
+            original.Nom = a.Nom;
+            original.Tipus = a.Tipus;
+
+            original.Efectes.Clear();
+
+            foreach (var e in a.Efectes)
+            {
+                original.Efectes.Add(new Efecte
+                {
+                    // copia básica (ajusta según modelo)
+                });
+            }
+        }
+
+
+
 
         private void Tipus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BD.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WeScale.Model;
+using WeScale.UserContr;
 using WeScale.UserContr.Cartes;
 using WeScale.ViewModels;
-using WeScale.UserContr;
-using WeScale.Model;
 
 namespace WeScale
 {
@@ -52,7 +53,10 @@ namespace WeScale
 
         private void BtnAfegirCarta_Click(object sender, RoutedEventArgs e)
         {
-            var vista = new UsCo_Carta(null, ModeCarta.Afegir);
+
+            var novaCarta = new Personatge();
+
+            var vista = new UsCo_Carta(novaCarta, ModeCarta.Afegir);
 
             Window finestra = new Window();
             finestra.Title = "Afegir Carta";
