@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WeScale.UserContr.SubUsCo_AfegirCarta"
-             mc:Ignorable="d" d:DesignWidth="800" Height="196">
+             mc:Ignorable="d" d:DesignWidth="500" Height="196">
     <Grid>
+    
         <StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
                 <Label Content="Tier:" Margin="0 0 20 0"/>
@@ -28,5 +29,28 @@
                 <TextBox Text="Text..."  ></TextBox>
             </StackPanel>
         </StackPanel>
+            <StackPanel Margin="20 10 20 0" HorizontalAlignment="Right" Width="250">
+                <Label Content="Efectes:" Margin="0 0 0 10"/>
+            <ListView ItemsSource="{Binding Carta.Efectes}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+
+                            <ItemsControl ItemsSource="{Binding EfecteEstats}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="{Binding IdEstatNavigation.Nom}" Margin="0 0 10 0" Width="400"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            </StackPanel>
+       
     </Grid>
 </UserControl>

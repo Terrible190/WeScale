@@ -1,5 +1,7 @@
-﻿using System;
+﻿using BD.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,33 @@ namespace WeScale.UserContr.SubUsCo_AfegirCarta
     /// </summary>
     public partial class InventariPersonatges : UserControl
     {
-        public InventariPersonatges()
+        public ObservableCollection<Accio> Habilitats { get; set; }
+        public ObservableCollection<Accio> Armes { get; set; }
+        public ObservableCollection<Accio> Objectes { get; set; }
+
+        public InventariPersonatges(Personatge p)
         {
             InitializeComponent();
+
+            Habilitats = new ObservableCollection<Accio>(
+                p.PersonatgeAccios
+                 .Where(pa => pa.IdObjhabarmActiuNavigation.Tipus == 2)
+                 .Select(pa => pa.IdObjhabarmActiuNavigation)
+            );
+
+            Armes = new ObservableCollection<Accio>(
+                p.PersonatgeAccios
+                 .Where(pa => pa.IdObjhabarmActiuNavigation.Tipus == 1)
+                 .Select(pa => pa.IdObjhabarmActiuNavigation)
+            );
+
+            Objectes = new ObservableCollection<Accio>(
+                p.PersonatgeAccios
+                 .Where(pa => pa.IdObjhabarmActiuNavigation.Tipus == 3)
+                 .Select(pa => pa.IdObjhabarmActiuNavigation)
+            );
+
+            this.DataContext = this;
         }
     }
 }

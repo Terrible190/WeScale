@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using BD.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WeScale.ViewModels
 {
@@ -31,11 +32,29 @@ namespace WeScale.ViewModels
         {
             // Personatges
             Personatges = new ObservableCollection<Personatge>(
-                _context.Personatges.ToList()
+    _context.Personatges
+        .Include(p => p.PersonatgeAccios)
+            .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
+                .ThenInclude(a => a.Efectes)
+                    .ThenInclude(e => e.EfecteEstats)
+                        .ThenInclude(ee => ee.IdEstatNavigation)
+
+        .Include(p => p.PersonatgeAccios)
+            .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
+                .ThenInclude(a => a.Efectes)
+                    .ThenInclude(e => e.EfecteModEstadisticas)
+
+        .ToList()
             );
 
             // Accions
-            var accions = _context.Accios.ToList();
+            var accions = _context.Accios
+                .Include(a => a.Efectes)
+                    .ThenInclude(e => e.EfecteEstats)
+                    .ThenInclude(ee => ee.IdEstatNavigation)
+                .Include(a => a.Efectes)
+                    .ThenInclude(e => e.EfecteModEstadisticas)
+                .ToList();
 
             Armes = new ObservableCollection<Accio>(
                 accions.Where(a => a.Tipus == 1)

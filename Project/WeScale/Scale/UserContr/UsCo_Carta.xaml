@@ -107,7 +107,7 @@
                     </StackPanel>
 
                     <!-- Contenido dinámico -->
-                    <ContentControl Height="185"
+                    <ContentControl Height="255"
                                     x:Name="ContentArea"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"/>
@@ -117,7 +117,7 @@
                            Background="White" Foreground="Black" Padding="3"
                            Margin="20 10 20 0"/>
 
-                    <TextBox Height="80"
+                    <TextBox Height="50"
                              Margin="20 10 20 0"
                              Background="White" Foreground="Black"
                              AcceptsReturn="True"
