@@ -151,7 +151,7 @@
                 <Button Grid.Column="1"
                         Style="{StaticResource RPGImageButtonStyle2}"
                         Content="Guardar"
-                        HorizontalAlignment="Right"/>
+                        HorizontalAlignment="Right" Click="BtnAfegir_Click"/>
             </Grid>
 
         </Grid>
