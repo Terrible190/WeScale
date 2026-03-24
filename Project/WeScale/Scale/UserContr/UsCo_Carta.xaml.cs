@@ -331,8 +331,7 @@ namespace WeScale.UserContr
         {
             StackPanel panel = new StackPanel();
 
-            panel.Children.Add(CrearAtributBinding("Carta", "Dany"));
-            
+            panel.Children.Add(CrearAtributBinding("Carta.DanyFisicBase", "Dany"));
 
             return panel;
         }

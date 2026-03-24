@@ -96,7 +96,8 @@
                                            Style="{StaticResource RPGLabelStyle}"
                                            Margin="0 0 20 0"/>
                                     <ComboBox   x:Name="Tipus"
-                                              Width="100"
+                                              Style="{StaticResource RPGComboBoxStyle}"
+                                              Width="150"
                                               SelectionChanged="Tipus_SelectionChanged"/>
                                 </StackPanel>
 
@@ -124,7 +125,6 @@
                         <TextBox 
                                  Margin="20 10 20 0"
                                  Width="auto"
-                                 AcceptsReturn="True"
                                  Style="{StaticResource RPGTextAreaStyle}"
                                  Text="{Binding Descripcio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
