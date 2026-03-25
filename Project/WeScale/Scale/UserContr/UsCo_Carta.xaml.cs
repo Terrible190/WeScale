@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using WeScale.UserContr.Cartes.UnificarCartes;
 using WeScale.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace WeScale.UserContr
 {
@@ -475,7 +476,7 @@ namespace WeScale.UserContr
                 Estadistica = a.Estadistica,
                 NivellMinim = a.NivellMinim,
                 Tier = a.Tier,
-                Efectes = new List<Efecte>()
+                Efectes = new ObservableCollection<Efecte>()
             };
 
             // 🔥 RELACIÓN EFECTES (MUY IMPORTANTE)
