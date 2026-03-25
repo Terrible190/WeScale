@@ -1,6 +1,7 @@
 ﻿using BD.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -190,15 +191,27 @@ namespace WeScale.UserContr
 
             original.Nom = a.Nom;
             original.Tipus = a.Tipus;
+            original.Cooldown = a.Cooldown;
+            original.Descripcio = a.Descripcio;
+            original.Imatge = a.Imatge ?? "";
+            original.Icona = a.Icona ?? "";
 
+            original.Usos = a.Usos;
+            original.Estadistica = a.Estadistica;
+            original.NivellMinim = a.NivellMinim;
+            original.Tier = a.Tier;
+
+            // 🔥 EFECTES (SIN DUPLICAR)
             original.Efectes.Clear();
 
-            foreach (var e in a.Efectes)
+            if (a.Efectes != null)
             {
-                original.Efectes.Add(new Efecte
+                foreach (var e in a.Efectes)
                 {
-                    // copia básica (ajusta según modelo)
-                });
+                    var efecteBD = context.Efectes.Find(e.IdEfecte);
+                    if (efecteBD != null)
+                        original.Efectes.Add(efecteBD);
+                }
             }
         }
 
@@ -400,7 +413,6 @@ namespace WeScale.UserContr
         {
             var vm = (CartaVM)DataContext;
 
-            // 🔥 VALIDACIÓN GLOBAL
             string error = ValidarCarta(vm.Carta);
             if (error != null)
             {
@@ -408,14 +420,21 @@ namespace WeScale.UserContr
                 return;
             }
 
-            // 🔥 DETECTAR TIPO REAL
-            if (vm.Carta is Personatge p)
+            if (Mode == ModeCarta.Afegir)
             {
-                AfegirPersonatge(_context, p);
+                if (vm.Carta is Personatge p)
+                    AfegirPersonatge(_context, p);
+
+                else if (vm.Carta is Accio a)
+                    AfegirAccio(_context, a);
             }
-            else if (vm.Carta is Accio a)
+            else if (Mode == ModeCarta.Editar)
             {
-                AfegirAccio(_context, a);
+                if (vm.Carta is Personatge p)
+                    EditarPersonatge(_context, p);
+
+                else if (vm.Carta is Accio a)
+                    EditarAccio(_context, a);
             }
 
             int cambios = _context.SaveChanges();
@@ -423,7 +442,6 @@ namespace WeScale.UserContr
 
             Window.GetWindow(this)?.Close();
         }
-
         private string ValidarCarta(object carta)
         {
             if (carta is Personatge p)
@@ -453,7 +471,14 @@ namespace WeScale.UserContr
 
                 if (a.Cooldown < 0)
                     return "Cooldown invalid";
+                if (Mode.Equals("Afegir"))
+                {
+                    bool existe = _context.Accios
+                    .Any(x => x.Nom == a.Nom && x.IdObjActiu != a.IdObjActiu);
 
+                    if (existe)
+                        return "Ja existeix una acció amb aquest nom";
+                }
                 return null;
             }
 
@@ -463,29 +488,33 @@ namespace WeScale.UserContr
 
         private void AfegirAccio(AppDbContext context, Accio a)
         {
+            // 🔥 evitar duplicados silenciosos
+            if (context.Accios.Any(x => x.Nom == a.Nom))
+            {
+                MessageBox.Show("Ja existeix una acció amb aquest nom");
+                return;
+            }
+
             var nova = new Accio
             {
                 Nom = a.Nom,
-                Tipus = a.Tipus, // 🔥 1 arma / 2 habilidad / 3 item
+                Tipus = a.Tipus,
                 Cooldown = a.Cooldown,
                 Descripcio = a.Descripcio,
-                Imatge = a.Imatge,
-                Icona = a.Icona,
+                Imatge = Safe(a.Imatge),
+                Icona = Safe(a.Icona),
                 Usos = a.Usos,
                 Estadistica = a.Estadistica,
                 NivellMinim = a.NivellMinim,
                 Tier = a.Tier,
-                Efectes = new List<Efecte>()
+                Efectes = new ObservableCollection<Efecte>()
             };
 
-            // 🔥 RELACIÓN EFECTES (MUY IMPORTANTE)
             if (a.Efectes != null)
             {
                 foreach (var e in a.Efectes)
                 {
-                    // 👇 NO crear nuevos si ya existen en BD
                     var efecteBD = context.Efectes.Find(e.IdEfecte);
-
                     if (efecteBD != null)
                         nova.Efectes.Add(efecteBD);
                 }

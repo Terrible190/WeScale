@@ -18,7 +18,7 @@ using WeScale.UserContr;
 using WeScale.UserContr.Cartes;
 using WeScale.UserContr.Cartes.UnificarCartes;
 using WeScale.ViewModels;
-
+using WeScale.Model;
 namespace WeScale
 {
     /// <summary>
@@ -52,6 +52,8 @@ namespace WeScale
             finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             finestra.ShowDialog();
+            vm.LoadData();
+
         }
 
         private void BtnAfegirCarta_Click(object sender, RoutedEventArgs e)
@@ -71,6 +73,8 @@ namespace WeScale
             finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             finestra.ShowDialog();
+
+            vm.LoadData();
         }
 
         public void CartaVisualitzar(object sender, object carta)
@@ -92,6 +96,18 @@ namespace WeScale
         public void CartaEliminar(object sender, object carta)
         {
             MessageBox.Show($"Eliminar: {carta}");
+            var vm = (MainViewModel)DataContext;
+
+            vm.Personatges().Remove(carta as Personatge);
+            vm.Armes().Remove(carta as Accio);
+                vm.Habilitats().Remove(carta as Accio);
+                vm.Objectes().Remove(carta as Accio);
+    
+                vm.Cartes.Remove(carta);    
+            vm.getContext().SaveChanges();
+           
+
+
         }
 
         private void FiltreCanvis(object sender, RoutedEventArgs e)
