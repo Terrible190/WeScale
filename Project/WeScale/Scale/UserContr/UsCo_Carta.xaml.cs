@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using WeScale.UserContr.Cartes.UnificarCartes;
 using WeScale.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace WeScale.UserContr
 {
