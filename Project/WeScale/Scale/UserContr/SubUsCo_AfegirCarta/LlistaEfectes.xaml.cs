@@ -22,7 +22,6 @@ namespace WeScale.UserContr.SubUsCo_AfegirCarta
 
             _totsEfectes = efectes;
             EfectesFiltrats = new ObservableCollection<Efecte>(efectes);
-
             DataContext = this;
         }
 

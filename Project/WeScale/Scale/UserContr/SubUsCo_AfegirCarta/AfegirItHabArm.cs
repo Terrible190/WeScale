@@ -39,7 +39,6 @@ namespace WeScale.UserContr.SubUsCo_AfegirCarta
 
             if (cartaVM?.Carta is Accio accio)
             {
-                // 🔥 coger efectos del ViewModel (NO del context)
 
                 var ventana = new LlistaEfectes(_efectes);
 

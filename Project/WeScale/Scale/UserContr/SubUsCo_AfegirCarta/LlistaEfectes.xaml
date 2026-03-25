@@ -45,7 +45,7 @@
                         <StackPanel>
 
                             <!-- NOM -->
-                            <TextBlock Text="{Binding Nom}"
+                            <TextBlock Text="{Binding }"
                                    Foreground="White"
                                    FontSize="15"
                                    FontWeight="Bold"/>

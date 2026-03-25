@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BD.Models;
 
@@ -27,7 +28,7 @@ public partial class Accio
 
     public int? Tier { get; set; }
 
-    public virtual ICollection<Efecte> Efectes { get; set; } = new List<Efecte>();
+    public virtual ObservableCollection<Efecte> Efectes { get; set; } = new ObservableCollection<Efecte>();
 
     public virtual ICollection<PersonatgeAccio> PersonatgeAccios { get; set; } = new List<PersonatgeAccio>();
 }
