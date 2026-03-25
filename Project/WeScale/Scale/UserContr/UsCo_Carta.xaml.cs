@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using WeScale.UserContr.Cartes.UnificarCartes;
+using WeScale.ViewModels;
 
 namespace WeScale.UserContr
 {
@@ -15,16 +16,17 @@ namespace WeScale.UserContr
     public partial class UsCo_Carta : UserControl
     {
 
+
         private AppDbContext _context;
         public object CartaActual { get; set; }
 
         public ModeCarta Mode { get; set; }
-
+        private List<Efecte> _efectes;
         public UsCo_Carta(object carta, ModeCarta mode, AppDbContext context)
         {
             InitializeComponent();
             _context = context;
-
+            _efectes = _context.Efectes.ToList();
             CartaActual = carta;
             Mode = mode;
 
@@ -57,7 +59,13 @@ namespace WeScale.UserContr
                             break;
 
                         case 2:
+                            Tipus.SelectedItem = "Habilitat";
                             break;
+
+                        case 3: 
+                            Tipus.SelectedItem = "Item";
+                            break;
+
                     }
                 }
             }
@@ -248,17 +256,17 @@ namespace WeScale.UserContr
 
                 case "Arma":
                     Atributs.Content = CrearUI_Arma();
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes);
                     break;
 
                 case "Habilitat":
                     Atributs.Content=CrearUI_Habilitat();
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes);
                     break;
 
                 case "Item":
                     Atributs.Content=CrearUI_Item();
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm();
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes);
                     break;
 
                 default:
@@ -340,7 +348,7 @@ namespace WeScale.UserContr
         {
             StackPanel panel = new StackPanel();
 
-            panel.Children.Add(CrearAtributBinding("Cooldown", "Cooldown"));
+            panel.Children.Add(CrearAtributBinding("Carta.Cooldown", "Cooldown"));
 
            
             return panel;
@@ -350,8 +358,8 @@ namespace WeScale.UserContr
         {
             StackPanel panel = new StackPanel();
 
-            panel.Children.Add(CrearAtributBinding("Usos","Usos"));
-            panel.Children.Add(CrearAtributBinding("Coldown","Coldown"));
+            panel.Children.Add(CrearAtributBinding("Carta.Usos","Usos"));
+            panel.Children.Add(CrearAtributBinding("Carta.Coldown","Coldown"));
 
             return panel;
         }
@@ -415,6 +423,7 @@ namespace WeScale.UserContr
             fila.Children.Add(txt);
             fila.Children.Add(up);
             fila.Children.Add(down);
+
 
             return fila;
         }

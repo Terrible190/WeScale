@@ -1,56 +1,152 @@
 ﻿<UserControl x:Class="WeScale.UserContr.SubUsCo_AfegirCarta.AfegirItHabArm"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WeScale.UserContr.SubUsCo_AfegirCarta"
-             mc:Ignorable="d" d:DesignWidth="500" Height="196">
-    <Grid>
-    
-        <StackPanel Margin="0,0,0,-7">
-            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label Style="{StaticResource RPGLabelStyle}" Content="Tier:" Margin="0 0 20 0"/>
-                <ComboBox Style="{StaticResource RPGComboBoxStyle}"  Width="100"></ComboBox>
+            >
+
+    <Grid Margin="10">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 🔹 ATRIBUTOS -->
+        <Grid Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Tier -->
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <Label Style="{StaticResource RPGLabelStyle}" Content="Tier:" Width="120"/>
+                <ComboBox Style="{StaticResource RPGComboBoxStyle}"
+                          SelectedItem="{Binding Carta.Tier, Mode=TwoWay}">
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                    <ComboBoxItem Content="5"/>
+                </ComboBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label  Style="{StaticResource RPGLabelStyle}" Content="Nivel min. est:" Margin="0 0 20 0" Width="114"/>
-                <TextBox  Style="{StaticResource RPGTextBoxStyle}" Width="50" Text="Text..."  ></TextBox>
+
+            <!-- Nivel -->
+            <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="1">
+                <Label Style="{StaticResource RPGLabelStyle}" Content="Nivel min:" Width="120"/>
+                <TextBox Style="{StaticResource RPGTextBoxStyle}"
+                         Text="{Binding Carta.NivellMinim, Mode=TwoWay}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label  Style="{StaticResource RPGLabelStyle}" Content="Estadistica min" Margin="0 0 20 0" Width="116"/>
-                <TextBox Style="{StaticResource RPGTextBoxStyle}"  Width="50" Text="Text..."  ></TextBox>
+
+            <!-- Estadística -->
+            <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="2">
+                <Label Style="{StaticResource RPGLabelStyle}" Content="Estadística:" Width="120"/>
+                <TextBox Style="{StaticResource RPGTextBoxStyle}"
+                         Text="{Binding Carta.Estadistica, Mode=TwoWay}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label  Style="{StaticResource RPGLabelStyle}" Content="Usos" Margin="0 0 20 0"/>
-                <TextBox Style="{StaticResource RPGTextBoxStyle}"  Width="50" Text="Text..."  ></TextBox>
+
+            <!-- Usos -->
+            <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="3">
+                <Label Style="{StaticResource RPGLabelStyle}" Content="Usos:" Width="120"/>
+                <TextBox Style="{StaticResource RPGTextBoxStyle}"
+                         Text="{Binding Carta.Usos, Mode=TwoWay}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="20 10 20 0" >
-                <Label  Style="{StaticResource RPGLabelStyle}" Content="Cooldown" Margin="0 0 20 0"/>
-                <TextBox Style="{StaticResource RPGTextBoxStyle}"  Width="50" Text="Text..."  ></TextBox>
-            </StackPanel>
-        </StackPanel>
-            <StackPanel Margin="20 10 20 0" HorizontalAlignment="Right" Width="250">
-            <Label  Style="{StaticResource RPGLabelStyle}"  Content="Efectes:" Margin="0 0 0 10"/>
-            <ListView ItemsSource="{Binding Carta.Efectes}">
+        </Grid>
+
+        <!-- 🔹 EFECTOS -->
+        <Grid Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- 🔹 HEADER -->
+            <DockPanel Margin="10">
+                <Label Content="Efectes:"
+               Style="{StaticResource RPGLabelStyle}"
+               DockPanel.Dock="Left"/>
+
+                <!-- ➕ AFEGIR -->
+                <Button Content="+"
+                Width="30"
+                Height="30"
+                Margin="5,0,0,0"
+                DockPanel.Dock="Right"
+                Click="BtnAfegirEfecte_Click"
+                Style="{StaticResource RPGButtonStyle}"/>
+            </DockPanel>
+
+            <!-- 🔹 LLISTA -->
+            <ListView Grid.Row="1"
+              ItemsSource="{Binding Carta.Efectes}"
+              Margin="10"
+              Background="Transparent"
+              BorderThickness="0">
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
+                        <Border Padding="8"
+                        Margin="5"
+                        Background="#2E2E2E"
+                        CornerRadius="8"
+                        BorderBrush="#555"
+                        BorderThickness="1">
 
-                            <ItemsControl ItemsSource="{Binding EfecteEstats}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBox Text="{Binding IdEstatNavigation.Nom}" Margin="0 0 10 0" Width="400"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                        </StackPanel>
+                                <!-- INFO -->
+                                <StackPanel>
+
+                                    <!-- Nom efecte -->
+                                    <TextBlock Text="{Binding Nom}"
+                                       FontWeight="Bold"
+                                       FontSize="14"
+                                       Foreground="White"
+                                       Margin="0,0,0,5"/>
+
+                                    <!-- Estats -->
+                                    <ItemsControl ItemsSource="{Binding EfecteEstats}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="#444"
+                                                CornerRadius="4"
+                                                Margin="0,2"
+                                                Padding="4">
+                                                    <TextBlock Text="{Binding IdEstatNavigation.Nom}"
+                                                       Foreground="#DDD"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                </StackPanel>
+
+                                <!-- ❌ ELIMINAR -->
+                                <Button Grid.Column="1"
+                                Content="✖"
+                                Width="25"
+                                Height="25"
+                                Margin="5"
+                                VerticalAlignment="Top"
+                                Click="BtnEliminarEfecte_Click"
+                                Style="{StaticResource RPGButtonStyle}"/>
+
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+
             </ListView>
-            </StackPanel>
-       
+
+        </Grid>
     </Grid>
 </UserControl>

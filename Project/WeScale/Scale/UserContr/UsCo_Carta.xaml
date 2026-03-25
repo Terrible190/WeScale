@@ -37,26 +37,26 @@
 
                         <!-- Imagen -->
                         <Image Height="223" Margin="20"
-                               Source="{Binding Imatge}" />
+                               Source="{Binding Carta.Imatge}" />
 
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Imatge"
                                    Style="{StaticResource RPGLabelStyle}"
                                    Margin="20 0 20 0"/>
                             <TextBox Style="{StaticResource RPGTextBoxStyle}"
-                                     Text="{Binding Imatge, Mode=TwoWay}" />
+                                     Text="{Binding Carta.Imatge, Mode=TwoWay}" />
                         </StackPanel>
 
                         <!-- Icono -->
                         <Image Height="74" Width="71" Margin="20"
-                               Source="{Binding Icona}" />
+                               Source="{Binding Carta.Icona}" />
 
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Icona"
                                    Style="{StaticResource RPGLabelStyle}"
                                    Margin="20 0 20 0"/>
                             <TextBox Style="{StaticResource RPGTextBoxStyle}"
-                                     Text="{Binding Icona, Mode=TwoWay}" />
+                                     Text="{Binding Carta.Icona, Mode=TwoWay}" />
                         </StackPanel>
 
                     </StackPanel>

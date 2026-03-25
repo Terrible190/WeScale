@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using BD.Models;
+﻿using BD.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace WeScale.ViewModels
 {
@@ -14,7 +15,7 @@ namespace WeScale.ViewModels
         public int finestraCartes { get; set; } = 0;
 
         public ObservableCollection<Personatge> Personatges { get; set; }
-
+        public ObservableCollection<Efecte> Efectes { get; set; }
         public ObservableCollection<Accio> Armes { get; set; }
         public ObservableCollection<Accio> Habilitats { get; set; }
         public ObservableCollection<Accio> Objectes { get; set; }
@@ -52,6 +53,13 @@ namespace WeScale.ViewModels
                     .ThenInclude(e => e.EfecteModEstadisticas)
 
         .ToList()
+            );
+
+            Efectes = new ObservableCollection<Efecte>(
+                _context.Efectes
+                    .Include(e => e.EfecteEstats)
+                    .ThenInclude(es => es.IdEstatNavigation)
+                    .ToList()
             );
 
             // Accions
