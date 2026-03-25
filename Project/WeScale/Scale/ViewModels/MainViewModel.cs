@@ -23,7 +23,10 @@ namespace WeScale.ViewModels
         public List<Accio> Accions =>
             Armes.Concat(Habilitats).Concat(Objectes).ToList();
 
-        public AppDbContext getContext() { 
+        public Action OnCartesUpdated { get; internal set; }
+
+        public AppDbContext getContext()
+        {
             return _context;
         }
 
@@ -38,22 +41,23 @@ namespace WeScale.ViewModels
 
         public void LoadData()
         {
+            Cartes.Clear();
             // Personatges
             Personatges = new ObservableCollection<Personatge>(
-    _context.Personatges
-        .Include(p => p.PersonatgeAccios)
-            .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
-                .ThenInclude(a => a.Efectes)
-                    .ThenInclude(e => e.EfecteEstats)
-                        .ThenInclude(ee => ee.IdEstatNavigation)
+     _context.Personatges
+         .Include(p => p.PersonatgeAccios)
+             .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
+                 .ThenInclude(a => a.Efectes)
+                     .ThenInclude(e => e.EfecteEstats)
+                         .ThenInclude(ee => ee.IdEstatNavigation)
 
-        .Include(p => p.PersonatgeAccios)
-            .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
-                .ThenInclude(a => a.Efectes)
-                    .ThenInclude(e => e.EfecteModEstadisticas)
+         .Include(p => p.PersonatgeAccios)
+             .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
+                 .ThenInclude(a => a.Efectes)
+                     .ThenInclude(e => e.EfecteModEstadisticas)
 
-        .ToList()
-            );
+         .ToList()
+             );
 
             Efectes = new ObservableCollection<Efecte>(
                 _context.Efectes
@@ -94,6 +98,12 @@ namespace WeScale.ViewModels
 
             foreach (var obj in Objectes)
                 Cartes.Add(obj);
+        }
+
+        public void Refresh()
+        {
+            LoadData();  // Recarga los datos
+            OnCartesUpdated?.Invoke();  // Dispara el evento para actualizar la vista
         }
     }
 }

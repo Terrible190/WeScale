@@ -35,9 +35,24 @@ namespace WeScale
             ChkHabilitats.IsChecked = true;
             ChkObjectes.IsChecked = true;
            
-            DataContext = new MainViewModel();
-        }
+            var vm = new MainViewModel();
+            DataContext = vm;
 
+            vm.OnCartesUpdated += () =>
+            {
+                AplicarFiltres();
+            };
+        }
+        public event Action OnCartesUpdated;
+
+
+        public void Refresh()
+        {
+            var vm = (MainViewModel)DataContext;
+
+            vm.LoadData();
+            OnCartesUpdated?.Invoke();
+        }
         public void CartaEditar(object sender, object carta)
         {
             var vm = (MainViewModel)DataContext;
@@ -52,7 +67,7 @@ namespace WeScale
             finestra.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             finestra.ShowDialog();
-            vm.LoadData();
+            vm.Refresh();
 
         }
 
@@ -74,7 +89,7 @@ namespace WeScale
 
             finestra.ShowDialog();
 
-            vm.LoadData();
+            vm.Refresh();
         }
 
         public void CartaVisualitzar(object sender, object carta)
@@ -98,17 +113,13 @@ namespace WeScale
             MessageBox.Show($"Eliminar: {carta}");
             var vm = (MainViewModel)DataContext;
 
-            vm.Personatges().Remove(carta as Personatge);
-            vm.Armes().Remove(carta as Accio);
-                vm.Habilitats().Remove(carta as Accio);
-                vm.Objectes().Remove(carta as Accio);
-    
-                vm.Cartes.Remove(carta);    
+            // Elimina la carta de la lista de cartas
+            vm.Cartes.Remove(carta);
+
+            // Elimina la carta del contexto y guarda los cambios
             vm.getContext().SaveChanges();
-           
-
-
         }
+        
 
         private void FiltreCanvis(object sender, RoutedEventArgs e)
         {
