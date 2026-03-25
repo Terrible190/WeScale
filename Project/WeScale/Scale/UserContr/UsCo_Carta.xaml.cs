@@ -187,8 +187,8 @@ namespace WeScale.UserContr
         private void EditarAccio(AppDbContext context, Accio a)
         {
             var original = context.Accios
-                .Include(x => x.Efectes)
-                .First(x => x.IdObjActiu == a.IdObjActiu);
+        .Include(x => x.Efectes)
+        .First(x => x.IdObjActiu == a.IdObjActiu);
 
             original.Nom = a.Nom;
             original.Tipus = a.Tipus;
@@ -202,16 +202,25 @@ namespace WeScale.UserContr
             original.NivellMinim = a.NivellMinim;
             original.Tier = a.Tier;
 
-            // 🔥 EFECTES (SIN DUPLICAR)
-            original.Efectes.Clear();
-
             if (a.Efectes != null)
             {
                 foreach (var e in a.Efectes)
                 {
-                    var efecteBD = context.Efectes.Find(e.IdEfecte);
-                    if (efecteBD != null)
-                        original.Efectes.Add(efecteBD);
+                    if (!original.Efectes.Any(x => x.IdEfecte == e.IdEfecte))
+                    {
+                        var efecteBD = context.Efectes.Find(e.IdEfecte);
+                        if (efecteBD != null)
+                            original.Efectes.Add(efecteBD);
+                    }
+                }
+
+                var toRemove = original.Efectes
+                    .Where(x => !a.Efectes.Any(e => e.IdEfecte == x.IdEfecte))
+                    .ToList();
+
+                foreach (var r in toRemove)
+                {
+                    original.Efectes.Remove(r);
                 }
             }
         }
@@ -443,6 +452,7 @@ namespace WeScale.UserContr
 
             Window.GetWindow(this)?.Close();
         }
+
         private string ValidarCarta(object carta)
         {
             if (carta is Personatge p)
