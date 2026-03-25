@@ -14,7 +14,7 @@ public partial class Accio
 
     public int? Cooldown { get; set; }
 
-    public string? Descripcio { get; set; }
+    public string? Descripcio { get; set; } = string.Empty;
 
     public string? Imatge { get; set; }
 
