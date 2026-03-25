@@ -120,37 +120,7 @@ namespace WeScale.UserContr
             MessageBox.Show($"Cambios guardados: {cambios}");
             Window.GetWindow(this)?.Close();
         }
-        private void AfegirPersonatge(AppDbContext context, Personatge p)
-        {
-            var nou = new Personatge
-            {
-                Nom = p.Nom,
-                Seleccionable = p.Seleccionable,
-                Imatge = p.Imatge,
-                Icona = p.Icona,
-                Velocitat = p.Velocitat,
-                HpBase = p.HpBase,
-                DanyFisicBase = p.DanyFisicBase,
-                DanyMagicBase = p.DanyMagicBase,
-                DefensaFisicaBase = p.DefensaFisicaBase,
-                DefensaMagicaBase = p.DefensaMagicaBase,
-                CriticBase = p.CriticBase,
-                CriticMultiplicadorBase = p.CriticMultiplicadorBase,
-                PersonatgeAccios = new List<PersonatgeAccio>()
-            };
-
-            // 🔥 relaciones
-            foreach (var pa in p.PersonatgeAccios)
-            {
-                nou.PersonatgeAccios.Add(new PersonatgeAccio
-                {
-                    IdObjhabarmActiu = pa.IdObjhabarmActiu
-                });
-            }
-
-            _context.Personatges.Add(nou);
-        }
-
+      
 
         private void EditarPersonatge(AppDbContext context, Personatge p)
         {
@@ -190,10 +160,9 @@ namespace WeScale.UserContr
 
             foreach (var rel in aEliminar)
             {
-                context.PersonatgeAccios.Remove(rel); // 🔥 CLAVE
+                context.PersonatgeAccios.Remove(rel); 
             }
 
-            // ➕ añadir nuevos
             var idsActuals = original.PersonatgeAccios
                 .Select(x => x.IdObjhabarmActiu)
                 .ToList();
@@ -288,7 +257,6 @@ namespace WeScale.UserContr
                 if (child is Button btn)
                     btn.IsEnabled = false;
 
-                // 🔥 CASO ESPECIAL: LISTVIEW
                 if (child is ListView lv)
                 {
                     foreach (var item in lv.Items)
@@ -430,7 +398,144 @@ namespace WeScale.UserContr
 
         private void BtnAfegir_Click(object sender, RoutedEventArgs e)
         {
+            var vm = (CartaVM)DataContext;
 
+            // 🔥 VALIDACIÓN GLOBAL
+            string error = ValidarCarta(vm.Carta);
+            if (error != null)
+            {
+                MessageBox.Show(error);
+                return;
+            }
+
+            // 🔥 DETECTAR TIPO REAL
+            if (vm.Carta is Personatge p)
+            {
+                AfegirPersonatge(_context, p);
+            }
+            else if (vm.Carta is Accio a)
+            {
+                AfegirAccio(_context, a);
+            }
+
+            int cambios = _context.SaveChanges();
+            MessageBox.Show($"Cambios: {cambios}");
+
+            Window.GetWindow(this)?.Close();
         }
+
+        private string ValidarCarta(object carta)
+        {
+            if (carta is Personatge p)
+            {
+                if (string.IsNullOrWhiteSpace(p.Nom))
+                    return "El nom del personatge es obligatori";
+
+                if (p.HpBase < 0)
+                    return "La vida no pot ser negativa";
+
+                if (p.DanyFisicBase < 0 || p.DanyMagicBase < 0)
+                    return "El dany no pot ser negatiu";
+
+                if (p.PersonatgeAccios == null)
+                    return "Error en accions del personatge";
+
+                return null;
+            }
+
+            if (carta is Accio a)
+            {
+                if (string.IsNullOrWhiteSpace(a.Nom))
+                    return "El nom de l'acció es obligatori";
+
+                if (a.Tipus < 1 || a.Tipus > 3)
+                    return "Tipus d'acció invalid";
+
+                if (a.Cooldown < 0)
+                    return "Cooldown invalid";
+
+                return null;
+            }
+
+            return "Tipus de carta desconegut";
+        }
+
+
+        private void AfegirAccio(AppDbContext context, Accio a)
+        {
+            var nova = new Accio
+            {
+                Nom = a.Nom,
+                Tipus = a.Tipus, // 🔥 1 arma / 2 habilidad / 3 item
+                Cooldown = a.Cooldown,
+                Descripcio = a.Descripcio,
+                Imatge = a.Imatge,
+                Icona = a.Icona,
+                Usos = a.Usos,
+                Estadistica = a.Estadistica,
+                NivellMinim = a.NivellMinim,
+                Tier = a.Tier,
+                Efectes = new List<Efecte>()
+            };
+
+            // 🔥 RELACIÓN EFECTES (MUY IMPORTANTE)
+            if (a.Efectes != null)
+            {
+                foreach (var e in a.Efectes)
+                {
+                    // 👇 NO crear nuevos si ya existen en BD
+                    var efecteBD = context.Efectes.Find(e.IdEfecte);
+
+                    if (efecteBD != null)
+                        nova.Efectes.Add(efecteBD);
+                }
+            }
+
+            context.Accios.Add(nova);
+        }
+        private void AfegirPersonatge(AppDbContext context, Personatge p)
+        {
+            var nou = new Personatge
+            {
+                Nom = Safe(p.Nom),
+                Seleccionable = p.Seleccionable,
+
+                Imatge = Safe(p.Imatge),   // 🔥 FIX
+                Icona = Safe(p.Icona),     // 🔥 FIX
+
+                Velocitat = p.Velocitat,
+                HpBase = p.HpBase,
+                DanyFisicBase = p.DanyFisicBase,
+                DanyMagicBase = p.DanyMagicBase,
+
+                DefensaFisicaBase = p.DefensaFisicaBase,
+                DefensaMagicaBase = p.DefensaMagicaBase,
+
+                CriticBase = p.CriticBase,
+                CriticMultiplicadorBase = p.CriticMultiplicadorBase >= 1 ? p.CriticMultiplicadorBase : 1,
+
+                PersonatgeAccios = new List<PersonatgeAccio>()
+            };
+
+            if (p.PersonatgeAccios != null)
+            {
+                foreach (var pa in p.PersonatgeAccios)
+                {
+                    nou.PersonatgeAccios.Add(new PersonatgeAccio
+                    {
+                        IdObjhabarmActiu = pa.IdObjhabarmActiu,
+                        Equipada = pa.Equipada
+                    });
+                }
+            }
+
+            context.Personatges.Add(nou);
+        }
+
+        private string Safe(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "" : value;
+        }
+
     }
 }
