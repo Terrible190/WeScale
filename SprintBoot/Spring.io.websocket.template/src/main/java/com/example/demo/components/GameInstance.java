@@ -108,6 +108,21 @@ public class GameInstance {
         return true;
     }
 
+    public synchronized boolean unselectCharacter(WebSocketSession session) {
+
+        // comprobar si el jugador tenía personaje
+        Personaje actual = personajesSeleccionados.remove(session);
+
+        if (actual == null) {
+            return false; // no tenía ninguno seleccionado
+        }
+
+        // devolverlo a disponibles
+        personajesDisponibles.add(actual);
+
+        return true;
+    }
+
     public void sendCharactersToPlayer(WebSocketSession session) {
         StringBuilder sb = new StringBuilder();
         sb.append("Characters:\n");

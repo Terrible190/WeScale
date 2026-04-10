@@ -104,7 +104,26 @@ public class GameManager {
 
             return;
         }
+        if (msg.equalsIgnoreCase("unselect")) {
 
+            GameInstance game = sessionToGame.get(session);
+
+            if (game != null) {
+                boolean ok = game.unselectCharacter(session);
+
+                try {
+                    if (ok) {
+                        session.sendMessage(new TextMessage("Character unselected."));
+                    } else {
+                        session.sendMessage(new TextMessage("You don't have a character selected."));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return;
+        }
         if (msg.equalsIgnoreCase("start")) {
             GameInstance game = sessionToGame.get(session);
             if (game != null) {
