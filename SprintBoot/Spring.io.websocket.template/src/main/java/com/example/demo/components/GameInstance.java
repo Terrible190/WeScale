@@ -1,5 +1,6 @@
 package com.example.demo.components;
 
+import com.example.demo.api.model.Personaje;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -10,10 +11,15 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.TextMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Classe que representa una partida i tot el seu estat: - jugadors connectats -
@@ -49,6 +55,9 @@ public class GameInstance {
     /**
      * Id de la partida (UUID)
      */
+    private List<Personaje> personajesDisponibles = new java.util.ArrayList<>();
+    private Map<WebSocketSession, Personaje> personajesSeleccionados = new HashMap<>();
+
     private final String id;
     private boolean started = false;
 
@@ -67,11 +76,79 @@ public class GameInstance {
         this.id = UUID.randomUUID().toString();
         this.players = players;
         this.executor = executor;
+
         System.out.println("Starting the game instance.");
     }
 
+    public void setPersonajesDisponibles(List<Personaje> personajes) {
+        this.personajesDisponibles = new ArrayList<>(personajes);
+    }
+
+    public synchronized boolean selectCharacter(WebSocketSession session, int personajeId) {
+
+        // ya eligió personaje
+        if (personajesSeleccionados.containsKey(session)) {
+            return false;
+        }
+
+        // buscar personaje disponible
+        Personaje elegido = personajesDisponibles.stream()
+                .filter(p -> p.getId() == personajeId)
+                .findFirst()
+                .orElse(null);
+
+        if (elegido == null) {
+            return false; // no existe o ya fue tomado
+        }
+
+        // bloquear selección
+        personajesDisponibles.remove(elegido);
+        personajesSeleccionados.put(session, elegido);
+
+        return true;
+    }
+
+    public void sendCharactersToPlayer(WebSocketSession session) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Characters:\n");
+
+        for (Personaje p : personajesDisponibles) {
+            sb.append(p.getId())
+                    .append(" - ")
+                    .append(p.getNombre())
+                    .append("\n");
+        }
+
+        send(session, sb.toString());
+    }
+
+    public String sendCharactersToPlayer() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Characters:\n");
+
+        for (Personaje p : personajesDisponibles) {
+            sb.append(p.getId())
+                    .append(" - ")
+                    .append(p.getNombre())
+                    .append("\n");
+        }
+
+        return sb.toString();
+    }
+
     public void removePlayer(WebSocketSession session) {
+
+        Personaje p = personajesSeleccionados.remove(session);
+
+        if (p != null) {
+            personajesDisponibles.add(p);
+        }
+
         players.remove(session);
+    }
+
+    public Personaje getCharacterOfPlayer(WebSocketSession session) {
+        return personajesSeleccionados.get(session);
     }
 
     /**
@@ -123,6 +200,10 @@ public class GameInstance {
         } catch (IOException e) {
             // handle disconnect
         }
+    }
+
+    public List<Personaje> getPersonajesDisponibles() {
+        return personajesDisponibles;
     }
 
     /**

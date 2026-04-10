@@ -1,5 +1,7 @@
 package com.example.demo.components;
 
+import com.example.demo.api.model.Personaje;
+import com.example.demo.api.repository.PersonajeRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
@@ -44,6 +47,9 @@ public class GameManager {
      */
     private final Map<String, GameInstance> games = new ConcurrentHashMap<>();
 
+    @Autowired
+    private PersonajeRepository personajeRepository;
+
     public GameManager() {
         executor = Executors.newFixedThreadPool(10);
     }
@@ -68,7 +74,8 @@ public class GameManager {
         sessionToGame.remove(session);
 
         // Notificar a los jugadores restantes
-        game.broadcast("Player left. Total players: " + game.getPlayers().size());
+        game.broadcast("Un jugador ha salido: " + game.getPlayers().size());
+        game.broadcast("Personajes disponibles:" + game.sendCharactersToPlayer());
 
         // Si la sala queda vacía, eliminar el juego
         if (game.getPlayers().isEmpty()) {
@@ -88,8 +95,13 @@ public class GameManager {
         if (msg.startsWith("join")) {
             String[] parts = msg.split(" ");
             if (parts.length == 2) {
+                GameInstance game = sessionToGame.get(session);
                 joinGame(session, parts[1]);
+                if (game != null) {
+                    game.sendCharactersToPlayer(session);
+                }
             }
+
             return;
         }
 
@@ -101,7 +113,6 @@ public class GameManager {
             return;
         }
 
-        // ✅ Nuevo comando
         if (msg.equalsIgnoreCase("listgames")) {
             listGames(session);
             return;
@@ -110,8 +121,68 @@ public class GameManager {
             leaveGame(session);
             return;
         }
+        if (msg.equalsIgnoreCase("characters")) {
 
-        // Mensajes normales del juego
+            GameInstance game = sessionToGame.get(session);
+
+            if (game != null) {
+                game.sendCharactersToPlayer(session);
+            }
+
+            return;
+        }
+
+        if (msg.equalsIgnoreCase("mycharacter")) {
+
+            GameInstance game = sessionToGame.get(session);
+
+            if (game != null) {
+                Personaje p = game.getCharacterOfPlayer(session);
+
+                if (p != null) {
+                    try {
+                        session.sendMessage(new TextMessage(
+                                "Your character: " + p.toString()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        session.sendMessage(new TextMessage("You have not selected a character yet."));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            return;
+        }
+
+        if (msg.startsWith("pick")) {
+
+            String[] parts = msg.split(" ");
+
+            if (parts.length == 2) {
+                GameInstance game = sessionToGame.get(session);
+
+                if (game != null) {
+                    boolean ok = game.selectCharacter(session, Integer.parseInt(parts[1]));
+
+                    if (ok) {
+                        game.broadcast("Character selected. Remaining characters: "
+                                + game.getPersonajesDisponibles().size());
+                    } else {
+                        try {
+                            session.sendMessage(new TextMessage("Character already taken or invalid ID."));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            return;
+        }
+
         GameInstance game = sessionToGame.get(session);
         if (game != null) {
             game.enqueue(new GameMessage(session, message));
@@ -120,28 +191,28 @@ public class GameManager {
     }
 
     private void createGame(WebSocketSession session) {
-        // ✅ Verificar que no esté en otra partida
+
         if (sessionToGame.containsKey(session)) {
-            try {
-                session.sendMessage(new TextMessage("You are already in a game! Leave it first."));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             return;
         }
 
         List<WebSocketSession> players = new ArrayList<>();
         players.add(session);
 
+        List<Personaje> personajes = personajeRepository.findBySeleccionableTrue();
+
         GameInstance game = new GameInstance(players, executor);
+        game.setPersonajesDisponibles(personajes);
+
         String gameId = game.getId();
 
         sessionToGame.put(session, game);
         games.put(gameId, game);
 
-        game.broadcast("Game created with ID: " + gameId + ". Total players: " + game.getPlayers().size());
+        game.broadcast("Game created: " + gameId);
 
-        System.out.println("Game created with ID: " + gameId);
+        // enviar personajes al creador
+        game.sendCharactersToPlayer(session);
     }
 
     private void joinGame(WebSocketSession session, String gameId) {
