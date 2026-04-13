@@ -55,7 +55,7 @@ public class GameManager {
     }
 
     public void onConnect(WebSocketSession session) {
-        System.out.println("Player connected: " + session.getId());
+        System.out.println("Jugador ponectado: " + session.getId());
 
     }
 
@@ -63,7 +63,7 @@ public class GameManager {
         GameInstance game = sessionToGame.get(session);
         if (game == null) {
             try {
-                session.sendMessage(new org.springframework.web.socket.TextMessage("You are not in any game."));
+                session.sendMessage(new org.springframework.web.socket.TextMessage("No estas en ninguna partida."));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -80,7 +80,7 @@ public class GameManager {
         // Si la sala queda vacía, eliminar el juego
         if (game.getPlayers().isEmpty()) {
             games.remove(game.getId());
-            System.out.println("Game removed: " + game.getId());
+            System.out.println("Partida borrada: " + game.getId());
         }
     }
 
@@ -113,9 +113,9 @@ public class GameManager {
 
                 try {
                     if (ok) {
-                        session.sendMessage(new TextMessage("Character unselected."));
+                        session.sendMessage(new TextMessage("Personaje desseleccionado."));
                     } else {
-                        session.sendMessage(new TextMessage("You don't have a character selected."));
+                        session.sendMessage(new TextMessage("Aun no has elegido el personaje"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -167,7 +167,7 @@ public class GameManager {
                     }
                 } else {
                     try {
-                        session.sendMessage(new TextMessage("You have not selected a character yet."));
+                        session.sendMessage(new TextMessage("No has seleccionado el personaje aun"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -192,7 +192,7 @@ public class GameManager {
                                 + game.getPersonajesDisponibles().size());
                     } else {
                         try {
-                            session.sendMessage(new TextMessage("Character already taken or invalid ID."));
+                            session.sendMessage(new TextMessage("Personaje ya ha sido elegido o id invalido"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -238,7 +238,7 @@ public class GameManager {
         // ✅ Verificar que no esté en otra partida
         if (sessionToGame.containsKey(session)) {
             try {
-                session.sendMessage(new TextMessage("You are already in a game! Leave it first."));
+                session.sendMessage(new TextMessage("Ya estas en la partida, primero salte de la partida"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -257,7 +257,7 @@ public class GameManager {
 
         if (game.getPlayers().size() >= 5) {
             try {
-                session.sendMessage(new TextMessage("Game is full"));
+                session.sendMessage(new TextMessage("Partida llena"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -267,9 +267,7 @@ public class GameManager {
         game.addPlayer(session);
         sessionToGame.put(session, game);
 
-        game.broadcast("Player joined! Total players: " + game.getPlayers().size());
-
-        System.out.println("Player joined game: " + gameId + " (total: " + game.getPlayers().size() + ")");
+        game.broadcast("Jugador se ha unido. Juadores totales: " + game.getPlayers().size());
     }
 
     private void tryStartGame() {

@@ -67,7 +67,7 @@ public class GameInstance {
         }
         started = true;
 
-        System.out.println("Game started: " + id);
+        System.out.println("Partida iniciada: " + id);
 
         // lógica del juego
     }
@@ -77,7 +77,7 @@ public class GameInstance {
         this.players = players;
         this.executor = executor;
 
-        System.out.println("Starting the game instance.");
+        System.out.println("Iniciando game instance.");
     }
 
     public void setPersonajesDisponibles(List<Personaje> personajes) {
@@ -125,7 +125,7 @@ public class GameInstance {
 
     public void sendCharactersToPlayer(WebSocketSession session) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Characters:\n");
+        sb.append("Personajes:\n");
 
         for (Personaje p : personajesDisponibles) {
             sb.append(p.getId())
@@ -139,7 +139,7 @@ public class GameInstance {
 
     public String sendCharactersToPlayer() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Characters:\n");
+        sb.append("Personajes:\n");
 
         for (Personaje p : personajesDisponibles) {
             sb.append(p.getId())
