@@ -5,7 +5,6 @@ public class TestWS : MonoBehaviour
 {
     public WebSocketConnection ws;
 
-    // 👇 TU SERVIDOR LOCAL
     public string url = "ws://localhost:8080/ws";
 
     void Awake()
@@ -24,18 +23,25 @@ public class TestWS : MonoBehaviour
 
     void Update()
     {
-        // Leer mensajes entrantes
+        // Leer mensajes
         while (ws.TryRemoveIncomingMessage(out string msg))
         {
             Debug.Log("📩 Recibido: " + msg);
         }
 
-        // Enviar mensaje con SPACE
+        // ENVIAR START GAME con SPACE
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ws.AddOutgoingMessage("Hola servidor local 👋");
-            Debug.Log("📤 Enviado");
+            SendStartGame();
         }
+    }
+
+    void SendStartGame()
+    {
+        string json = "{\"type\":\"startgame\",\"data\":null}";
+        ws.AddOutgoingMessage(json);
+
+        Debug.Log("📤 Enviado STARTGAME");
     }
 
     private void OnStateChanged(WebSocketConnection connection, WebSocketState oldState, WebSocketState newState)
