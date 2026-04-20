@@ -2,11 +2,13 @@ package com.example.demo.components;
 
 import com.example.demo.api.model.Personaje;
 import org.springframework.web.socket.WebSocketSession;
+import java.io.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GameInstance {
 
@@ -32,11 +34,13 @@ public class GameInstance {
         this.id = UUID.randomUUID().toString();
     }
 
-    public synchronized void start() {
+   public synchronized void start() {
         if (started) return;
         started = true;
 
-        broadcast(new WSMessage("game_started", id));
+        Object mapa = cargarMapa();
+
+        broadcast(mapa);
     }
 
     public void setPersonajesDisponibles(List<Personaje> personajes) {
@@ -112,6 +116,15 @@ public class GameInstance {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    private Object cargarMapa() {
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream("map_fixed.json");
+            return mapper.readValue(is, Object.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

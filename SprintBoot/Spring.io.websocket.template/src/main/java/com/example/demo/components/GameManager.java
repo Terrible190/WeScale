@@ -8,7 +8,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.*;
 import java.util.concurrent.*;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class GameManager {
@@ -30,79 +30,84 @@ public class GameManager {
         try {
             WSMessage msg = mapper.readValue(message, WSMessage.class);
 
-            String type = msg.getType();
+           String type = msg.getType(); // 🔥 cambio clave
             GameInstance game = sessionToGame.get(session);
 
             switch (type) {
 
-                case "startgame":
+                case "START_GAME":
                     createGame(session);
                     break;
 
-                case "join":
+                case "JOIN":
                     joinGame(session, (String) msg.getData());
                     break;
 
-                case "leave":
+                case "LEAVE":
                     leaveGame(session);
                     break;
 
-                case "characters":
-                    if (game != null) game.sendCharactersToPlayer(session);
+                case "CHARACTERS":
+                    if (game != null) {
+                        game.sendCharactersToPlayer(session);
+                    }
                     break;
 
-                case "pick":
+                case "PICK":
                     if (game != null) {
-                        int id = (Integer) msg.getData();
+                        int id = ((Number) msg.getData()).intValue(); // 🔥 fix
                         boolean ok = game.selectCharacter(session, id);
 
                         if (ok) {
                             game.broadcast(new WSMessage(
-                                    "character_selected",
+                                    "CHARACTER_SELECTED",
                                     game.getPersonajesDisponibles().size()
                             ));
                         } else {
-                            send(session, new WSMessage("error", "Personaje inválido o ya elegido"));
+                            send(session, new WSMessage("ERROR", "Personaje inválido"));
                         }
                     }
                     break;
 
-                case "unselect":
+                case "UNSELECT":
                     if (game != null) {
                         boolean ok = game.unselectCharacter(session);
                         send(session, new WSMessage(
-                                ok ? "ok" : "error",
-                                ok ? "Personaje deseleccionado" : "No habías elegido personaje"
+                                ok ? "OK" : "ERROR",
+                                ok ? "Deseleccionado" : "No habías elegido"
                         ));
                     }
                     break;
 
-                case "start":
-                    if (game != null) game.start();
+                case "START":
+                    if (game != null) {
+                        game.start();
+                    }
                     break;
 
-                case "mycharacter":
+                case "MY_CHARACTER":
                     if (game != null) {
                         Personaje p = game.getCharacterOfPlayer(session);
                         send(session, new WSMessage(
-                                p != null ? "mycharacter" : "error",
-                                p != null ? p : "No has seleccionado personaje"
+                                p != null ? "MY_CHARACTER" : "ERROR",
+                                p != null ? p : "No seleccionado"
                         ));
                     }
                     break;
 
-                case "listgames":
+                case "LIST_GAMES":
                     listGames(session);
                     break;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void createGame(WebSocketSession session) {
-        if (sessionToGame.containsKey(session)) return;
+        if (sessionToGame.containsKey(session)) {
+            return;
+        }
 
         List<WebSocketSession> players = new ArrayList<>();
         players.add(session);
@@ -116,7 +121,7 @@ public class GameManager {
         games.put(game.getId(), game);
 
         game.broadcast(new WSMessage("game_created", game.getId()));
-        game.broadcast("");
+        game.broadcast(new WSMessage("INFO", "Game created"));
         game.sendCharactersToPlayer(session);
     }
 
@@ -188,4 +193,5 @@ public class GameManager {
             e.printStackTrace();
         }
     }
+
 }
