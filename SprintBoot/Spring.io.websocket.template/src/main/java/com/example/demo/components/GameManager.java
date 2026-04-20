@@ -116,6 +116,7 @@ public class GameManager {
         games.put(game.getId(), game);
 
         game.broadcast(new WSMessage("game_created", game.getId()));
+        game.broadcast("");
         game.sendCharactersToPlayer(session);
     }
 

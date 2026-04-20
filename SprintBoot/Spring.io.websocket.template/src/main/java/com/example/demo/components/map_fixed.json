@@ -1,0 +1,3395 @@
+{
+  "messageType": "MAP_DATA",
+  "data": {
+    "mapas": [
+      {
+        "id_mapa": 1,
+        "pisos": 9,
+        "nivell_base": 3,
+        "nodes": [
+          {
+            "pis": 1,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 4,
+                "escala": {
+                  "hp": 1.15,
+                  "dany_fisic": 1.15,
+                  "dany_magic": 1.15,
+                  "defensa_fisica": 1.15,
+                  "defensa_magica": 1.15,
+                  "velocitat": 1.23,
+                  "critic": 1.11
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 4,
+                "escala": {
+                  "hp": 1.15,
+                  "dany_fisic": 1.15,
+                  "dany_magic": 1.15,
+                  "defensa_fisica": 1.15,
+                  "defensa_magica": 1.15,
+                  "velocitat": 1.23,
+                  "critic": 1.11
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 4,
+                "escala": {
+                  "hp": 1.15,
+                  "dany_fisic": 1.15,
+                  "dany_magic": 1.15,
+                  "defensa_fisica": 1.15,
+                  "defensa_magica": 1.15,
+                  "velocitat": 1.23,
+                  "critic": 1.11
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.15
+              }
+            }
+          },
+          {
+            "pis": 2,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 5,
+                "escala": {
+                  "hp": 1.2,
+                  "dany_fisic": 1.2,
+                  "dany_magic": 1.2,
+                  "defensa_fisica": 1.2,
+                  "defensa_magica": 1.2,
+                  "velocitat": 1.24,
+                  "critic": 1.12
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 5,
+                "escala": {
+                  "hp": 1.2,
+                  "dany_fisic": 1.2,
+                  "dany_magic": 1.2,
+                  "defensa_fisica": 1.2,
+                  "defensa_magica": 1.2,
+                  "velocitat": 1.24,
+                  "critic": 1.12
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 5,
+                "escala": {
+                  "hp": 1.2,
+                  "dany_fisic": 1.2,
+                  "dany_magic": 1.2,
+                  "defensa_fisica": 1.2,
+                  "defensa_magica": 1.2,
+                  "velocitat": 1.24,
+                  "critic": 1.12
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.2
+              }
+            }
+          },
+          {
+            "pis": 3,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 6,
+                "escala": {
+                  "hp": 1.25,
+                  "dany_fisic": 1.25,
+                  "dany_magic": 1.25,
+                  "defensa_fisica": 1.25,
+                  "defensa_magica": 1.25,
+                  "velocitat": 1.25,
+                  "critic": 1.12
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 6,
+                "escala": {
+                  "hp": 1.25,
+                  "dany_fisic": 1.25,
+                  "dany_magic": 1.25,
+                  "defensa_fisica": 1.25,
+                  "defensa_magica": 1.25,
+                  "velocitat": 1.25,
+                  "critic": 1.12
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 6,
+                "escala": {
+                  "hp": 1.25,
+                  "dany_fisic": 1.25,
+                  "dany_magic": 1.25,
+                  "defensa_fisica": 1.25,
+                  "defensa_magica": 1.25,
+                  "velocitat": 1.25,
+                  "critic": 1.12
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.25
+              }
+            }
+          },
+          {
+            "pis": 4,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 7,
+                "escala": {
+                  "hp": 1.3,
+                  "dany_fisic": 1.3,
+                  "dany_magic": 1.3,
+                  "defensa_fisica": 1.3,
+                  "defensa_magica": 1.3,
+                  "velocitat": 1.26,
+                  "critic": 1.13
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 7,
+                "escala": {
+                  "hp": 1.3,
+                  "dany_fisic": 1.3,
+                  "dany_magic": 1.3,
+                  "defensa_fisica": 1.3,
+                  "defensa_magica": 1.3,
+                  "velocitat": 1.26,
+                  "critic": 1.13
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 7,
+                "escala": {
+                  "hp": 1.3,
+                  "dany_fisic": 1.3,
+                  "dany_magic": 1.3,
+                  "defensa_fisica": 1.3,
+                  "defensa_magica": 1.3,
+                  "velocitat": 1.26,
+                  "critic": 1.13
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.3
+              }
+            }
+          },
+          {
+            "pis": 5,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 8,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 8,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 8,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 8,
+              "escala": {
+                "hp": 2.7,
+                "dany_fisic": 2.7,
+                "dany_magic": 2.7,
+                "defensa_fisica": 2.7,
+                "defensa_magica": 2.7,
+                "velocitat": 1.54,
+                "critic": 1.27
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.35
+              }
+            }
+          },
+          {
+            "pis": 6,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 9,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 9,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 9,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.4
+              }
+            }
+          },
+          {
+            "pis": 7,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.45
+              }
+            }
+          },
+          {
+            "pis": 8,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.5
+              }
+            }
+          },
+          {
+            "pis": 9,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.55
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id_mapa": 2,
+        "pisos": 10,
+        "nivell_base": 6,
+        "nodes": [
+          {
+            "pis": 1,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 7,
+                "escala": {
+                  "hp": 1.25,
+                  "dany_fisic": 1.25,
+                  "dany_magic": 1.25,
+                  "defensa_fisica": 1.25,
+                  "defensa_magica": 1.25,
+                  "velocitat": 1.25,
+                  "critic": 1.12
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 7,
+                "escala": {
+                  "hp": 1.25,
+                  "dany_fisic": 1.25,
+                  "dany_magic": 1.25,
+                  "defensa_fisica": 1.25,
+                  "defensa_magica": 1.25,
+                  "velocitat": 1.25,
+                  "critic": 1.12
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 7,
+                "escala": {
+                  "hp": 1.25,
+                  "dany_fisic": 1.25,
+                  "dany_magic": 1.25,
+                  "defensa_fisica": 1.25,
+                  "defensa_magica": 1.25,
+                  "velocitat": 1.25,
+                  "critic": 1.12
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.25
+              }
+            }
+          },
+          {
+            "pis": 2,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 8,
+                "escala": {
+                  "hp": 1.3,
+                  "dany_fisic": 1.3,
+                  "dany_magic": 1.3,
+                  "defensa_fisica": 1.3,
+                  "defensa_magica": 1.3,
+                  "velocitat": 1.26,
+                  "critic": 1.13
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 8,
+                "escala": {
+                  "hp": 1.3,
+                  "dany_fisic": 1.3,
+                  "dany_magic": 1.3,
+                  "defensa_fisica": 1.3,
+                  "defensa_magica": 1.3,
+                  "velocitat": 1.26,
+                  "critic": 1.13
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 8,
+                "escala": {
+                  "hp": 1.3,
+                  "dany_fisic": 1.3,
+                  "dany_magic": 1.3,
+                  "defensa_fisica": 1.3,
+                  "defensa_magica": 1.3,
+                  "velocitat": 1.26,
+                  "critic": 1.13
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.3
+              }
+            }
+          },
+          {
+            "pis": 3,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 9,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 9,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 9,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.35
+              }
+            }
+          },
+          {
+            "pis": 4,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.4
+              }
+            }
+          },
+          {
+            "pis": 5,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 11,
+              "escala": {
+                "hp": 2.9,
+                "dany_fisic": 2.9,
+                "dany_magic": 2.9,
+                "defensa_fisica": 2.9,
+                "defensa_magica": 2.9,
+                "velocitat": 1.58,
+                "critic": 1.29
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.45
+              }
+            }
+          },
+          {
+            "pis": 6,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.5
+              }
+            }
+          },
+          {
+            "pis": 7,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.55
+              }
+            }
+          },
+          {
+            "pis": 8,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.6
+              }
+            }
+          },
+          {
+            "pis": 9,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.65
+              }
+            }
+          },
+          {
+            "pis": 10,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 16,
+              "escala": {
+                "hp": 3.4,
+                "dany_fisic": 3.4,
+                "dany_magic": 3.4,
+                "defensa_fisica": 3.4,
+                "defensa_magica": 3.4,
+                "velocitat": 1.68,
+                "critic": 1.34
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.7
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id_mapa": 3,
+        "pisos": 11,
+        "nivell_base": 9,
+        "nodes": [
+          {
+            "pis": 1,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 10,
+                "escala": {
+                  "hp": 1.35,
+                  "dany_fisic": 1.35,
+                  "dany_magic": 1.35,
+                  "defensa_fisica": 1.35,
+                  "defensa_magica": 1.35,
+                  "velocitat": 1.27,
+                  "critic": 1.14
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.35
+              }
+            }
+          },
+          {
+            "pis": 2,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 11,
+                "escala": {
+                  "hp": 1.4,
+                  "dany_fisic": 1.4,
+                  "dany_magic": 1.4,
+                  "defensa_fisica": 1.4,
+                  "defensa_magica": 1.4,
+                  "velocitat": 1.28,
+                  "critic": 1.14
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.4
+              }
+            }
+          },
+          {
+            "pis": 3,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 12,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.45
+              }
+            }
+          },
+          {
+            "pis": 4,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.5
+              }
+            }
+          },
+          {
+            "pis": 5,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 14,
+              "escala": {
+                "hp": 3.1,
+                "dany_fisic": 3.1,
+                "dany_magic": 3.1,
+                "defensa_fisica": 3.1,
+                "defensa_magica": 3.1,
+                "velocitat": 1.62,
+                "critic": 1.31
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.55
+              }
+            }
+          },
+          {
+            "pis": 6,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.6
+              }
+            }
+          },
+          {
+            "pis": 7,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.65
+              }
+            }
+          },
+          {
+            "pis": 8,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.7
+              }
+            }
+          },
+          {
+            "pis": 9,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.75
+              }
+            }
+          },
+          {
+            "pis": 10,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 19,
+              "escala": {
+                "hp": 3.6,
+                "dany_fisic": 3.6,
+                "dany_magic": 3.6,
+                "defensa_fisica": 3.6,
+                "defensa_magica": 3.6,
+                "velocitat": 1.72,
+                "critic": 1.36
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.8
+              }
+            }
+          },
+          {
+            "pis": 11,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.85
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id_mapa": 4,
+        "pisos": 12,
+        "nivell_base": 12,
+        "nodes": [
+          {
+            "pis": 1,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 13,
+                "escala": {
+                  "hp": 1.45,
+                  "dany_fisic": 1.45,
+                  "dany_magic": 1.45,
+                  "defensa_fisica": 1.45,
+                  "defensa_magica": 1.45,
+                  "velocitat": 1.29,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.45
+              }
+            }
+          },
+          {
+            "pis": 2,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 14,
+                "escala": {
+                  "hp": 1.5,
+                  "dany_fisic": 1.5,
+                  "dany_magic": 1.5,
+                  "defensa_fisica": 1.5,
+                  "defensa_magica": 1.5,
+                  "velocitat": 1.3,
+                  "critic": 1.15
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.5
+              }
+            }
+          },
+          {
+            "pis": 3,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 15,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.55
+              }
+            }
+          },
+          {
+            "pis": 4,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.6
+              }
+            }
+          },
+          {
+            "pis": 5,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 17,
+              "escala": {
+                "hp": 3.3,
+                "dany_fisic": 3.3,
+                "dany_magic": 3.3,
+                "defensa_fisica": 3.3,
+                "defensa_magica": 3.3,
+                "velocitat": 1.66,
+                "critic": 1.33
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.65
+              }
+            }
+          },
+          {
+            "pis": 6,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.7
+              }
+            }
+          },
+          {
+            "pis": 7,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.75
+              }
+            }
+          },
+          {
+            "pis": 8,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.8
+              }
+            }
+          },
+          {
+            "pis": 9,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 21,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 21,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 21,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.85
+              }
+            }
+          },
+          {
+            "pis": 10,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 22,
+                "escala": {
+                  "hp": 1.9,
+                  "dany_fisic": 1.9,
+                  "dany_magic": 1.9,
+                  "defensa_fisica": 1.9,
+                  "defensa_magica": 1.9,
+                  "velocitat": 1.38,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 22,
+                "escala": {
+                  "hp": 1.9,
+                  "dany_fisic": 1.9,
+                  "dany_magic": 1.9,
+                  "defensa_fisica": 1.9,
+                  "defensa_magica": 1.9,
+                  "velocitat": 1.38,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 22,
+                "escala": {
+                  "hp": 1.9,
+                  "dany_fisic": 1.9,
+                  "dany_magic": 1.9,
+                  "defensa_fisica": 1.9,
+                  "defensa_magica": 1.9,
+                  "velocitat": 1.38,
+                  "critic": 1.19
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 22,
+              "escala": {
+                "hp": 3.8,
+                "dany_fisic": 3.8,
+                "dany_magic": 3.8,
+                "defensa_fisica": 3.8,
+                "defensa_magica": 3.8,
+                "velocitat": 1.76,
+                "critic": 1.38
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.9
+              }
+            }
+          },
+          {
+            "pis": 11,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 23,
+                "escala": {
+                  "hp": 1.95,
+                  "dany_fisic": 1.95,
+                  "dany_magic": 1.95,
+                  "defensa_fisica": 1.95,
+                  "defensa_magica": 1.95,
+                  "velocitat": 1.39,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 23,
+                "escala": {
+                  "hp": 1.95,
+                  "dany_fisic": 1.95,
+                  "dany_magic": 1.95,
+                  "defensa_fisica": 1.95,
+                  "defensa_magica": 1.95,
+                  "velocitat": 1.39,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 23,
+                "escala": {
+                  "hp": 1.95,
+                  "dany_fisic": 1.95,
+                  "dany_magic": 1.95,
+                  "defensa_fisica": 1.95,
+                  "defensa_magica": 1.95,
+                  "velocitat": 1.39,
+                  "critic": 1.2
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.95
+              }
+            }
+          },
+          {
+            "pis": 12,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 24,
+                "escala": {
+                  "hp": 2.0,
+                  "dany_fisic": 2.0,
+                  "dany_magic": 2.0,
+                  "defensa_fisica": 2.0,
+                  "defensa_magica": 2.0,
+                  "velocitat": 1.4,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 24,
+                "escala": {
+                  "hp": 2.0,
+                  "dany_fisic": 2.0,
+                  "dany_magic": 2.0,
+                  "defensa_fisica": 2.0,
+                  "defensa_magica": 2.0,
+                  "velocitat": 1.4,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 24,
+                "escala": {
+                  "hp": 2.0,
+                  "dany_fisic": 2.0,
+                  "dany_magic": 2.0,
+                  "defensa_fisica": 2.0,
+                  "defensa_magica": 2.0,
+                  "velocitat": 1.4,
+                  "critic": 1.2
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 2.0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id_mapa": 5,
+        "pisos": 13,
+        "nivell_base": 15,
+        "nodes": [
+          {
+            "pis": 1,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 16,
+                "escala": {
+                  "hp": 1.55,
+                  "dany_fisic": 1.55,
+                  "dany_magic": 1.55,
+                  "defensa_fisica": 1.55,
+                  "defensa_magica": 1.55,
+                  "velocitat": 1.31,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.55
+              }
+            }
+          },
+          {
+            "pis": 2,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 17,
+                "escala": {
+                  "hp": 1.6,
+                  "dany_fisic": 1.6,
+                  "dany_magic": 1.6,
+                  "defensa_fisica": 1.6,
+                  "defensa_magica": 1.6,
+                  "velocitat": 1.32,
+                  "critic": 1.16
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.6
+              }
+            }
+          },
+          {
+            "pis": 3,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 18,
+                "escala": {
+                  "hp": 1.65,
+                  "dany_fisic": 1.65,
+                  "dany_magic": 1.65,
+                  "defensa_fisica": 1.65,
+                  "defensa_magica": 1.65,
+                  "velocitat": 1.33,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.65
+              }
+            }
+          },
+          {
+            "pis": 4,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 19,
+                "escala": {
+                  "hp": 1.7,
+                  "dany_fisic": 1.7,
+                  "dany_magic": 1.7,
+                  "defensa_fisica": 1.7,
+                  "defensa_magica": 1.7,
+                  "velocitat": 1.34,
+                  "critic": 1.17
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.7
+              }
+            }
+          },
+          {
+            "pis": 5,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 20,
+                "escala": {
+                  "hp": 1.75,
+                  "dany_fisic": 1.75,
+                  "dany_magic": 1.75,
+                  "defensa_fisica": 1.75,
+                  "defensa_magica": 1.75,
+                  "velocitat": 1.35,
+                  "critic": 1.18
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 20,
+              "escala": {
+                "hp": 3.5,
+                "dany_fisic": 3.5,
+                "dany_magic": 3.5,
+                "defensa_fisica": 3.5,
+                "defensa_magica": 3.5,
+                "velocitat": 1.7,
+                "critic": 1.35
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.75
+              }
+            }
+          },
+          {
+            "pis": 6,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 21,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 21,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 21,
+                "escala": {
+                  "hp": 1.8,
+                  "dany_fisic": 1.8,
+                  "dany_magic": 1.8,
+                  "defensa_fisica": 1.8,
+                  "defensa_magica": 1.8,
+                  "velocitat": 1.36,
+                  "critic": 1.18
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.8
+              }
+            }
+          },
+          {
+            "pis": 7,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 22,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 22,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 22,
+                "escala": {
+                  "hp": 1.85,
+                  "dany_fisic": 1.85,
+                  "dany_magic": 1.85,
+                  "defensa_fisica": 1.85,
+                  "defensa_magica": 1.85,
+                  "velocitat": 1.37,
+                  "critic": 1.19
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.85
+              }
+            }
+          },
+          {
+            "pis": 8,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 23,
+                "escala": {
+                  "hp": 1.9,
+                  "dany_fisic": 1.9,
+                  "dany_magic": 1.9,
+                  "defensa_fisica": 1.9,
+                  "defensa_magica": 1.9,
+                  "velocitat": 1.38,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 23,
+                "escala": {
+                  "hp": 1.9,
+                  "dany_fisic": 1.9,
+                  "dany_magic": 1.9,
+                  "defensa_fisica": 1.9,
+                  "defensa_magica": 1.9,
+                  "velocitat": 1.38,
+                  "critic": 1.19
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 23,
+                "escala": {
+                  "hp": 1.9,
+                  "dany_fisic": 1.9,
+                  "dany_magic": 1.9,
+                  "defensa_fisica": 1.9,
+                  "defensa_magica": 1.9,
+                  "velocitat": 1.38,
+                  "critic": 1.19
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.9
+              }
+            }
+          },
+          {
+            "pis": 9,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 24,
+                "escala": {
+                  "hp": 1.95,
+                  "dany_fisic": 1.95,
+                  "dany_magic": 1.95,
+                  "defensa_fisica": 1.95,
+                  "defensa_magica": 1.95,
+                  "velocitat": 1.39,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 24,
+                "escala": {
+                  "hp": 1.95,
+                  "dany_fisic": 1.95,
+                  "dany_magic": 1.95,
+                  "defensa_fisica": 1.95,
+                  "defensa_magica": 1.95,
+                  "velocitat": 1.39,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 24,
+                "escala": {
+                  "hp": 1.95,
+                  "dany_fisic": 1.95,
+                  "dany_magic": 1.95,
+                  "defensa_fisica": 1.95,
+                  "defensa_magica": 1.95,
+                  "velocitat": 1.39,
+                  "critic": 1.2
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 1.95
+              }
+            }
+          },
+          {
+            "pis": 10,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 25,
+                "escala": {
+                  "hp": 2.0,
+                  "dany_fisic": 2.0,
+                  "dany_magic": 2.0,
+                  "defensa_fisica": 2.0,
+                  "defensa_magica": 2.0,
+                  "velocitat": 1.4,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 25,
+                "escala": {
+                  "hp": 2.0,
+                  "dany_fisic": 2.0,
+                  "dany_magic": 2.0,
+                  "defensa_fisica": 2.0,
+                  "defensa_magica": 2.0,
+                  "velocitat": 1.4,
+                  "critic": 1.2
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 25,
+                "escala": {
+                  "hp": 2.0,
+                  "dany_fisic": 2.0,
+                  "dany_magic": 2.0,
+                  "defensa_fisica": 2.0,
+                  "defensa_magica": 2.0,
+                  "velocitat": 1.4,
+                  "critic": 1.2
+                }
+              }
+            ],
+            "boss": {
+              "id_personatge": 2,
+              "nivell": 25,
+              "escala": {
+                "hp": 4.0,
+                "dany_fisic": 4.0,
+                "dany_magic": 4.0,
+                "defensa_fisica": 4.0,
+                "defensa_magica": 4.0,
+                "velocitat": 1.8,
+                "critic": 1.4
+              }
+            },
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 2.0
+              }
+            }
+          },
+          {
+            "pis": 11,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 26,
+                "escala": {
+                  "hp": 2.05,
+                  "dany_fisic": 2.05,
+                  "dany_magic": 2.05,
+                  "defensa_fisica": 2.05,
+                  "defensa_magica": 2.05,
+                  "velocitat": 1.41,
+                  "critic": 1.21
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 26,
+                "escala": {
+                  "hp": 2.05,
+                  "dany_fisic": 2.05,
+                  "dany_magic": 2.05,
+                  "defensa_fisica": 2.05,
+                  "defensa_magica": 2.05,
+                  "velocitat": 1.41,
+                  "critic": 1.21
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 26,
+                "escala": {
+                  "hp": 2.05,
+                  "dany_fisic": 2.05,
+                  "dany_magic": 2.05,
+                  "defensa_fisica": 2.05,
+                  "defensa_magica": 2.05,
+                  "velocitat": 1.41,
+                  "critic": 1.21
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 2.05
+              }
+            }
+          },
+          {
+            "pis": 12,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 27,
+                "escala": {
+                  "hp": 2.1,
+                  "dany_fisic": 2.1,
+                  "dany_magic": 2.1,
+                  "defensa_fisica": 2.1,
+                  "defensa_magica": 2.1,
+                  "velocitat": 1.42,
+                  "critic": 1.21
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 27,
+                "escala": {
+                  "hp": 2.1,
+                  "dany_fisic": 2.1,
+                  "dany_magic": 2.1,
+                  "defensa_fisica": 2.1,
+                  "defensa_magica": 2.1,
+                  "velocitat": 1.42,
+                  "critic": 1.21
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 27,
+                "escala": {
+                  "hp": 2.1,
+                  "dany_fisic": 2.1,
+                  "dany_magic": 2.1,
+                  "defensa_fisica": 2.1,
+                  "defensa_magica": 2.1,
+                  "velocitat": 1.42,
+                  "critic": 1.21
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 2.1
+              }
+            }
+          },
+          {
+            "pis": 13,
+            "tipus": "combat",
+            "enemics": [
+              {
+                "id_personatge": 1,
+                "nivell": 28,
+                "escala": {
+                  "hp": 2.15,
+                  "dany_fisic": 2.15,
+                  "dany_magic": 2.15,
+                  "defensa_fisica": 2.15,
+                  "defensa_magica": 2.15,
+                  "velocitat": 1.43,
+                  "critic": 1.22
+                }
+              },
+              {
+                "id_personatge": 2,
+                "nivell": 28,
+                "escala": {
+                  "hp": 2.15,
+                  "dany_fisic": 2.15,
+                  "dany_magic": 2.15,
+                  "defensa_fisica": 2.15,
+                  "defensa_magica": 2.15,
+                  "velocitat": 1.43,
+                  "critic": 1.22
+                }
+              },
+              {
+                "id_personatge": 1,
+                "nivell": 28,
+                "escala": {
+                  "hp": 2.15,
+                  "dany_fisic": 2.15,
+                  "dany_magic": 2.15,
+                  "defensa_fisica": 2.15,
+                  "defensa_magica": 2.15,
+                  "velocitat": 1.43,
+                  "critic": 1.22
+                }
+              }
+            ],
+            "boss": null,
+            "recompensa": {
+              "num_opcions": 3,
+              "pool": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "escala": {
+                "factor": 2.15
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
