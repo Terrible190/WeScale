@@ -107,7 +107,7 @@ public class StatePickCharacter extends State
             if(!ci.isSelected){
 
                 // si no està seleccionat, assignem l'id del jugador al personatge 
-                ci.selectedPlayerId = message.playerId;
+                
                 ci.isSelected = true;
 
                 // Missatge individual

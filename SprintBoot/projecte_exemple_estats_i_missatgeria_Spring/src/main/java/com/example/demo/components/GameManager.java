@@ -1,86 +1,58 @@
 package com.example.demo.components;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.*;
+import java.util.concurrent.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.example.demo.api.model.Player;
+import com.example.demo.api.model.Personaje;
+import com.example.demo.repository.PersonajeRepository;
+import com.example.demo.repository.PersonajeRepository;
 
-/**
- * El gestor de joc es responsabilitza de gestionar les noves connexions WS i crear les partides 
- * quan hi ha prous jugadors. Un cop establert el WS amb cada jugador, també  
- * s'encarrega de recepcionar els missatges dels WS ja connectats, redirigint-los a les
- * partides pertinents.
- */
 @Component
 public class GameManager {
 
-    private long lastPlayerId = 0; 
+    private long lastId = 0;
 
-    /** Executor de fils */
-    private ExecutorService executor;
-    
-    /** Cua de jugadors pendents d'assignar a partida */
-    private final Queue<WebSocketSession> waitingPlayers = new ConcurrentLinkedQueue<>();
+    private ExecutorService executor = Executors.newFixedThreadPool(10);
 
-
-    /** mapa que relaciona Ids de sessió de websocket(String) amb partides actuals (GameInstance).
-     * Un websocket session id pertany a un únic player connectat.*/
     private final Map<WebSocketSession, GameInstance> sessionToGame = new ConcurrentHashMap<>();
-
     private final Map<WebSocketSession, Player> sessionToPlayer = new ConcurrentHashMap<>();
-
-    /** Índex de GameInstance per game_id */
     private final Map<String, GameInstance> games = new ConcurrentHashMap<>();
 
-
-    public GameManager(){
-        executor = Executors.newFixedThreadPool(10);
-    }
+    @Autowired
+    private PersonajeRepository repo;
 
     public void onConnect(WebSocketSession session) {
-        waitingPlayers.add(session);
-        tryStartGame();
+        Player p = new Player(lastId++, session);
+        sessionToPlayer.put(session, p);
     }
 
-    public void handleIncoming(WebSocketSession session, String message) {
-        // Mirem si hi ha un joc associat a aquesta sessió, i si és el cas
-        // encuem la petició al joc trobat.
+    public void handleIncoming(WebSocketSession session, String payload) {
         GameInstance game = sessionToGame.get(session);
+
         if (game != null) {
-            Player p = sessionToPlayer.get(session);
-            game.enqueue(new GameMessage(p, message));
+            game.enqueue(new GameMessage(sessionToPlayer.get(session), payload));
+        } else {
+            createGame(session);
         }
     }
 
-    private void tryStartGame() {
-        System.out.println("Number of waiting players:"+waitingPlayers.size()   );
-        if (waitingPlayers.size() >= 3) {
-            List<Player> players = List.of(
-                new Player( lastPlayerId++, waitingPlayers.poll()),
-                new Player( lastPlayerId++, waitingPlayers.poll()),
-                new Player( lastPlayerId++, waitingPlayers.poll())
-            );
+    private void createGame(WebSocketSession session) {
 
-            GameInstance game = new GameInstance(players, executor);
-            String gameId = game.getId();
+        List<Player> players = new ArrayList<>();
+        players.add(sessionToPlayer.get(session));
 
-            // Registrem els jugadors al mapa de sessions-->joc i sessions-->Player
-            players.forEach(p -> sessionToGame.put(p.getSession(), game));
-            players.forEach(p -> sessionToPlayer.put(p.getSession(),p));
+        List<Personaje> personajes = repo.findBySeleccionableTrue();
 
-            // Indexem el joc pel seu Id
-            games.put(gameId, game);
+        GameInstance game = new GameInstance(players, executor, personajes);
 
-            // Engeguem el fil de joc
-            game.start();
-        }
+        sessionToGame.put(session, game);
+        games.put(game.getId(), game);
+
+        game.start();
     }
 }
