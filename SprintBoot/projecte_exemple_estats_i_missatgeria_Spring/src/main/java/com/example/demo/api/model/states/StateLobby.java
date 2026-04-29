@@ -46,14 +46,6 @@ public class StateLobby extends State {
             case PlayerReadyMessage_IN.TYPE:
                 handleReady(msg, json);
                 break;
-            /*
-                {
-                    "messageType": "PLAYER_READY",
-                    "data": {
-                      "ready": true
-                }
-}
-             */
         }
     }
 

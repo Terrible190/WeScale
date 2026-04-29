@@ -36,25 +36,55 @@ public class GameManager {
     }
 
     public void handleIncoming(WebSocketSession session, String payload) {
+        
 
-        JSONMessage json = new ObjectMapper().readValue(payload, JSONMessage.class);
+    private String loadMapJson() {
+        try (java.io.InputStream is
+                = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
 
-        switch (json.messageType) {
+            if (is == null) {
+                throw new RuntimeException("No se encontró map_fixed.json en resources");
+            }
 
-            case CreateGameMessage_IN.TYPE:
-                createGame(session);
-                break;
+            return new String(is.readAllBytes());
 
-            case JoinGameMessage_IN.TYPE:
-                joinGame(session, json);
-                break;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    JSONMessage json = new ObjectMapper().readValue(payload, JSONMessage.class);
 
-            default:
-                GameInstance game = sessionToGame.get(session);
-                if (game != null) {
-                    game.enqueue(new GameMessage(sessionToPlayer.get(session), payload));
-                }
-                break;
+    switch (json.messageType) {
+
+        case CreateGameMessage_IN.TYPE:
+            createGame(session);
+            break;
+
+        case JoinGameMessage_IN.TYPE:
+            joinGame(session, json);
+            break;
+
+        default:
+            GameInstance game = sessionToGame.get(session);
+            if (game != null) {
+                game.enqueue(new GameMessage(sessionToPlayer.get(session), payload));
+            }
+            break;
+    }
+}
+
+private String loadMapJson() {
+        try (java.io.InputStream is
+                = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
+
+            if (is == null) {
+                throw new RuntimeException("No se encontró map_fixed.json en resources");
+            }
+
+            return new String(is.readAllBytes());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -71,12 +101,16 @@ public class GameManager {
         games.put(game.getId(), game);
 
         game.start(); // solo una vez al crear
-    }
+
+
+}
 
     private void joinGame(WebSocketSession session, JSONMessage json) {
 
         JoinGameMessage_IN data
-                = new ObjectMapper().treeToValue(json.data, JoinGameMessage_IN.class);
+                = new ObjectMapper().treeToValue(json.data, JoinGameMessage_IN.class  
+
+);
 
         GameInstance game = games.get(data.gameId);
 

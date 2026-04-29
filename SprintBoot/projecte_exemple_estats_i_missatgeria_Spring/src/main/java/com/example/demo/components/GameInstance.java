@@ -35,7 +35,7 @@ public class GameInstance {
         this.id = UUID.randomUUID().toString();
         this.personajesDisponibles = personajes;
 
-        currentState = new StatePickCharacter(this);
+        currentState = new StateLobby(this);
     }
 
     public void start() {
