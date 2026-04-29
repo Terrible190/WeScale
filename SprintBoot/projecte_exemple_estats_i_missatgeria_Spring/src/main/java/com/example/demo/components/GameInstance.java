@@ -11,6 +11,7 @@ import com.example.demo.api.model.Personaje;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.states.State;
 import com.example.demo.api.model.states.StateLobby;
+import com.example.demo.api.model.states.StatePickCharacter;
 
 public class GameInstance {
 
@@ -34,7 +35,7 @@ public class GameInstance {
         this.id = UUID.randomUUID().toString();
         this.personajesDisponibles = personajes;
 
-        currentState = new StateLobby(this);
+        currentState = new StatePickCharacter(this);
     }
 
     public void start() {

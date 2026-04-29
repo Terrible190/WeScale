@@ -11,6 +11,8 @@ import com.example.demo.api.model.Player;
 import com.example.demo.api.model.Personaje;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.*;
+import com.example.demo.api.model.messages.out.CharactersList_OUT;
+import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
 import com.example.demo.repository.PersonajeRepository;
 import tools.jackson.databind.ObjectMapper;
 
@@ -84,8 +86,32 @@ public class GameManager {
 
         Player player = sessionToPlayer.get(session);
 
+        // 🔥 añadir jugador
         game.getPlayers().add(player);
 
+        // 🔥 guardar relación sesión -> game
         sessionToGame.put(session, game);
+
+        // =========================
+        // 📢 1. BROADCAST a todos
+        // =========================
+        game.broadcast(new JSONMessage(
+                game.getId(),
+                new PlayerJoined_OUT(
+                        player.getId(),
+                        player.getName(),
+                        game.getPlayers().size()
+                )
+        ));
+
+        // =========================
+        // 🎮 2. ENVIAR personajes SOLO al nuevo jugador
+        // =========================
+        game.send(session,
+                new JSONMessage(
+                        game.getId(),
+                        new CharactersList_OUT(game.getPersonajesDisponibles())
+                )
+        );
     }
 }

@@ -13,7 +13,7 @@ import com.example.demo.components.GameInstance;
 import com.example.demo.components.GameMessage;
 
 import tools.jackson.databind.ObjectMapper;
-
+// sin uso
 public class StateLobby extends State {
 
     private ObjectMapper mapper = new ObjectMapper();

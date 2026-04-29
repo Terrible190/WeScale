@@ -63,15 +63,15 @@ public class StatePickCharacter extends State {
 
         for (Player p : game.getPlayers()) {
 
-            PlayerInfo info = new PlayerInfo(p.getId(), p.getName());
-
-            // 🔥 AÑADIR PERSONAJE SELECCIONADO DESDE GAMEINSTANCE
-            info.personajeSeleccionado = game.getSeleccionados().get(p.getId());
-
-            players.add(info);
+            players.add(new PlayerInfo(
+                    p.getId(),
+                    p.getName(),
+                    game.getSeleccionados().get(p.getId()) // puede ser null
+            ));
         }
 
         List<CharacterInfo> characters = new ArrayList<>();
+
         for (Personaje p : game.getPersonajesDisponibles()) {
             characters.add(new CharacterInfo(
                     p.getId(),
