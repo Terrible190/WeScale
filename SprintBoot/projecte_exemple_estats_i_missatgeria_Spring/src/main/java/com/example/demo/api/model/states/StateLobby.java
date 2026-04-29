@@ -1,11 +1,14 @@
 package com.example.demo.api.model.states;
 
+import com.example.demo.api.model.Player;
 import java.util.concurrent.TimeUnit;
 
 import com.example.demo.api.model.messages.JSONMessage;
+import com.example.demo.api.model.messages.in.PlayerReadyMessage_IN;
 import com.example.demo.api.model.messages.in.pick_characters.PickCharacterMessage_IN;
 import com.example.demo.api.model.messages.out.CharactersList_OUT;
 import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
+import com.example.demo.api.model.messages.out.ReadyStatus_OUT;
 import com.example.demo.components.GameInstance;
 import com.example.demo.components.GameMessage;
 
@@ -19,8 +22,8 @@ public class StateLobby extends State {
         super(game);
 
         game.broadcast(new JSONMessage(
-            game.getId(),
-            new CharactersList_OUT(game.getPersonajesDisponibles())
+                game.getId(),
+                new CharactersList_OUT(game.getPersonajesDisponibles())
         ));
     }
 
@@ -28,37 +31,58 @@ public class StateLobby extends State {
     public void tick() {
         GameMessage msg = game.pollMessage(5, TimeUnit.SECONDS);
 
-        if (msg == null) return;
+        if (msg == null) {
+            return;
+        }
 
         JSONMessage json = mapper.readValue(msg.payload(), JSONMessage.class);
 
         switch (json.messageType) {
 
             case PickCharacterMessage_IN.TYPE:
-                handlePick(msg, json);
+                // to do
                 break;
+
+            case PlayerReadyMessage_IN.TYPE:
+                handleReady(msg, json);
+                break;
+            /*
+                {
+                    "messageType": "PLAYER_READY",
+                    "data": {
+                      "ready": true
+                }
+}
+             */
         }
     }
 
-    private void handlePick(GameMessage msg, JSONMessage json) {
 
-        PickCharacterMessage_IN data =
-            mapper.treeToValue(json.data, PickCharacterMessage_IN.class);
+    private void handleReady(GameMessage msg, JSONMessage json) {
 
-        var personaje = game.getPersonajesDisponibles()
-            .stream()
-            .filter(p -> p.getId() == data.characterId)
-            .findFirst()
-            .orElse(null);
+        PlayerReadyMessage_IN data
+                = mapper.treeToValue(json.data, PlayerReadyMessage_IN.class);
 
-        if (personaje == null) return;
+        // marcar jugador
+        msg.player().setReady(data.ready);
 
-        game.getPersonajesDisponibles().remove(personaje);
-        game.getSeleccionados().put(msg.player().getId(), personaje);
+        // contar listos
+        int readyCount = (int) game.getPlayers()
+                .stream()
+                .filter(Player::isReady)
+                .count();
 
+        int total = game.getPlayers().size();
+
+        // 🔥 enviar a todos el estado
         game.broadcast(new JSONMessage(
-            game.getId(),
-            new CharactersList_OUT(game.getPersonajesDisponibles())
+                game.getId(),
+                new ReadyStatus_OUT(readyCount, total)
         ));
+
+        // si todos listos → empezar
+        if (readyCount == total) {
+            game.start();
+        }
     }
 }

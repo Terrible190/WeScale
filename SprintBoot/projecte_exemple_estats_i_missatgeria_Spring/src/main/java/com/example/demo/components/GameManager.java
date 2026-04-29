@@ -9,8 +9,10 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.example.demo.api.model.Player;
 import com.example.demo.api.model.Personaje;
+import com.example.demo.api.model.messages.JSONMessage;
+import com.example.demo.api.model.messages.in.*;
 import com.example.demo.repository.PersonajeRepository;
-import com.example.demo.repository.PersonajeRepository;
+import tools.jackson.databind.ObjectMapper;
 
 @Component
 public class GameManager {
@@ -32,12 +34,25 @@ public class GameManager {
     }
 
     public void handleIncoming(WebSocketSession session, String payload) {
-        GameInstance game = sessionToGame.get(session);
 
-        if (game != null) {
-            game.enqueue(new GameMessage(sessionToPlayer.get(session), payload));
-        } else {
-            createGame(session);
+        JSONMessage json = new ObjectMapper().readValue(payload, JSONMessage.class);
+
+        switch (json.messageType) {
+
+            case CreateGameMessage_IN.TYPE:
+                createGame(session);
+                break;
+
+            case JoinGameMessage_IN.TYPE:
+                joinGame(session, json);
+                break;
+
+            default:
+                GameInstance game = sessionToGame.get(session);
+                if (game != null) {
+                    game.enqueue(new GameMessage(sessionToPlayer.get(session), payload));
+                }
+                break;
         }
     }
 
@@ -53,6 +68,24 @@ public class GameManager {
         sessionToGame.put(session, game);
         games.put(game.getId(), game);
 
-        game.start();
+        game.start(); // solo una vez al crear
+    }
+
+    private void joinGame(WebSocketSession session, JSONMessage json) {
+
+        JoinGameMessage_IN data
+                = new ObjectMapper().treeToValue(json.data, JoinGameMessage_IN.class);
+
+        GameInstance game = games.get(data.gameId);
+
+        if (game == null) {
+            return;
+        }
+
+        Player player = sessionToPlayer.get(session);
+
+        game.getPlayers().add(player);
+
+        sessionToGame.put(session, game);
     }
 }
