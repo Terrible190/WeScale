@@ -2,7 +2,6 @@ package com.example.demo.api.model.states;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import com.example.demo.api.model.Player;
@@ -20,104 +19,73 @@ import tools.jackson.databind.ObjectMapper;
 
 public class StatePickCharacter extends State {
 
-    private ObjectMapper mapper;
-    private Players2SelectMessage_OUT m;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public StatePickCharacter(GameInstance game) {
         super(game);
-        mapper = new ObjectMapper();
-
-        // 🔥 PLAYERS
-        List<PlayerInfo> players = new ArrayList<>();
-        for (Player p : game.getPlayers()) {
-            players.add(new PlayerInfo(p.getId(), "Player " + p.getId()));
-        }
-
-        // 🔥 PERSONAJES DESDE GAME (BD)
-        List<CharacterInfo> characters = new ArrayList<>();
-
-        for (Personaje p : game.getPersonajesDisponibles()) {
-            characters.add(new CharacterInfo(
-                p.getId(),
-                p.getNombre(),
-                "", // image opcional
-                -1,
-                false
-            ));
-        }
-
-        m = new Players2SelectMessage_OUT();
-        m.players = players;
-        m.characters = characters;
-
-        game.broadcast(new JSONMessage(game.getId(), m));
+        broadcastState();
     }
 
     @Override
     public void tick() {
 
         GameMessage message = game.pollMessage(5, TimeUnit.SECONDS);
-
-        if (message == null) return;
+        if (message == null) {
+            return;
+        }
 
         JSONMessage gm = mapper.readValue(message.payload(), JSONMessage.class);
 
         switch (gm.messageType) {
-            case PickCharacterMessage_IN.TYPE:
-                pickCharacter(message.player(), gm);
+
+            case PickCharacterMessage_IN.TYPE: {
+
+                PickCharacterMessage_IN data
+                        = mapper.treeToValue(gm.data, PickCharacterMessage_IN.class);
+
+                boolean ok = game.pickCharacter(message.player(), data.characterId);
+
+                if (ok) {
+                    broadcastState();
+                } else {
+                    game.send(message.player().getSession(),
+                            new JSONMessage(game.getId(),
+                                    new ActionResult_OUT(false, 1)));
+                }
                 break;
+            }
         }
     }
 
-    private void pickCharacter(Player p, JSONMessage jsonMsg) {
+    private void broadcastState() {
 
-        PickCharacterMessage_IN msg =
-            mapper.treeToValue(jsonMsg.data, PickCharacterMessage_IN.class);
+        List<PlayerInfo> players = new ArrayList<>();
 
-        System.out.println("Pick: " + msg.characterId);
+        for (Player p : game.getPlayers()) {
 
-        // 🔥 BUSCAR PERSONAJE REAL
-        Optional<Personaje> op = game.getPersonajesDisponibles()
-                .stream()
-                .filter(x -> x.getId() == msg.characterId)
-                .findFirst();
+            PlayerInfo info = new PlayerInfo(p.getId(), p.getName());
 
-        if (!op.isPresent()) {
-            game.send(p.getSession(),
-                new JSONMessage(game.getId(), new ActionResult_OUT(false, 2)));
-            return;
+            // 🔥 AÑADIR PERSONAJE SELECCIONADO DESDE GAMEINSTANCE
+            info.personajeSeleccionado = game.getSeleccionados().get(p.getId());
+
+            players.add(info);
         }
 
-        Personaje personaje = op.get();
-
-        // 🔥 EVITAR DOBLE SELECCIÓN
-        if (game.getSeleccionados().containsValue(personaje)) {
-            game.send(p.getSession(),
-                new JSONMessage(game.getId(), new ActionResult_OUT(false, 3)));
-            return;
+        List<CharacterInfo> characters = new ArrayList<>();
+        for (Personaje p : game.getPersonajesDisponibles()) {
+            characters.add(new CharacterInfo(
+                    p.getId(),
+                    p.getNombre(),
+                    "",
+                    -1,
+                    false
+            ));
         }
 
-        // 🔥 GUARDAR SELECCIÓN
-        game.getSeleccionados().put(p.getId(), personaje);
+        Players2SelectMessage_OUT out = new Players2SelectMessage_OUT();
+        out.players = players;
+        out.characters = characters;
 
-        // 🔥 ACTUALIZAR STRUCT m
-        for (CharacterInfo ci : m.characters) {
-            if (ci.characterId == personaje.getId()) {
-                ci.isSelected = true;
-                ci.selectedPlayerId = (int) p.getId();
-            }
-        }
-
-        // 🔥 RESPUESTA OK
-        game.send(p.getSession(),
-            new JSONMessage(game.getId(), new ActionResult_OUT(true, 0)));
-
-        // 🔥 BROADCAST
-        game.broadcast(new JSONMessage(game.getId(), m));
-
-        // 🔥 SI TODOS HAN ELEGIDO → SIGUIENTE ESTADO
-        if (game.getSeleccionados().size() == game.getPlayers().size()) {
-            game.setState(new StateMap(game));
-        }
+        game.broadcast(new JSONMessage(game.getId(), out));
     }
 }

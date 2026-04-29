@@ -40,7 +40,7 @@ public class StateLobby extends State {
         switch (json.messageType) {
 
             case PickCharacterMessage_IN.TYPE:
-                // to do
+                game.setState(new StatePickCharacter(game));       
                 break;
 
             case PlayerReadyMessage_IN.TYPE:
@@ -56,7 +56,6 @@ public class StateLobby extends State {
              */
         }
     }
-
 
     private void handleReady(GameMessage msg, JSONMessage json) {
 

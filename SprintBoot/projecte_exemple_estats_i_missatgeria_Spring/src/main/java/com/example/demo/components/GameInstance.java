@@ -80,12 +80,54 @@ public class GameInstance {
             session.sendMessage(new org.springframework.web.socket.TextMessage(
                     new tools.jackson.databind.ObjectMapper().writeValueAsString(msg)
             ));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
-    public List<Player> getPlayers() { return players; }
-    public String getId() { return id; }
+    public synchronized boolean pickCharacter(Player player, long characterId) {
 
-    public List<Personaje> getPersonajesDisponibles() { return personajesDisponibles; }
-    public Map<Long, Personaje> getSeleccionados() { return seleccionados; }
+        // ya tiene personaje
+        if (seleccionados.containsKey(player.getId())) {
+            return false;
+        }
+
+        // buscar personaje en disponibles
+        Personaje character = personajesDisponibles.stream()
+                .filter(x -> x.getId() == characterId)
+                .findFirst()
+                .orElse(null);
+
+        if (character == null) {
+            return false;
+        }
+
+        // ya elegido por otro jugador (redundante pero seguro)
+        if (seleccionados.containsValue(character)) {
+            return false;
+        }
+
+        // 🔥 reservar personaje
+        seleccionados.put(player.getId(), character);
+
+        // 🔥 quitar de disponibles
+        personajesDisponibles.remove(character);
+
+        return true;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public List<Personaje> getPersonajesDisponibles() {
+        return personajesDisponibles;
+    }
+
+    public Map<Long, Personaje> getSeleccionados() {
+        return seleccionados;
+    }
 }
