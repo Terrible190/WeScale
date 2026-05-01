@@ -144,7 +144,17 @@ namespace WeScale.UserContr.SubUsCo_AfegirCarta
 
                 if (context != null)
                 {
-                    context.PersonatgeAccios.Remove(rel);
+                    // 🔥 CLAVE DEFINITIVA
+                    if (rel.IdPersonatgeAccio == 0)
+                    {
+                        // 👉 nunca existió en BD → ignorar
+                        context.Entry(rel).State = EntityState.Detached;
+                    }
+                    else
+                    {
+                        // 👉 sí existe → borrar correctamente
+                        context.PersonatgeAccios.Remove(rel);
+                    }
                 }
             }
 
