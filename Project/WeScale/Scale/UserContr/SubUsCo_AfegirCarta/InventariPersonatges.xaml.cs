@@ -1,4 +1,5 @@
 ﻿using BD.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -136,11 +137,15 @@ namespace WeScale.UserContr.SubUsCo_AfegirCarta
             {
                 _personatge.PersonatgeAccios.Remove(rel);
 
-                // 🔥 IMPORTANTE: eliminar del contexto
-                var context = ((MainWindow)Application.Current.MainWindow)
+                var mainVM = ((MainWindow)Application.Current.MainWindow)
                     .DataContext as MainViewModel;
 
-                context?.getContext().PersonatgeAccios.Remove(rel);
+                var context = mainVM?.getContext();
+
+                if (context != null)
+                {
+                    context.PersonatgeAccios.Remove(rel);
+                }
             }
 
             Armes.Remove(accio);
