@@ -12,7 +12,10 @@ import com.example.demo.api.model.Personaje;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.*;
 import com.example.demo.api.model.messages.out.CharactersList_OUT;
+import com.example.demo.api.model.messages.out.GameFastInfo;
+import com.example.demo.api.model.messages.out.GamesList_OUT;
 import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
+import com.example.demo.api.model.messages.out.characters_to_pick.PlayerInfo;
 import com.example.demo.api.model.states.StateLobby;
 import com.example.demo.repository.PersonajeRepository;
 import tools.jackson.databind.ObjectMapper;
@@ -62,7 +65,6 @@ public class GameManager {
 
                     sessionToGame.remove(session);   // 👈 AQUÍ
 
-
                     game.broadcast(new JSONMessage(
                             game.getId(),
                             new PlayerJoined_OUT(
@@ -72,7 +74,9 @@ public class GameManager {
                             )
                     ));
                 }
-
+                break;
+            case GetGamesList_IN.TYPE:
+                sendGamesList(session);
                 break;
             default:
                 game = sessionToGame.get(session);
@@ -140,5 +144,34 @@ public class GameManager {
                         new CharactersList_OUT(game.getPersonajesDisponibles())
                 )
         );
+    }
+
+    private void sendGamesList(WebSocketSession session) {
+
+        List<GameFastInfo> list = new ArrayList<>();
+
+        for (GameInstance game : games.values()) {
+
+            List<PlayerInfo> players = new ArrayList<>();
+
+            for (Player p : game.getPlayers()) {
+                players.add(new PlayerInfo(p.getId(), p.getName(), null));
+            }
+
+            list.add(new GameFastInfo(game.getId(), players));
+        }
+
+        JSONMessage msg = new JSONMessage(
+                null,
+                new GamesList_OUT(list)
+        );
+
+        try {
+            session.sendMessage(new org.springframework.web.socket.TextMessage(
+                    new ObjectMapper().writeValueAsString(msg)
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
