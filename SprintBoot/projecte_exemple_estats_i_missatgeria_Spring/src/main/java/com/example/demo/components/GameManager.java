@@ -13,6 +13,7 @@ import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.*;
 import com.example.demo.api.model.messages.out.CharactersList_OUT;
 import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
+import com.example.demo.api.model.states.StateLobby;
 import com.example.demo.repository.PersonajeRepository;
 import tools.jackson.databind.ObjectMapper;
 
@@ -36,55 +37,49 @@ public class GameManager {
     }
 
     public void handleIncoming(WebSocketSession session, String payload) {
-        
 
-    private String loadMapJson() {
-        try (java.io.InputStream is
-                = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
+        JSONMessage json = new ObjectMapper().readValue(payload, JSONMessage.class);
 
-            if (is == null) {
-                throw new RuntimeException("No se encontró map_fixed.json en resources");
-            }
+        switch (json.messageType) {
 
-            return new String(is.readAllBytes());
+            case CreateGameMessage_IN.TYPE:
+                createGame(session);
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    JSONMessage json = new ObjectMapper().readValue(payload, JSONMessage.class);
+                break;
 
-    switch (json.messageType) {
+            case JoinGameMessage_IN.TYPE:
+                joinGame(session, json);
+                break;
+            case LeaveGame_IN.TYPE:
 
-        case CreateGameMessage_IN.TYPE:
-            createGame(session);
-            break;
+                GameInstance game = sessionToGame.get(session);
 
-        case JoinGameMessage_IN.TYPE:
-            joinGame(session, json);
-            break;
+                if (game != null) {
 
-        default:
-            GameInstance game = sessionToGame.get(session);
-            if (game != null) {
-                game.enqueue(new GameMessage(sessionToPlayer.get(session), payload));
-            }
-            break;
-    }
-}
+                    Player p = sessionToPlayer.get(session);
 
-private String loadMapJson() {
-        try (java.io.InputStream is
-                = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
+                    game.removePlayer(p);
 
-            if (is == null) {
-                throw new RuntimeException("No se encontró map_fixed.json en resources");
-            }
+                    sessionToGame.remove(session);   // 👈 AQUÍ
 
-            return new String(is.readAllBytes());
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+                    game.broadcast(new JSONMessage(
+                            game.getId(),
+                            new PlayerJoined_OUT(
+                                    p.getId(),
+                                    p.getName(),
+                                    game.getPlayers().size()
+                            )
+                    ));
+                }
+
+                break;
+            default:
+                game = sessionToGame.get(session);
+                if (game != null) {
+                    game.enqueue(new GameMessage(sessionToPlayer.get(session), payload));
+                }
+                break;
         }
     }
 
@@ -102,15 +97,13 @@ private String loadMapJson() {
 
         game.start(); // solo una vez al crear
 
-
-}
+    }
 
     private void joinGame(WebSocketSession session, JSONMessage json) {
 
         JoinGameMessage_IN data
-                = new ObjectMapper().treeToValue(json.data, JoinGameMessage_IN.class  
-
-);
+                = new ObjectMapper().treeToValue(json.data, JoinGameMessage_IN.class
+                );
 
         GameInstance game = games.get(data.gameId);
 

@@ -12,6 +12,8 @@ import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.states.State;
 import com.example.demo.api.model.states.StateLobby;
 import com.example.demo.api.model.states.StatePickCharacter;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 public class GameInstance {
 
@@ -114,6 +116,37 @@ public class GameInstance {
         personajesDisponibles.remove(character);
 
         return true;
+    }
+
+    public void removePlayer(Player player) {
+
+        // 1. quitar del juego
+        players.remove(player);
+
+        // 2. liberar personaje si tenía uno
+        Personaje personaje = seleccionados.remove(player.getId());
+
+        if (personaje != null) {
+
+            // devolverlo a disponibles
+            personajesDisponibles.add(personaje);
+        }
+    }
+
+    public JsonNode loadMapJson() {
+        try (java.io.InputStream is
+                = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
+
+            if (is == null) {
+                throw new RuntimeException("No se encontró map_fixed.json en resources");
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readTree(is);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Player> getPlayers() {

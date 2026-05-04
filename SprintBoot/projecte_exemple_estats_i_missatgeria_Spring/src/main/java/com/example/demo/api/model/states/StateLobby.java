@@ -4,9 +4,11 @@ import com.example.demo.api.model.Player;
 import java.util.concurrent.TimeUnit;
 
 import com.example.demo.api.model.messages.JSONMessage;
+import com.example.demo.api.model.messages.in.LeaveGame_IN;
 import com.example.demo.api.model.messages.in.PlayerReadyMessage_IN;
 import com.example.demo.api.model.messages.in.pick_characters.PickCharacterMessage_IN;
 import com.example.demo.api.model.messages.out.CharactersList_OUT;
+import com.example.demo.api.model.messages.out.GameInfo_OUT;
 import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
 import com.example.demo.api.model.messages.out.ReadyStatus_OUT;
 import com.example.demo.components.GameInstance;
@@ -14,6 +16,7 @@ import com.example.demo.components.GameMessage;
 
 import tools.jackson.databind.ObjectMapper;
 // sin uso
+
 public class StateLobby extends State {
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -23,7 +26,8 @@ public class StateLobby extends State {
 
         game.broadcast(new JSONMessage(
                 game.getId(),
-                new CharactersList_OUT(game.getPersonajesDisponibles())
+                new GameInfo_OUT(new CharactersList_OUT(game.getPersonajesDisponibles()),
+                        game.loadMapJson())
         ));
     }
 
@@ -40,7 +44,7 @@ public class StateLobby extends State {
         switch (json.messageType) {
 
             case PickCharacterMessage_IN.TYPE:
-                game.setState(new StatePickCharacter(game));       
+                game.setState(new StatePickCharacter(game));
                 break;
 
             case PlayerReadyMessage_IN.TYPE:
