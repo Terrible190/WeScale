@@ -87,6 +87,26 @@ public class GameInstance {
         }
     }
 
+    public synchronized boolean unselectCharacter(Player player) {
+
+        // si no tenía personaje → nada que hacer
+        if (!seleccionados.containsKey(player.getId())) {
+            return false;
+        }
+
+        // obtener personaje
+        Personaje character = seleccionados.get(player.getId());
+
+        // 🔥 quitar de seleccionados
+        seleccionados.remove(player.getId());
+
+        // 🔥 volver a disponibles
+        personajesDisponibles.add(character);
+
+
+        return true;
+    }
+
     public synchronized boolean pickCharacter(Player player, long characterId) {
 
         // ya tiene personaje

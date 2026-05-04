@@ -44,7 +44,12 @@ public class StateLobby extends State {
         switch (json.messageType) {
 
             case PickCharacterMessage_IN.TYPE:
-                game.setState(new StatePickCharacter(game));
+                StatePickCharacter newState = new StatePickCharacter(game);
+                game.setState(newState);
+
+                // 🔥 REPROCESAR el mensaje en el nuevo estado
+                game.enqueue(msg);
+
                 break;
 
             case PlayerReadyMessage_IN.TYPE:
