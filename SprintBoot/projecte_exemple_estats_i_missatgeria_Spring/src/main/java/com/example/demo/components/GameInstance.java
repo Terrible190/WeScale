@@ -20,6 +20,7 @@ public class GameInstance {
     private final List<Player> players;
     private final BlockingQueue<GameMessage> queue = new LinkedBlockingQueue<>();
     private final ExecutorService executor;
+    private static final int MAX_PLAYERS = 4;
 
     private final AtomicBoolean running = new AtomicBoolean(false);
     private volatile boolean active = true;
@@ -103,7 +104,6 @@ public class GameInstance {
         // 🔥 volver a disponibles
         personajesDisponibles.add(character);
 
-
         return true;
     }
 
@@ -167,6 +167,10 @@ public class GameInstance {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isFull() {
+        return players.size() >= MAX_PLAYERS;
     }
 
     public List<Player> getPlayers() {

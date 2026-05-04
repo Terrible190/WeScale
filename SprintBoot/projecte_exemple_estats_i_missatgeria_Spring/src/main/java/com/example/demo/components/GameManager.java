@@ -16,6 +16,7 @@ import com.example.demo.api.model.messages.out.GameFastInfo;
 import com.example.demo.api.model.messages.out.GamesList_OUT;
 import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
 import com.example.demo.api.model.messages.out.characters_to_pick.PlayerInfo;
+import com.example.demo.api.model.messages.out.generic.ActionResult_OUT;
 import com.example.demo.api.model.states.StateLobby;
 import com.example.demo.repository.PersonajeRepository;
 import tools.jackson.databind.ObjectMapper;
@@ -104,17 +105,36 @@ public class GameManager {
     }
 
     private void joinGame(WebSocketSession session, JSONMessage json) {
-
         JoinGameMessage_IN data
                 = new ObjectMapper().treeToValue(json.data, JoinGameMessage_IN.class
                 );
 
         GameInstance game = games.get(data.gameId);
 
-        if (game == null) {
+        if (sessionToGame.containsKey(session)) {
+            game.send(session,
+                    new JSONMessage(
+                            game.getId(),
+                            new ActionResult_OUT(false, 4)
+                    )
+            );
             return;
         }
 
+        if (game == null) {
+            return;
+        }
+        if (game.isFull()) {
+
+            game.send(session,
+                    new JSONMessage(
+                            game.getId(),
+                            new ActionResult_OUT(false, 3)
+                    )
+            );
+
+            return; // ❌ NO entra
+        }
         Player player = sessionToPlayer.get(session);
 
         // 🔥 añadir jugador
