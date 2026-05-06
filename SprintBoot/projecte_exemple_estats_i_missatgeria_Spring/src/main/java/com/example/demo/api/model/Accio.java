@@ -1,37 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.example.demo.api.model;
 
-import java.util.List;
+import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/**
- *
- * @author Anas
- */
+@JsonPropertyOrder({
+    "id",
+    "nombre",
+    "tipo",
+    "cooldown",
+    "descripcion"
+})
+@Entity
+@Table(name = "ACCIO")
 public class Accio {
 
+    @Id
+    @Column(name = "id_obj_actiu")
     private int id;
+
+    @Column(name = "nom")
     private String nombre;
+
+    @Column(name = "tipus")
     private int tipo;
+
+    @Column(name = "cooldown")
     private int cooldown;
+
+    @Column(name = "descripcio")
     private String descripcion;
-
-    private List<Efecto> efectos;
-
-    public Accio(int id, String nombre, int tipo, int cooldown, String descripcion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.tipo = tipo;
-        this.cooldown = cooldown;
-        this.descripcion = descripcion;
-    }
 
     public int getId() { return id; }
     public String getNombre() { return nombre; }
     public int getTipo() { return tipo; }
-
-    public List<Efecto> getEfectos() { return efectos; }
-    public void setEfectos(List<Efecto> efectos) { this.efectos = efectos; }
+    public int getCooldown() { return cooldown; }
+    public String getDescripcion() { return descripcion; }
 }
