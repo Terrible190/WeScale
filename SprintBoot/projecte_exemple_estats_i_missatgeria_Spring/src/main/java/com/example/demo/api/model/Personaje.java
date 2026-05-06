@@ -14,13 +14,17 @@ public class Personaje {
     private String nombre;
     @Column(name = "hp_base")
     private float hp;
+    @Column(name = "dany_fisic_base")
     private float danyoFisico;
+    @Column(name = "dany_magic_base")
     private float danyoMagico;
-
+    @Column(name = "defensa_fisica_base")
     private float defensaFisica;
+    @Column(name = "defensa_magica_base")
     private float defensaMagica;
-
+    @Column(name = "critic_base")
     private float critico;
+    @Column(name = "critic_multiplicador_base")
     private float multiplicadorCritico;
     private boolean seleccionable;
     @Transient
@@ -67,9 +71,57 @@ public class Personaje {
     public boolean isSeleccionable() {
         return seleccionable;
     }
-    
+
+    public float getDanyoFisico() {
+        return danyoFisico;
+    }
+
+    public void setDanyoFisico(float danyoFisico) {
+        this.danyoFisico = danyoFisico;
+    }
+
+    public float getDanyoMagico() {
+        return danyoMagico;
+    }
+
+    public void setDanyoMagico(float danyoMagico) {
+        this.danyoMagico = danyoMagico;
+    }
+
+    public float getDefensaFisica() {
+        return defensaFisica;
+    }
+
+    public void setDefensaFisica(float defensaFisica) {
+        this.defensaFisica = defensaFisica;
+    }
+
+    public float getDefensaMagica() {
+        return defensaMagica;
+    }
+
+    public void setDefensaMagica(float defensaMagica) {
+        this.defensaMagica = defensaMagica;
+    }
+
+    public float getCritico() {
+        return critico;
+    }
+
+    public void setCritico(float critico) {
+        this.critico = critico;
+    }
+
+    public float getMultiplicadorCritico() {
+        return multiplicadorCritico;
+    }
+
+    public void setMultiplicadorCritico(float multiplicadorCritico) {
+        this.multiplicadorCritico = multiplicadorCritico;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return "Id: " + getId() + " - Nom: " + getNombre() + " - Vida: " + getHp();
     }
 }
