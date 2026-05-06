@@ -90,6 +90,18 @@ public class GameManager {
 
     private void createGame(WebSocketSession session) {
 
+        // 🔥 SI YA ESTÁ EN UNA PARTIDA → BLOQUEAR
+        if (sessionToGame.containsKey(session)) {
+            GameInstance game = sessionToGame.get(session);
+            game.send(session,
+                    new JSONMessage(
+                            game.getId(),
+                            new ActionResult_OUT(false, 4)
+                    )
+            );
+            return;
+        }
+
         List<Player> players = new ArrayList<>();
         players.add(sessionToPlayer.get(session));
 
@@ -100,8 +112,7 @@ public class GameManager {
         sessionToGame.put(session, game);
         games.put(game.getId(), game);
 
-        game.start(); // solo una vez al crear
-
+        game.start();
     }
 
     private void joinGame(WebSocketSession session, JSONMessage json) {

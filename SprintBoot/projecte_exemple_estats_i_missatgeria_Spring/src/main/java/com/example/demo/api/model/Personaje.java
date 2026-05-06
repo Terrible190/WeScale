@@ -47,7 +47,6 @@ public class Personaje {
     @Column(name = "seleccionable")
     private boolean seleccionable;
 
-    // 🔥 AQUÍ se cargan automáticamente las acciones
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "PERSONATGE_ACCIO",

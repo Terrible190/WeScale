@@ -24,7 +24,7 @@ public class GameInstance {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
     private volatile boolean active = true;
-
+    private static long idCounter = 1;
     private final String id;
     private State currentState;
 
@@ -35,7 +35,7 @@ public class GameInstance {
     public GameInstance(List<Player> players, ExecutorService executor, List<Personaje> personajes) {
         this.players = players;
         this.executor = executor;
-        this.id = UUID.randomUUID().toString();
+        this.id = String.valueOf(idCounter++);
         this.personajesDisponibles = personajes;
 
         currentState = new StateLobby(this);
