@@ -19,6 +19,8 @@ import com.example.demo.api.model.messages.out.characters_to_pick.PlayerInfo;
 import com.example.demo.api.model.messages.out.generic.ActionResult_OUT;
 import com.example.demo.api.model.states.StateLobby;
 import com.example.demo.repository.PersonajeRepository;
+import java.io.IOException;
+import org.springframework.web.socket.TextMessage;
 import tools.jackson.databind.ObjectMapper;
 
 @Component
@@ -40,9 +42,10 @@ public class GameManager {
         sessionToPlayer.put(session, p);
     }
 
-    public void handleIncoming(WebSocketSession session, String payload) {
+    public void handleIncoming(WebSocketSession session, String payload) throws IOException {
 
         JSONMessage json = new ObjectMapper().readValue(payload, JSONMessage.class);
+        GameInstance game = sessionToGame.get(session);
 
         switch (json.messageType) {
 
@@ -55,8 +58,6 @@ public class GameManager {
                 joinGame(session, json);
                 break;
             case LeaveGame_IN.TYPE:
-
-                GameInstance game = sessionToGame.get(session);
 
                 if (game != null) {
 
@@ -79,6 +80,31 @@ public class GameManager {
             case GetGamesList_IN.TYPE:
                 sendGamesList(session);
                 break;
+            case GameInfo_IN.TYPE: {
+                if (game == null) {
+                    session.sendMessage(new TextMessage(
+                            new ObjectMapper().writeValueAsString(
+                                    new JSONMessage(null,
+                                            new ActionResult_OUT(false, 5) // no estás en sala
+                                    )
+                            )
+                    ));
+                    return;
+                }
+
+                List<PlayerInfo> players = game.getPlayers()
+                        .stream()
+                        .map(p -> new PlayerInfo(p.getId(), p.getName(), null))
+                        .toList();
+
+                GameFastInfo info = new GameFastInfo(game.getId(), players);
+
+                game.send(session,
+                        new JSONMessage(game.getId(), info)
+                );
+
+                break;
+            }
             default:
                 game = sessionToGame.get(session);
                 if (game != null) {

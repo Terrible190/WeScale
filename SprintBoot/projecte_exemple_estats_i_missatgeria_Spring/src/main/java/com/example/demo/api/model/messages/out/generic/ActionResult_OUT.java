@@ -19,9 +19,4 @@ public class ActionResult_OUT extends MessageBody{
 
     public boolean success;
     public int errorCode;
-
-
-
-
-
 }
