@@ -153,6 +153,12 @@ public class GameInstance {
         }
     }
 
+    public boolean allPlayersHaveCharacter() {
+
+        return players.stream()
+                .allMatch(p -> seleccionados.containsKey(p.getId()));
+    }
+
     public JsonNode loadMapJson() {
         try (java.io.InputStream is
                 = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {

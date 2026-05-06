@@ -82,7 +82,7 @@ public class StatePickCharacter extends State {
             players.add(new PlayerInfo(
                     p.getId(),
                     p.getName(),
-                    game.getSeleccionados().get(p.getId()) // puede ser null
+                    game.getSeleccionados().get(p.getId())
             ));
         }
 
@@ -103,5 +103,10 @@ public class StatePickCharacter extends State {
         out.characters = characters;
 
         game.broadcast(new JSONMessage(game.getId(), out));
+
+        // 🔥 NUEVO: comprobar si todos han elegido
+        if (game.allPlayersHaveCharacter()) {
+            game.setState(new StateInGame(game)); // o el estado que tengas
+        }
     }
 }
