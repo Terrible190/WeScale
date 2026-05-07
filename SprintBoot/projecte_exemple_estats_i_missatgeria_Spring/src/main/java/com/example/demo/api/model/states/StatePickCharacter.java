@@ -87,7 +87,7 @@ public class StatePickCharacter extends State {
         }
 
         List<CharacterInfo> characters = new ArrayList<>();
-
+        
         for (Personaje p : game.getPersonajesDisponibles()) {
             characters.add(new CharacterInfo(
                     p.getId(),
@@ -103,7 +103,6 @@ public class StatePickCharacter extends State {
         out.characters = characters;
 
         game.broadcast(new JSONMessage(game.getId(), out));
-
         // 🔥 NUEVO: comprobar si todos han elegido
         if (game.allPlayersHaveCharacter()) {
             game.setState(new StateInGame(game)); // o el estado que tengas

@@ -47,7 +47,6 @@ public class StateLobby extends State {
                 StatePickCharacter newState = new StatePickCharacter(game);
                 game.setState(newState);
 
-                // 🔥 REPROCESAR el mensaje en el nuevo estado
                 game.enqueue(msg);
 
                 break;

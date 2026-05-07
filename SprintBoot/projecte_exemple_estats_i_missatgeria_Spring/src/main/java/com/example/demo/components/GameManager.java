@@ -75,6 +75,10 @@ public class GameManager {
                                     game.getPlayers().size()
                             )
                     ));
+                    
+                    if (game.getPlayers().isEmpty()) {
+                        games.remove(game.getId());
+                    }
                 }
                 break;
             case GetGamesList_IN.TYPE:

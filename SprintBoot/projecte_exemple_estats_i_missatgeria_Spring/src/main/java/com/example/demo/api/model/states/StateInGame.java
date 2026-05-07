@@ -4,6 +4,8 @@
  */
 package com.example.demo.api.model.states;
 
+import com.example.demo.api.model.messages.JSONMessage;
+import com.example.demo.api.model.messages.out.GameStarted_OUT;
 import com.example.demo.components.GameInstance;
 
 /**
@@ -16,6 +18,7 @@ public class StateInGame extends State{
         super(game);
         
         System.out.println("Siuuu");
+        game.broadcast(new JSONMessage(game.getId(), new GameStarted_OUT()));
     }
 
     @Override

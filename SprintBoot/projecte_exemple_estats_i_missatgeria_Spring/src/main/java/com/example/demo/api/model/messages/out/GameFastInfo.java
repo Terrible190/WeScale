@@ -4,6 +4,7 @@
  */
 package com.example.demo.api.model.messages.out;
 
+import com.example.demo.api.model.messages.MessageBody;
 import com.example.demo.api.model.messages.out.characters_to_pick.PlayerInfo;
 import java.util.List;
 
@@ -11,13 +12,19 @@ import java.util.List;
  *
  * @author Usuari
  */
-public class GameFastInfo {
+public class GameFastInfo extends MessageBody{
 
+    public static final String TYPE = "GameInfo";
     public String id;
     public List<PlayerInfo> players;
-
+    
     public GameFastInfo(String id, List<PlayerInfo> players) {
         this.id = id;
         this.players = players;
+    }
+
+    @Override
+    public String getMessageType() {
+       return TYPE; 
     }
 }

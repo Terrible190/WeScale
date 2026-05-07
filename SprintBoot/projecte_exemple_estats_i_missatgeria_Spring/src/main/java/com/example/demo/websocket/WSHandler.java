@@ -8,6 +8,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.example.demo.components.GameManager;
+import java.io.IOException;
 
 /**
  * La classe gestiona a baix nivell qualsevol connexió nova de WebSocket i desconnexió. Així mateix,
@@ -26,7 +27,7 @@ public class WSHandler extends TextWebSocketHandler {
     }
 
 	@Override
-	protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         gameManager.handleIncoming(session, message.getPayload());
 	}
 

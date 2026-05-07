@@ -137,6 +137,10 @@
   "data": {}
 }
 
+{
+  "messageType": "LEAVE_GAME",
+  "data": {}
+}
 
 {
   "messageType": "UNSELECT_CHARACTER",
