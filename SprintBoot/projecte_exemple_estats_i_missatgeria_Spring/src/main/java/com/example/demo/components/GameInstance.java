@@ -178,6 +178,13 @@ public class GameInstance {
         }
     }
 
+    public Personaje getPersonajeById(long id) {
+        return personajesDisponibles.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
     public boolean isFull() {
         return players.size() >= MAX_PLAYERS;
     }

@@ -146,3 +146,11 @@
   "messageType": "UNSELECT_CHARACTER",
   "data": {}
 }
+
+{
+  "messageType": "USE_ACTION",
+  "data": {
+    "actionId": 5,
+    "targetId": 2
+  }
+}

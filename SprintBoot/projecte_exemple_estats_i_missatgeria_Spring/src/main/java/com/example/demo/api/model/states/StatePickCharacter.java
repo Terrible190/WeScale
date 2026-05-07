@@ -79,15 +79,33 @@ public class StatePickCharacter extends State {
 
         for (Player p : game.getPlayers()) {
 
+            Personaje personaje = game.getSeleccionados().get(p.getId());
+
             players.add(new PlayerInfo(
                     p.getId(),
                     p.getName(),
-                    game.getSeleccionados().get(p.getId())
+                    personaje
             ));
+
+            // 🔥 DEBUG
+            if (personaje != null) {
+                System.out.println(
+                        "[DEBUG] Jugador "
+                        + p.getName()
+                        + " ha elegido "
+                        + personaje.getNombre()
+                );
+            } else {
+                System.out.println(
+                        "[DEBUG] Jugador "
+                        + p.getName()
+                        + " todavía no ha elegido personaje"
+                );
+            }
         }
 
         List<CharacterInfo> characters = new ArrayList<>();
-        
+
         for (Personaje p : game.getPersonajesDisponibles()) {
             characters.add(new CharacterInfo(
                     p.getId(),
@@ -103,9 +121,10 @@ public class StatePickCharacter extends State {
         out.characters = characters;
 
         game.broadcast(new JSONMessage(game.getId(), out));
+
         // 🔥 NUEVO: comprobar si todos han elegido
         if (game.allPlayersHaveCharacter()) {
-            game.setState(new StateInGame(game)); // o el estado que tengas
+            game.setState(new StateInGame(game));
         }
     }
 }
