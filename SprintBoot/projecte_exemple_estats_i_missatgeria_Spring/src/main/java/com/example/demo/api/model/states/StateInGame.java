@@ -25,9 +25,22 @@ public class StateInGame extends State {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    private Personaje enemy;
+
     public StateInGame(GameInstance game) {
         super(game);
-
+        this.enemy = new Personaje(
+                999,
+                "Enemigo de prueba",
+                200f,
+                15f,
+                5f,
+                10f,
+                8f,
+                10f,
+                1.5f,
+                false
+        );
         game.broadcast(new JSONMessage(
                 game.getId(),
                 new GameStarted_OUT()
@@ -55,19 +68,25 @@ public class StateInGame extends State {
                         = mapper.treeToValue(json.data, UseActionMessage_IN.class);
 
                 Player player = msg.player();
-                
+
                 System.out.println(
                         "[ACTION DEBUG] Player: "
                         + player.getName()
                         + " (ID: " + player.getId() + ") "
-                        + " ha usado acción: " + data.getActionId() 
+                        + " ha usado acción: " + data.getActionId()
                         + " Contra " + data.getTargetId()
                         + " Personaje " + game.getSeleccionados().get(player.getId()).getDanyoFisico()
-                        
                 );
-                System.out.println("siu");
+                addDaño(game.getSeleccionados().get(player.getId()).getDanyoFisico(), data.getTargetId());
+                System.out.println("Nombre: " + enemy.getNombre() + "Vida " + enemy.getHp());
                 break;
 
+        }
+    }
+
+    private void addDaño(float daño, long target) {
+        if (enemy.getId() == target) {
+            enemy.setHp(enemy.getHp() - daño);
         }
     }
 }
