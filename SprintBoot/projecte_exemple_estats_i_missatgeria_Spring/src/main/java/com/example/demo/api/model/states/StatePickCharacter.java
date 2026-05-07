@@ -49,9 +49,15 @@ public class StatePickCharacter extends State {
                 if (ok) {
                     broadcastState();
                 } else {
-                    game.send(message.player().getSession(),
-                            new JSONMessage(game.getId(),
-                                    new ActionResult_OUT(false, 1)));
+                    boolean ok1 = game.unselectCharacter(message.player());
+                    if (ok1) {
+                        game.pickCharacter(message.player(), data.characterId);
+                        broadcastState();
+                    } else {
+                        game.send(message.player().getSession(),
+                                new JSONMessage(game.getId(),
+                                        new ActionResult_OUT(false, 1)));
+                    }
                 }
                 break;
 

@@ -29,6 +29,7 @@ public class StateInGame extends State {
 
     public StateInGame(GameInstance game) {
         super(game);
+        //temporal
         this.enemy = new Personaje(
                 999,
                 "Enemigo de prueba",
