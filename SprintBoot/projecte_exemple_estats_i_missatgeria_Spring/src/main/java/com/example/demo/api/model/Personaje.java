@@ -47,6 +47,8 @@ public class Personaje {
 
     @Column(name = "seleccionable")
     private boolean seleccionable;
+    
+    private boolean isAlive = true; 
 
     public Personaje(int id,
             String nombre,
@@ -58,7 +60,6 @@ public class Personaje {
             float critico,
             float multiplicadorCritico,
             boolean seleccionable) {
-
         this.id = id;
         this.nombre = nombre;
         this.hp = hp;
@@ -70,7 +71,8 @@ public class Personaje {
         this.multiplicadorCritico = multiplicadorCritico;
         this.seleccionable = seleccionable;
     }
-    public Personaje(){
+
+    public Personaje() {
         //
     }
     @ManyToMany(fetch = FetchType.EAGER)
@@ -88,6 +90,14 @@ public class Personaje {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public boolean isIsAlive() {
+        return isAlive;
+    }
+
+    public void setIsAlive(boolean isAlive) {
+        this.isAlive = isAlive;
     }
 
     public float getHp() {

@@ -78,15 +78,27 @@ public class StateInGame extends State {
                         + " Personaje " + game.getSeleccionados().get(player.getId()).getDanyoFisico()
                 );
                 addDaño(game.getSeleccionados().get(player.getId()).getDanyoFisico(), data.getTargetId());
-                System.out.println("Nombre: " + enemy.getNombre() + "Vida " + enemy.getHp());
+                System.out.println("Nombre: " + enemy.getNombre() + " Vida " + enemy.getHp() + " viu? "
+                        + enemy.isIsAlive());
                 break;
 
         }
     }
 
     private void addDaño(float daño, long target) {
+        if (enemy.isIsAlive() == false) {
+            System.out.println("Esta muerto");
+            return;
+        }
+
         if (enemy.getId() == target) {
-            enemy.setHp(enemy.getHp() - daño);
+            if (enemy.getHp() - daño <= 0) {
+                enemy.setHp(0);
+                enemy.setIsAlive(false);
+            } else {
+                enemy.setHp(enemy.getHp() - daño);
+
+            }
         }
     }
 }
