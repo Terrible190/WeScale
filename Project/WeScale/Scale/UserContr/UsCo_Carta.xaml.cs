@@ -332,7 +332,7 @@ namespace WeScale.UserContr
         {
             StackPanel panel = new StackPanel();
 
-            panel.Children.Add(CrearAtributBinding("Carta.DanyFisicBase", "Dany"));
+            panel.Children.Add(CrearAtributDany());
 
             return panel;
         }
@@ -585,6 +585,108 @@ namespace WeScale.UserContr
         private string Safe(string value)
         {
             return string.IsNullOrWhiteSpace(value) ? "" : value;
+        }
+
+        private StackPanel CrearAtributDany()
+        {
+            var vm = (CartaVM)DataContext;
+            var accio = (Accio)vm.Carta;
+
+            StackPanel fila = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(5)
+            };
+
+            Label label = new Label
+            {
+                Content = "Dany",
+                Width = 80,
+                Style = (Style)Application.Current.Resources["RPGLabelStyle"],
+            };
+
+            TextBox txt = new TextBox
+            {
+                Width = 50,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                Style = (Style)Application.Current.Resources["RPGTextBoxStyle"],
+            };
+
+            // 🔥 BUSCAR MOD DE DAÑO
+            var modDany = accio.AccioEfectes
+                .Select(ae => ae.IdEfecteNavigation)
+                .SelectMany(e => e.EfecteModEstadisticas)
+                .FirstOrDefault(m => m.NomStat == 16);
+
+            if (modDany != null)
+            {
+                txt.Text = modDany.Valor.ToString();
+            }
+
+            txt.TextChanged += (s, e) =>
+            {
+                if (!int.TryParse(txt.Text, out int valor))
+                    return;
+
+                if (modDany != null)
+                {
+                    modDany.Valor = valor;
+                }
+                else
+                {
+                    var efecte = new Efecte
+                    {
+                        IdTipusEfecte = 3
+                    };
+
+                    modDany = new EfecteModEstadistica
+                    {
+                        NomStat = 16,
+                        Valor = valor
+                    };
+
+                    efecte.EfecteModEstadisticas =
+                        new List<EfecteModEstadistica> { modDany };
+
+                    accio.AccioEfectes.Add(new AccioEfecte
+                    {
+                        IdEfecteNavigation = efecte
+                    });
+                }
+            };
+
+            Button up = new Button
+            {
+                Content = "▲",
+                Width = 20,
+                Style = (Style)Application.Current.Resources["RPGButtonStyle"],
+            };
+
+            Button down = new Button
+            {
+                Content = "▼",
+                Width = 20,
+                Style = (Style)Application.Current.Resources["RPGButtonStyle"],
+            };
+
+            up.Click += (s, e) =>
+            {
+                if (int.TryParse(txt.Text, out int val))
+                    txt.Text = (val + 1).ToString();
+            };
+
+            down.Click += (s, e) =>
+            {
+                if (int.TryParse(txt.Text, out int val))
+                    txt.Text = (val - 1).ToString();
+            };
+
+            fila.Children.Add(label);
+            fila.Children.Add(txt);
+            fila.Children.Add(up);
+            fila.Children.Add(down);
+
+            return fila;
         }
 
     }
