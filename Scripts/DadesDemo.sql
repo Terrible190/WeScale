@@ -129,59 +129,69 @@ VALUES
 -- - Duració: 3 torns
 
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, tipus_dany, rang, duracio, descripcio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2),
   2,   -- dany màgic
   2,   -- enemic
   3,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Bola de Foc'),
   'Aplica l estat Cremat durant 3 torns.'
 );
 
 SET @id_efecte_bola := LAST_INSERT_ID();
 
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+    (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Bola de Foc'),
+    @id_efecte_bola
+);
 
 
 -- =====================================================
 -- EFECTE: Bastó Glacial (magic)
 -- =====================================================
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, tipus_dany, rang, duracio, descripcio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2),
   2,   -- dany màgic
   2,   -- enemic
   3,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Bastó Glacial'),
   'Aplica l estat Congelat durant 3 torns.'
 );
 
 SET @id_efecte_glacial := LAST_INSERT_ID();
 
-
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+    (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Bastó Glacial'),
+    @id_efecte_glacial
+);
 
 -- =====================================================
 -- EFECTE: Ballesta Enverinada (físic)
 -- =====================================================
 
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, tipus_dany, rang, duracio, descripcio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2),
   1,   -- dany físic
   4,   -- tots els enemics
   3,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Ballesta Enverinada'),
   'Aplica l estat Enverinat a tots els enemics durant 3 torns.'
 );
 
 SET @id_efecte_ballesta := LAST_INSERT_ID();
 
-
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+    (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Ballesta Enverinada'),
+    @id_efecte_ballesta
+);
 
 -- ------------------------------------------------------------
 -- EFECTE_ESTAT
@@ -218,15 +228,9 @@ INSERT INTO EFECTE_ESTAT
 (id_efecte, id_estat)
 VALUES
 (
-  (
-	SELECT e.id_efecte
-	FROM EFECTE e
-	JOIN ACCIO a ON a.id_obj_actiu = e.id_obj_arm_hab_actiu
-	WHERE a.nom = 'Ballesta Enverinada'
-  ),
+  @id_efecte_ballesta,
   (SELECT id_estat FROM ESTAT WHERE nom = 'Enverinat')
 );
-
 -- ------------------------------------------------------------
 -- EFECTE_MOD_ESTADISTICA Arma - Basto Glacial
 -- ------------------------------------------------------------
@@ -299,17 +303,22 @@ VALUES
 
 -- EFECTE: Habilitat Defensa (buff temporal)
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3),
   1,   -- self
   1,   -- 1 torn
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Defensa'),
   'Augmenta la defensa física i màgica.'
 );
 
 SET @id_efecte_defensa := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Defensa'),
+  @id_efecte_defensa
+);
 
 
 
@@ -494,17 +503,22 @@ VALUES
 
 -- ---------- EFECTE ZOMBI (ESTAT) ----------
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   2,   -- Estat
   1,   -- self
   NULL, -- permanent mentre estat actiu
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
   'Aplica l estat Zombi.'
 );
 
 SET @id_efecte_zombi_estat := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
+  @id_efecte_zombi_estat
+);
 
 
 INSERT INTO EFECTE_ESTAT
@@ -519,17 +533,22 @@ VALUES
 
 -- ---------- EFECTE ZOMBI (DEBUFF -70%) ----------
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   3,   -- Modificació estadística
   1,
   NULL,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
   'Redueix totes les estadístiques un 70%.'
 );
 
 SET @id_efecte_zombi_mod := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
+  @id_efecte_zombi_mod
+);
 
 
 INSERT INTO EFECTE_MOD_ESTADISTICA
@@ -548,17 +567,22 @@ VALUES
 
 -- ---------- EFECTE SEMIZOMBI (ESTAT) ----------
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   2,   -- Estat
   1,   -- self
   NULL,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
   'Aplica l estat Semizombi.'
 );
 
 SET @id_efecte_semizombi_estat := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
+  @id_efecte_semizombi_estat
+);
 
 
 INSERT INTO EFECTE_ESTAT
@@ -572,17 +596,22 @@ VALUES
 
 -- ---------- EFECTE SEMIZOMBI (DEBUFF -40%) ----------
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   3,   -- Modificació estadística
   1,
   NULL,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
   'Redueix totes les estadístiques un 40%.'
 );
 
 SET @id_efecte_semizombi_mod := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
+  @id_efecte_semizombi_mod
+);
 
 INSERT INTO EFECTE_MOD_ESTADISTICA
 (id_efecte, nom_stat, operacio, valor)
@@ -610,17 +639,22 @@ VALUES
 SET @id_accio_angel := LAST_INSERT_ID();
 
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   2,   -- Estat
   1,   -- self
   NULL,
-  @id_accio_angel,
   'Protegeix de la mort i restaura vida.'
 );
 
 SET @id_efecte_angel := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  @id_accio_angel,
+  @id_efecte_angel
+);
 
 INSERT INTO EFECTE_ESTAT
 (id_efecte, id_estat)
@@ -667,15 +701,21 @@ VALUES
 );
 
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio,
- id_obj_arm_hab_actiu)
+(id_tipus_efecte, tipus_dany, rang, duracio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2 LIMIT 1), -- Estat
   NULL,
   3,      -- seleccionat (aliat mort)
-  NULL,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Resurrecció' LIMIT 1)
+  NULL
+);
+
+SET @id_efecte_resurreccio := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Resurrecció' LIMIT 1),
+  @id_efecte_resurreccio
 );
 
 
@@ -700,17 +740,22 @@ VALUES
 -- =====================================================
 
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   1,   -- Invocació
   1,   -- self
   NULL,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Invocar Esquelet'),
   'Invoca un esquelet aliat.'
 );
 
 SET @id_efecte_invocar := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Invocar Esquelet'),
+  @id_efecte_invocar
+);
 
 
 -- =====================================================
@@ -738,17 +783,24 @@ VALUES
   'Marca l enemic amb Black Flash i infligeix dany físic extra.'
 );
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   2,   -- Estat
   3,   -- seleccionat
   1,   -- 1 torn
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash'),
   'Aplica l estat Black Flash Mark.'
 );
 
 SET @id_efecte_blackflash_estat := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash'),
+  @id_efecte_blackflash_estat
+);
+
+
 INSERT INTO EFECTE_ESTAT
 (id_efecte, id_estat)
 VALUES
@@ -758,18 +810,23 @@ VALUES
 );
 
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, tipus_dany, rang, duracio, descripcio)
 VALUES
 (
   3,   -- Mod estadística
   1,   -- físic
   3,   -- seleccionat
   0,   -- immediat
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash'),
   'Infligeix dany físic addicional.'
 );
 
 SET @id_efecte_blackflash_damage := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash'),
+  @id_efecte_blackflash_damage
+);
 
 
 INSERT INTO EFECTE_MOD_ESTADISTICA
@@ -783,18 +840,23 @@ VALUES
 );
 
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, tipus_dany, rang, duracio, descripcio)
 VALUES
 (
   3,   -- Mod estadística
   1,   -- físic
   3,   -- seleccionat
   0,   -- immediat
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash'),
   'Si l enemic té Black Flash Mark, el dany es duplica.'
 );
 
 SET @id_efecte_blackflash_bonus := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Black Flash'),
+  @id_efecte_blackflash_bonus
+);
 
 INSERT INTO EFECTE_MOD_ESTADISTICA
 (id_efecte, nom_stat, operacio, valor)
@@ -823,17 +885,22 @@ VALUES
 SET @id_accio_sobrecarga := LAST_INSERT_ID();
 
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   2,   -- Estat
   1,   -- self
   1,   -- 1 torn
-  @id_accio_sobrecarga,
   'Aplica l estat Sobrecàrrega Obscura.'
 );
 
 SET @id_efecte_sobrecarga_estat := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  @id_accio_sobrecarga,
+  @id_efecte_sobrecarga_estat
+);
 
 INSERT INTO EFECTE_ESTAT
 (id_efecte, id_estat)
@@ -874,15 +941,21 @@ VALUES (
 );
 
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3),
   1,
   2,
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Espines'),
   'Retorna dany rebut.'
 );
+
 SET @id_efecte_espines := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Espines'),
+  @id_efecte_espines
+);
 
 INSERT INTO EFECTE_MOD_ESTADISTICA
 (id_efecte, nom_stat, operacio, valor)
@@ -912,12 +985,23 @@ VALUES
 SET @id_accio := LAST_INSERT_ID();
 
 INSERT INTO EFECTE
-(id_tipus_efecte, tipus_dany, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, tipus_dany, rang, duracio, descripcio)
 VALUES
-(2, NULL, 1, NULL, @id_accio,
- 'Aplica l''estat Espines permanentment.');
+(
+  2,
+  NULL,
+  1,
+  NULL,
+  'Aplica l''estat Espines permanentment.'
+);
 
 SET @id_efecte := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  @id_accio,
+  @id_efecte
+);
 
 INSERT INTO EFECTE_ESTAT
 (id_efecte, id_estat)
@@ -953,17 +1037,22 @@ VALUES
 );
 
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 3), -- Mod estadística
   1,      -- self
   NULL,   -- permanent
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Escut Arcà'),
   'Augmenta la defensa màgica.'
 );
 
 SET @id_efecte_escut := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'Escut Arcà'),
+  @id_efecte_escut
+);
 
 INSERT INTO EFECTE_MOD_ESTADISTICA
 (id_efecte, nom_stat, operacio, valor)
@@ -993,17 +1082,23 @@ SET @id_accio_frenesi := LAST_INSERT_ID();
 
 
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2),
   1,   -- self
   2,   -- 2 torns
-  @id_accio_frenesi,
   'Aplica l estat Frenesí.'
 );
 
 SET @id_efecte_frenesi := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  @id_accio_frenesi,
+  @id_efecte_frenesi
+);
+
 
 INSERT INTO EFECTE_ESTAT
 (id_efecte, id_estat)
@@ -1040,17 +1135,22 @@ VALUES
 -- 	Escala amb crític 
 -- =====================================================
 INSERT INTO EFECTE
-(id_tipus_efecte, rang, duracio, id_obj_arm_hab_actiu, descripcio)
+(id_tipus_efecte, rang, duracio, descripcio)
 VALUES
 (
   (SELECT id_tipus_efecte FROM TIPUS_EFECTE WHERE tipus_efecte = 2),
   1,        -- self
   NULL,     -- permanent mentre estat actiu
-  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
   'Recupera un 25% del dany causat. Si és crític, la curació escala amb el multiplicador crític.'
 );
 
 SET @id_efecte_vampirisme_pro := LAST_INSERT_ID();
+
+INSERT INTO ACCIO_EFECTE (id_accio, id_efecte)
+VALUES (
+  (SELECT id_obj_actiu FROM ACCIO WHERE nom = 'ESTAT_INTERNAL'),
+  @id_efecte_vampirisme_pro
+);
 
 -- Vinculem amb l'estat Vampirisme
 INSERT INTO EFECTE_ESTAT

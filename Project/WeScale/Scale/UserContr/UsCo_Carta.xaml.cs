@@ -187,8 +187,9 @@ namespace WeScale.UserContr
         private void EditarAccio(AppDbContext context, Accio a)
         {
             var original = context.Accios
-        .Include(x => x.Efectes)
-        .First(x => x.IdObjActiu == a.IdObjActiu);
+                .Include(x => x.AccioEfectes)
+                .ThenInclude(x => x.IdEfecteNavigation)
+                .First(x => x.IdObjActiu == a.IdObjActiu);
 
             original.Nom = a.Nom;
             original.Tipus = a.Tipus;
@@ -202,26 +203,27 @@ namespace WeScale.UserContr
             original.NivellMinim = a.NivellMinim;
             original.Tier = a.Tier;
 
-            if (a.Efectes != null)
+            // 🔥 AÑADIR
+            foreach (var e in a.AccioEfectes)
             {
-                foreach (var e in a.Efectes)
+                if (!original.AccioEfectes.Any(x => x.IdEfecte == e.IdEfecte))
                 {
-                    if (!original.Efectes.Any(x => x.IdEfecte == e.IdEfecte))
+                    original.AccioEfectes.Add(new AccioEfecte
                     {
-                        var efecteBD = context.Efectes.Find(e.IdEfecte);
-                        if (efecteBD != null)
-                            original.Efectes.Add(efecteBD);
-                    }
+                        IdAccio = original.IdObjActiu,
+                        IdEfecte = e.IdEfecte
+                    });
                 }
+            }
 
-                var toRemove = original.Efectes
-                    .Where(x => !a.Efectes.Any(e => e.IdEfecte == x.IdEfecte))
-                    .ToList();
+            // 🔥 ELIMINAR
+            var toRemove = original.AccioEfectes
+                .Where(x => !a.AccioEfectes.Any(e => e.IdEfecte == x.IdEfecte))
+                .ToList();
 
-                foreach (var r in toRemove)
-                {
-                    original.Efectes.Remove(r);
-                }
+            foreach (var r in toRemove)
+            {
+                original.AccioEfectes.Remove(r);
             }
         }
 
@@ -248,17 +250,17 @@ namespace WeScale.UserContr
 
                 case "Arma":
                     Atributs.Content = CrearUI_Arma();
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes);
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes,_context,CartaActual);
                     break;
 
                 case "Habilitat":
                     Atributs.Content=CrearUI_Habilitat();
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes);
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes,_context,CartaActual);
                     break;
 
                 case "Item":
                     Atributs.Content=CrearUI_Item();
-                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes);
+                    ContentArea.Content = new SubUsCo_AfegirCarta.AfegirItHabArm(_efectes, _context,CartaActual);
                     break;
 
                 default:
@@ -499,7 +501,7 @@ namespace WeScale.UserContr
 
         private void AfegirAccio(AppDbContext context, Accio a)
         {
-            // 🔥 evitar duplicados silenciosos
+            // 🔥 evitar duplicados
             if (context.Accios.Any(x => x.Nom == a.Nom))
             {
                 MessageBox.Show("Ja existeix una acció amb aquest nom");
@@ -518,21 +520,29 @@ namespace WeScale.UserContr
                 Estadistica = a.Estadistica,
                 NivellMinim = a.NivellMinim,
                 Tier = a.Tier,
-                Efectes = new ObservableCollection<Efecte>()
+                AccioEfectes = new List<AccioEfecte>()
             };
 
-            if (a.Efectes != null)
+            if (a.AccioEfectes != null)
             {
-                foreach (var e in a.Efectes)
+                foreach (var ae in a.AccioEfectes)
                 {
-                    var efecteBD = context.Efectes.Find(e.IdEfecte);
+                    var efecteBD = context.Efectes.Find(ae.IdEfecte);
+
                     if (efecteBD != null)
-                        nova.Efectes.Add(efecteBD);
+                    {
+                        nova.AccioEfectes.Add(new AccioEfecte
+                        {
+                            IdAccio = nova.IdObjActiu,
+                            IdEfecte = ae.IdEfecte
+                        });
+                    }
                 }
             }
 
             context.Accios.Add(nova);
         }
+
         private void AfegirPersonatge(AppDbContext context, Personatge p)
         {
             var nou = new Personatge

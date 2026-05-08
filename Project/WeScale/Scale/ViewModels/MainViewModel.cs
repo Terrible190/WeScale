@@ -42,37 +42,52 @@ namespace WeScale.ViewModels
         public void LoadData()
         {
             Cartes.Clear();
-            // Personatges
+
+            // =========================
+            // PERSONATGES
+            // =========================
             Personatges = new ObservableCollection<Personatge>(
-     _context.Personatges
-         .Include(p => p.PersonatgeAccios)
-             .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
-                 .ThenInclude(a => a.Efectes)
-                     .ThenInclude(e => e.EfecteEstats)
-                         .ThenInclude(ee => ee.IdEstatNavigation)
+                _context.Personatges
+                    .Include(p => p.PersonatgeAccios)
+                        .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
+                            .ThenInclude(a => a.AccioEfectes)
+                                .ThenInclude(ae => ae.IdEfecteNavigation)
+                                    .ThenInclude(e => e.EfecteEstats)
+                                        .ThenInclude(es => es.IdEstatNavigation)
 
-         .Include(p => p.PersonatgeAccios)
-             .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
-                 .ThenInclude(a => a.Efectes)
-                     .ThenInclude(e => e.EfecteModEstadisticas)
+                    .Include(p => p.PersonatgeAccios)
+                        .ThenInclude(pa => pa.IdObjhabarmActiuNavigation)
+                            .ThenInclude(a => a.AccioEfectes)
+                                .ThenInclude(ae => ae.IdEfecteNavigation)
+                                    .ThenInclude(e => e.EfecteModEstadisticas)
 
-         .ToList()
-             );
-
-            Efectes = new ObservableCollection<Efecte>(
-                _context.Efectes
-                    .Include(e => e.EfecteEstats)
-                    .ThenInclude(es => es.IdEstatNavigation)
                     .ToList()
             );
 
-            // Accions
+            // =========================
+            // EFECTES (catálogo global)
+            // =========================
+            Efectes = new ObservableCollection<Efecte>(
+                _context.Efectes
+                    .Include(e => e.EfecteEstats)
+                        .ThenInclude(es => es.IdEstatNavigation)
+                    .Include(e => e.EfecteModEstadisticas)
+                    .ToList()
+            );
+
+            // =========================
+            // ACCIONS (ARMA / HABILITAT / OBJECTE)
+            // =========================
             var accions = _context.Accios
-                .Include(a => a.Efectes)
-                    .ThenInclude(e => e.EfecteEstats)
-                    .ThenInclude(ee => ee.IdEstatNavigation)
-                .Include(a => a.Efectes)
-                    .ThenInclude(e => e.EfecteModEstadisticas)
+                .Include(a => a.AccioEfectes)
+                    .ThenInclude(ae => ae.IdEfecteNavigation)
+                        .ThenInclude(e => e.EfecteEstats)
+                            .ThenInclude(es => es.IdEstatNavigation)
+
+                .Include(a => a.AccioEfectes)
+                    .ThenInclude(ae => ae.IdEfecteNavigation)
+                        .ThenInclude(e => e.EfecteModEstadisticas)
+
                 .ToList();
 
             Armes = new ObservableCollection<Accio>(
@@ -87,6 +102,9 @@ namespace WeScale.ViewModels
                 accions.Where(a => a.Tipus == 3)
             );
 
+            // =========================
+            // CARDS UI
+            // =========================
             foreach (var personatge in Personatges)
                 Cartes.Add(personatge);
 

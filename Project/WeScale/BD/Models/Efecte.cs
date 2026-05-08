@@ -15,17 +15,15 @@ public partial class Efecte
 
     public int? Duracio { get; set; }
 
-    public int IdObjArmHabActiu { get; set; }
-
     public string? Descripcio { get; set; }
+
+    public virtual ICollection<AccioEfecte> AccioEfectes { get; set; } = new List<AccioEfecte>();
 
     public virtual ICollection<EfecteEstat> EfecteEstats { get; set; } = new List<EfecteEstat>();
 
     public virtual ICollection<EfecteInvocacio> EfecteInvocacios { get; set; } = new List<EfecteInvocacio>();
 
     public virtual ICollection<EfecteModEstadistica> EfecteModEstadisticas { get; set; } = new List<EfecteModEstadistica>();
-
-    public virtual Accio IdObjArmHabActiuNavigation { get; set; } = null!;
 
     public virtual TipusEfecte IdTipusEfecteNavigation { get; set; } = null!;
 }
