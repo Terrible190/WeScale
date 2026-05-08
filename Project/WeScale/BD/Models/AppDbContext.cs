@@ -18,6 +18,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Accio> Accios { get; set; }
 
+    public virtual DbSet<AccioEfecte> AccioEfectes { get; set; }
+
     public virtual DbSet<Efecte> Efectes { get; set; }
 
     public virtual DbSet<EfecteEstat> EfecteEstats { get; set; }
@@ -37,6 +39,7 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<TipusEfecte> TipusEfectes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql("server=localhost;database=wescale;uid=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.32-mariadb"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -89,13 +92,42 @@ public partial class AppDbContext : DbContext
                 .HasColumnName("usos");
         });
 
+        modelBuilder.Entity<AccioEfecte>(entity =>
+        {
+            entity.HasKey(e => e.IdAccioEfecte).HasName("PRIMARY");
+
+            entity.ToTable("accio_efecte");
+
+            entity.HasIndex(e => e.IdAccio, "id_accio");
+
+            entity.HasIndex(e => e.IdEfecte, "id_efecte");
+
+            entity.Property(e => e.IdAccioEfecte)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_accio_efecte");
+            entity.Property(e => e.IdAccio)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_accio");
+            entity.Property(e => e.IdEfecte)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_efecte");
+
+            entity.HasOne(d => d.IdAccioNavigation).WithMany(p => p.AccioEfectes)
+                .HasForeignKey(d => d.IdAccio)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("accio_efecte_ibfk_1");
+
+            entity.HasOne(d => d.IdEfecteNavigation).WithMany(p => p.AccioEfectes)
+                .HasForeignKey(d => d.IdEfecte)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("accio_efecte_ibfk_2");
+        });
+
         modelBuilder.Entity<Efecte>(entity =>
         {
             entity.HasKey(e => e.IdEfecte).HasName("PRIMARY");
 
             entity.ToTable("efecte");
-
-            entity.HasIndex(e => e.IdObjArmHabActiu, "id_obj_arm_hab_actiu");
 
             entity.HasIndex(e => e.IdTipusEfecte, "id_tipus_efecte");
 
@@ -108,9 +140,6 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Duracio)
                 .HasColumnType("int(11)")
                 .HasColumnName("duracio");
-            entity.Property(e => e.IdObjArmHabActiu)
-                .HasColumnType("int(11)")
-                .HasColumnName("id_obj_arm_hab_actiu");
             entity.Property(e => e.IdTipusEfecte)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_tipus_efecte");
@@ -120,11 +149,6 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.TipusDany)
                 .HasColumnType("int(11)")
                 .HasColumnName("tipus_dany");
-
-            entity.HasOne(d => d.IdObjArmHabActiuNavigation).WithMany(p => p.Efectes)
-                .HasForeignKey(d => d.IdObjArmHabActiu)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("efecte_ibfk_2");
 
             entity.HasOne(d => d.IdTipusEfecteNavigation).WithMany(p => p.Efectes)
                 .HasForeignKey(d => d.IdTipusEfecte)

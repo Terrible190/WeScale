@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace BD.Models;
 
@@ -14,7 +13,7 @@ public partial class Accio
 
     public int? Cooldown { get; set; }
 
-    public string? Descripcio { get; set; } = string.Empty;
+    public string? Descripcio { get; set; }
 
     public string? Imatge { get; set; }
 
@@ -28,7 +27,7 @@ public partial class Accio
 
     public int? Tier { get; set; }
 
-    public virtual ObservableCollection<Efecte> Efectes { get; set; } = new ObservableCollection<Efecte>();
+    public virtual ICollection<AccioEfecte> AccioEfectes { get; set; } = new List<AccioEfecte>();
 
     public virtual ICollection<PersonatgeAccio> PersonatgeAccios { get; set; } = new List<PersonatgeAccio>();
 }

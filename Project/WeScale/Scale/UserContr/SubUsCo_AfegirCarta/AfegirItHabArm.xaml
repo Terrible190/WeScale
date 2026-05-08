@@ -81,21 +81,20 @@
                 Style="{StaticResource RPGButtonStyle}"/>
             </DockPanel>
 
-            <!-- 🔹 LLISTA -->
             <ListView Grid.Row="1"
-              ItemsSource="{Binding Carta.Efectes}"
-              Margin="10"
-              Background="Transparent"
-              BorderThickness="0">
+          ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=AccioEfectes}"
+          Margin="10"
+          Background="Transparent"
+          BorderThickness="0">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="8"
-                        Margin="5"
-                        Background="#2E2E2E"
-                        CornerRadius="8"
-                        BorderBrush="#555"
-                        BorderThickness="1">
+                    Margin="5"
+                    Background="#2E2E2E"
+                    CornerRadius="8"
+                    BorderBrush="#555"
+                    BorderThickness="1">
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -106,23 +105,24 @@
                                 <!-- INFO -->
                                 <StackPanel>
 
-                                    <!-- Nom efecte -->
-                                    <TextBlock Text="{Binding Nom}"
-                                       FontWeight="Bold"
-                                       FontSize="14"
-                                       Foreground="White"
-                                       Margin="0,0,0,5"/>
+                                    <!-- 🔥 AQUÍ EL CAMBIO CLAVE -->
+                                    <TextBlock Text="{Binding IdEfecteNavigation.Nom}"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   Foreground="White"
+                                   Margin="0,0,0,5"/>
 
-                                    <!-- Estats -->
-                                    <ItemsControl ItemsSource="{Binding EfecteEstats}">
+                                    <!-- ESTATS -->
+                                    <ItemsControl ItemsSource="{Binding IdEfecteNavigation.EfecteEstats}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border Background="#444"
-                                                CornerRadius="4"
-                                                Margin="0,2"
-                                                Padding="4">
+                                            CornerRadius="4"
+                                            Margin="0,2"
+                                            Padding="4">
+
                                                     <TextBlock Text="{Binding IdEstatNavigation.Nom}"
-                                                       Foreground="#DDD"/>
+                                                   Foreground="#DDD"/>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -132,13 +132,13 @@
 
                                 <!-- ❌ ELIMINAR -->
                                 <Button Grid.Column="1"
-                                Content="✖"
-                                Width="25"
-                                Height="25"
-                                Margin="5"
-                                VerticalAlignment="Top"
-                                Click="BtnEliminarEfecte_Click"
-                                Style="{StaticResource RPGButtonStyle}"/>
+                            Content="✖"
+                            Width="25"
+                            Height="25"
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Click="BtnEliminarEfecte_Click"
+                            Style="{StaticResource RPGButtonStyle}"/>
 
                             </Grid>
                         </Border>
