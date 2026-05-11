@@ -1,42 +1,42 @@
 package com.example.demo.api.model.states;
 
-import com.example.demo.api.model.Personaje;
-import com.example.demo.api.model.Player;
-import java.util.concurrent.TimeUnit;
-
+import com.example.demo.api.model.*;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.UseActionMessage_IN;
+import com.example.demo.api.model.messages.out.Enemy_OUT;
 import com.example.demo.api.model.messages.out.GameStarted_OUT;
-
 import com.example.demo.components.GameInstance;
 import com.example.demo.components.GameMessage;
-
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import tools.jackson.databind.JsonNode;
 
 public class StateInGame extends State {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    // =========================
+    // TURNOS
+    // =========================
     private int currentTurnIndex = 0;
 
-    private Personaje enemy;
+    // =========================
+    // MAPA
+    // =========================
+    private int currentFloor = 0;
+    private MapNode currentNode;
 
+    // =========================
+    // INIT
+    // =========================
     public StateInGame(GameInstance game) {
         super(game);
 
-        // 🔥 enemigo temporal de prueba
-        this.enemy = new Personaje(
-                999,
-                "Enemigo de prueba",
-                200f,
-                15f,
-                5f,
-                10f,
-                8f,
-                10f,
-                1.5f,
-                false
-        );
+        this.currentFloor = 1;
+        this.currentNode = loadFirstFloor();
 
         game.broadcast(new JSONMessage(
                 game.getId(),
@@ -44,13 +44,18 @@ public class StateInGame extends State {
         ));
 
         System.out.println("===== PARTIDA INICIADA =====");
+        System.out.println("Piso: " + currentNode.pis);
+        System.out.println("Tipo: " + currentNode.tipus);
+        System.out.println("Enemigos: " + currentNode.enemics.size());
 
         System.out.println(
-                "Empieza el jugador: "
-                + getCurrentPlayer().getName()
+                "Empieza el jugador: " + getCurrentPlayer().getName()
         );
     }
 
+    // =====================================================
+    // LOOP
+    // =====================================================
     @Override
     public void tick() {
 
@@ -68,14 +73,9 @@ public class StateInGame extends State {
 
                 Player currentPlayer = getCurrentPlayer();
 
-                // 🔥 comprobar turno
+                // 🔥 check turno
                 if (msg.player().getId() != currentPlayer.getId()) {
-
-                    System.out.println(
-                            "[TURNO] No es el turno de "
-                            + msg.player().getId()
-                    );
-
+                    System.out.println("[TURNO] No es turno de " + msg.player().getName());
                     break;
                 }
 
@@ -84,49 +84,51 @@ public class StateInGame extends State {
 
                 Player player = msg.player();
 
-                Personaje personajeJugador
-                        = game.getSeleccionados().get(player.getId());
+                Personaje pj = game.getSeleccionados().get(player.getId());
 
-                // seguridad
-                if (personajeJugador == null) {
-
-                    System.out.println(
-                            "[ERROR] "
-                            + player.getName()
-                            + " no tiene personaje seleccionado"
-                    );
-
+                if (pj == null) {
+                    System.out.println("[ERROR] Sin personaje");
                     break;
                 }
 
-                float damage = personajeJugador.getDanyoFisico();
+                float damage = pj.getDanyoFisico();
+
+                EnemyInstance target = currentNode.enemics.stream()
+                        .filter(e -> e.getInstanceId() == data.getTargetId())
+                        .findFirst()
+                        .orElse(null);
+
+                if (target == null) {
+                    System.out.println("[ERROR] enemigo no encontrado");
+                    break;
+                }
+
+                if (!target.isAlive()) {
+                    System.out.println("[INFO] enemigo ya muerto");
+                    break;
+                }
 
                 System.out.println(
-                        "\n[ACTION DEBUG] Player: "
-                        + player.getName()
-                        + " (ID: " + player.getId() + ") "
-                        + " ha usado acción: "
-                        + data.getActionId()
-                        + " contra "
-                        + data.getTargetId()
-                        + " haciendo "
-                        + damage
-                        + " daño"
+                        "\n[ACTION] " + player.getName()
+                        + " hace " + damage
+                        + " daño a enemigo " + target.getInstanceId()
                 );
 
-                addDaño(damage, data.getTargetId());
+                target.setHp(target.getHp() - damage);
 
                 System.out.println(
-                        "[ENEMY] "
-                        + enemy.getNombre()
-                        + " | HP: "
-                        + enemy.getHp()
-                        + " | vivo? "
-                        + enemy.isIsAlive()
+                        "[ENEMY] HP restante: " + target.getHp()
                 );
 
-                // 🔥 pasar turno
+                if (!target.isAlive()) {
+                    System.out.println("💀 enemigo eliminado");
+                }
+
                 nextTurn();
+
+                System.out.println(
+                        "Turno actual: " + getCurrentPlayer().getName()
+                );
 
                 break;
         }
@@ -135,59 +137,102 @@ public class StateInGame extends State {
     // =====================================================
     // TURNOS
     // =====================================================
-
     private Player getCurrentPlayer() {
         return game.getPlayers().get(currentTurnIndex);
     }
 
     private void nextTurn() {
-
         currentTurnIndex++;
 
         if (currentTurnIndex >= game.getPlayers().size()) {
             currentTurnIndex = 0;
         }
-
-        Player current = getCurrentPlayer();
-
-        System.out.println(
-                "\n===== TURNO DE "
-                + current.getId()
-                + " ====="
-        );
     }
 
     // =====================================================
-    // DAÑO
+    // MAPA (solo primer piso)
     // =====================================================
+    private MapNode loadFirstFloor() {
 
-    private void addDaño(float daño, long target) {
+        try (java.io.InputStream is
+                = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
 
-        if (!enemy.isIsAlive()) {
-
-            System.out.println("[ENEMY] Está muerto");
-
-            return;
-        }
-
-        if (enemy.getId() == target) {
-
-            float newHp = enemy.getHp() - daño;
-
-            if (newHp <= 0) {
-
-                enemy.setHp(0);
-
-                enemy.setIsAlive(false);
-
-                System.out.println(
-                        "\n===== ENEMIGO ELIMINADO ====="
-                );
-
-            } else {
-
-                enemy.setHp(newHp);
+            if (is == null) {
+                throw new RuntimeException("map_fixed.json no encontrado");
             }
+
+            JsonNode root = mapper.readTree(is);
+
+            // =========================
+            // 1. ENTRAR EN DATA
+            // =========================
+            JsonNode data = root.get("data");
+            if (data == null) {
+                throw new RuntimeException("JSON inválido: falta 'data'");
+            }
+
+            // =========================
+            // 2. MAPAS
+            // =========================
+            JsonNode mapas = data.get("mapas");
+            if (mapas == null || !mapas.isArray() || mapas.isEmpty()) {
+                throw new RuntimeException("JSON inválido: no hay mapas");
+            }
+
+            JsonNode map = mapas.get(0);
+
+            int idMapa = map.get("id_mapa").asInt();
+            int pisos = map.get("pisos").asInt();
+            int nivelBase = map.get("nivell_base").asInt();
+
+            // =========================
+            // 3. NODES
+            // =========================
+            JsonNode nodes = map.get("nodes");
+            if (nodes == null || !nodes.isArray() || nodes.isEmpty()) {
+                throw new RuntimeException("JSON inválido: no hay nodes");
+            }
+
+            // SOLO PRIMER PISO
+            JsonNode node = nodes.get(0);
+
+            int pis = node.get("pis").asInt();
+            String tipo = node.get("tipus").asText();
+
+            List<EnemyInstance> enemies = new ArrayList<>();
+
+            JsonNode enemics = node.get("enemics");
+
+            if (enemics != null && enemics.isArray()) {
+
+                for (JsonNode e : enemics) {
+
+                    long idPersonaje = e.get("id_personatge").asLong();
+
+                    JsonNode escala = e.get("escala");
+
+                    // 🔥 Opción A: scale único (simple)
+                    float scale = (float) escala.get("hp").asDouble();
+
+                    Personaje base = game.getEnemyById(idPersonaje);
+
+                    if (base == null) {
+                        System.out.println("[WARN] Personaje no encontrado: " + idPersonaje);
+                        continue;
+                    }
+
+                    EnemyInstance enemy = new EnemyInstance(base, scale);
+
+                    enemies.add(enemy);
+                }
+            }
+
+            System.out.println("Mapa cargado -> Piso " + pis + " | Tipo " + tipo);
+            game.broadcast(new JSONMessage(game.getId(), new Enemy_OUT(enemies)));
+            return new MapNode(pis, tipo, enemies);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error cargando mapa: " + e.getMessage(), e);
         }
     }
 }

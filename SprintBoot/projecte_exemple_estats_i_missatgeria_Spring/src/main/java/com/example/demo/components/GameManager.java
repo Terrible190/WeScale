@@ -136,8 +136,8 @@ public class GameManager {
         players.add(sessionToPlayer.get(session));
 
         List<Personaje> personajes = repo.findBySeleccionableTrue();
-
-        GameInstance game = new GameInstance(players, executor, personajes);
+        List<Personaje> enemigos = repo.findBySeleccionableTrue();
+        GameInstance game = new GameInstance(players, executor, personajes, enemigos);
 
         sessionToGame.put(session, game);
         games.put(game.getId(), game);

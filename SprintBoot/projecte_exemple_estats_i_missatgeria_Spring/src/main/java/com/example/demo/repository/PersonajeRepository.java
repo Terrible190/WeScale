@@ -16,4 +16,6 @@ import java.util.List;
 public interface PersonajeRepository extends JpaRepository<Personaje, Integer> {
 
     List<Personaje> findBySeleccionableTrue();
+    
+    List<Personaje> findBySeleccionableFalse();
 }

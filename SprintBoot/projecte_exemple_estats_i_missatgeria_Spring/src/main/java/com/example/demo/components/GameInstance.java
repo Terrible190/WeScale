@@ -31,11 +31,13 @@ public class GameInstance {
     // 🔥 LÓGICA NUEVA
     private List<Personaje> personajesDisponibles = new ArrayList<>();
     private Map<Long, Personaje> seleccionados = new HashMap<>();
+    private List<Personaje> enemigosBase;
 
-    public GameInstance(List<Player> players, ExecutorService executor, List<Personaje> personajes) {
+    public GameInstance(List<Player> players, ExecutorService executor, List<Personaje> personajes, List<Personaje> enemigos) {
         this.players = players;
         this.executor = executor;
         this.id = String.valueOf(idCounter++);
+        this.enemigosBase = enemigos;
         this.personajesDisponibles = personajes;
 
         currentState = new StateLobby(this);
@@ -176,6 +178,14 @@ public class GameInstance {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Personaje getEnemyById(long id) {
+
+        return enemigosBase.stream()
+                .filter(x -> x.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     public Personaje getPersonajeById(long id) {

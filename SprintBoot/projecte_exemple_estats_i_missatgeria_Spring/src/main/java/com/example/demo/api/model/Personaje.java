@@ -123,4 +123,16 @@ public class Personaje {
     public List<Accio> getAcciones() {
         return acciones;
     }
+
+    float getDefensaFisica() {
+        return defensaFisica;
+    }
+
+    float getDefensaMagica() {
+        return defensaMagica;
+    }
+
+    float getCritico() {
+        return critico;
+    }
 }
