@@ -154,3 +154,8 @@
     "targetId": 2
   }
 }
+
+{
+  "messageType": "GameInfo",
+  "data": {}
+}

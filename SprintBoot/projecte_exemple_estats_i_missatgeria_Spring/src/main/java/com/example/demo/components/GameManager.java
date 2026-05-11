@@ -75,7 +75,7 @@ public class GameManager {
                                     game.getPlayers().size()
                             )
                     ));
-                    
+
                     if (game.getPlayers().isEmpty()) {
                         games.remove(game.getId());
                     }
@@ -234,5 +234,50 @@ public class GameManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void onDisconnect(WebSocketSession session) {
+
+        Player player = sessionToPlayer.get(session);
+
+        if (player == null) {
+            return;
+        }
+
+        GameInstance game = sessionToGame.get(session);
+
+        // 🔥 si estaba en partida
+        if (game != null) {
+
+            game.removePlayer(player);
+
+            sessionToGame.remove(session);
+
+            System.out.println(
+                    "[DISCONNECT] "
+                    + player.getName()
+                    + " salió de la partida "
+                    + game.getId()
+            );
+
+            // 🔥 eliminar partida vacía
+            if (game.getPlayers().isEmpty()) {
+
+                games.remove(game.getId());
+
+                System.out.println(
+                        "[GAME REMOVED] "
+                        + game.getId()
+                );
+            }
+        }
+
+        // 🔥 eliminar player globalmente
+        sessionToPlayer.remove(session);
+
+        System.out.println(
+                "[PLAYER REMOVED] "
+                + player.getName()
+        );
     }
 }

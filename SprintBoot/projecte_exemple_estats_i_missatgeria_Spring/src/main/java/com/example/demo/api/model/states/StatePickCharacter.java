@@ -9,6 +9,7 @@ import com.example.demo.api.model.Personaje;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.UnselectCharacterMessage_IN;
 import com.example.demo.api.model.messages.in.pick_characters.PickCharacterMessage_IN;
+import com.example.demo.api.model.messages.out.PlayerInfo_OUT;
 import com.example.demo.api.model.messages.out.characters_to_pick.CharacterInfo;
 import com.example.demo.api.model.messages.out.characters_to_pick.PlayerInfo;
 import com.example.demo.api.model.messages.out.characters_to_pick.Players2SelectMessage_OUT;
@@ -45,6 +46,14 @@ public class StatePickCharacter extends State {
                         = mapper.treeToValue(gm.data, PickCharacterMessage_IN.class);
 
                 boolean ok = game.pickCharacter(message.player(), data.characterId);
+                PlayerInfo pf = new PlayerInfo(message.player().getId(), message.player().getName(), null);
+                game.send(
+                        message.player().getSession(),
+                        new JSONMessage(
+                                game.getId(),
+                                new PlayerInfo_OUT(pf)
+                        )
+                );
 
                 if (ok) {
                     broadcastState();
