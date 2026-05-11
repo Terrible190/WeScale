@@ -30,15 +30,24 @@ public class GameInstance {
 
     // 🔥 LÓGICA NUEVA
     private List<Personaje> personajesDisponibles = new ArrayList<>();
+    private List<Personaje> todosLosPersonajes = new ArrayList<>();
     private Map<Long, Personaje> seleccionados = new HashMap<>();
-    private List<Personaje> enemigosBase;
 
-    public GameInstance(List<Player> players, ExecutorService executor, List<Personaje> personajes, List<Personaje> enemigos) {
+    public GameInstance(List<Player> players,
+            ExecutorService executor,
+            List<Personaje> personajes) {
+
         this.players = players;
         this.executor = executor;
         this.id = String.valueOf(idCounter++);
-        this.enemigosBase = enemigos;
-        this.personajesDisponibles = personajes;
+
+        // 🔥 COPIAS DISTINTAS
+        this.personajesDisponibles = new ArrayList<>(personajes);
+        this.todosLosPersonajes = new ArrayList<>(personajes);
+
+        for (Personaje p : todosLosPersonajes) {
+            System.out.println(p.getNombre() + " - " + p.getId());
+        }
 
         currentState = new StateLobby(this);
     }
@@ -180,17 +189,9 @@ public class GameInstance {
         }
     }
 
-    public Personaje getEnemyById(long id) {
-
-        return enemigosBase.stream()
-                .filter(x -> x.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
-
     public Personaje getPersonajeById(long id) {
-        return personajesDisponibles.stream()
-                .filter(p -> p.getId() == id)
+        return todosLosPersonajes.stream()
+                .filter(x -> x.getId() == id)
                 .findFirst()
                 .orElse(null);
     }

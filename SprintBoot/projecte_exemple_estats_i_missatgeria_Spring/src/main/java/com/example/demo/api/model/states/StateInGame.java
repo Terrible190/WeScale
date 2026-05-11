@@ -214,7 +214,7 @@ public class StateInGame extends State {
                     // 🔥 Opción A: scale único (simple)
                     float scale = (float) escala.get("hp").asDouble();
 
-                    Personaje base = game.getEnemyById(idPersonaje);
+                    Personaje base = game.getPersonajeById(idPersonaje);
 
                     if (base == null) {
                         System.out.println("[WARN] Personaje no encontrado: " + idPersonaje);
@@ -228,7 +228,7 @@ public class StateInGame extends State {
             }
 
             System.out.println("Mapa cargado -> Piso " + pis + " | Tipo " + tipo);
-            game.broadcast(new JSONMessage(game.getId(), new Enemy_OUT(enemies)));
+            game.broadcast(new JSONMessage(game.getId(), new Enemy_OUT(enemies, pis)));
             return new MapNode(pis, tipo, enemies);
 
         } catch (Exception e) {
