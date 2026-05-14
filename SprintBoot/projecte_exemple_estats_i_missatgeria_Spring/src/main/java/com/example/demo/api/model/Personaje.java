@@ -2,6 +2,8 @@ package com.example.demo.api.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "danyoFisico",
     "danyoMagico",
     "seleccionable",
-    "acciones"
+    "acciones",
+    "armes",
+    "items"
 })
 @Entity
 @Table(name = "PERSONATGE")
@@ -47,8 +51,8 @@ public class Personaje {
 
     @Column(name = "seleccionable")
     private boolean seleccionable;
-    
-    private boolean isAlive = true; 
+
+    private boolean isAlive = true;
 
     public Personaje(int id,
             String nombre,
@@ -75,13 +79,14 @@ public class Personaje {
     public Personaje() {
         //
     }
+
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "PERSONATGE_ACCIO",
             joinColumns = @JoinColumn(name = "id_personatge"),
             inverseJoinColumns = @JoinColumn(name = "id_objhabarm_actiu")
     )
-
     private List<Accio> acciones;
 
     public int getId() {
@@ -120,8 +125,28 @@ public class Personaje {
         return seleccionable;
     }
 
+    @JsonProperty("acciones")
     public List<Accio> getAcciones() {
-        return acciones;
+
+        return acciones.stream()
+                .filter(a -> a.getTipo() == 2)
+                .toList();
+    }
+
+    @JsonProperty("armes")
+    public List<Accio> getArmes() {
+
+        return acciones.stream()
+                .filter(a -> a.getTipo() == 1)
+                .toList();
+    }
+
+    @JsonProperty("items")
+    public List<Accio> getItems() {
+
+        return acciones.stream()
+                .filter(a -> a.getTipo() == 3)
+                .toList();
     }
 
     float getDefensaFisica() {

@@ -356,7 +356,7 @@ public class StateInGame extends State {
                             = new EnemyInstance(base, scale);
 
                     enemies.add(enemy);
-
+                    
                     System.out.println(
                             "[ENEMY LOADED] "
                             + enemy.getInstanceId()
