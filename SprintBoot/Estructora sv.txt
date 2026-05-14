@@ -42,7 +42,7 @@
 {
   "messageType": "JOIN_GAME",
   "data": {
-    "gameId": "9a64a7ce-7a51-471e-835b-1c92c391044a"
+    "gameId": "1"
   }
 }
 

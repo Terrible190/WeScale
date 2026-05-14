@@ -44,6 +44,10 @@ public class EnemyInstance {
         this.hp = hp;
     }
 
+    public float getDanyoFisico() {
+        return danyoFisico;
+    }
+
     public boolean isAlive() {
         return hp > 0;
     }
