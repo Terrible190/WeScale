@@ -3,6 +3,7 @@ package com.example.demo.api.model.states;
 import com.example.demo.api.model.*;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.UseActionMessage_IN;
+import com.example.demo.api.model.messages.out.CharactersList_OUT;
 import com.example.demo.api.model.messages.out.Enemy_OUT;
 import com.example.demo.api.model.messages.out.GameStarted_OUT;
 import com.example.demo.components.GameInstance;
@@ -269,6 +270,27 @@ public class StateInGame extends State {
                     + " HP"
             );
         }
+        game.broadcast(
+                new JSONMessage(
+                        game.getId(),
+                        new Enemy_OUT(currentNode.enemics)
+                )
+        );
+
+        List<Personaje> jugadors = new ArrayList<>();
+
+        for (Player a : game.getPlayers()) {
+            Personaje p = game.getSeleccionados().get(a.getId());
+            jugadors.add(p);
+        }
+
+        game.broadcast(
+                new JSONMessage(
+                        game.getId(),
+                        new CharactersList_OUT(jugadors)
+                )
+        );
+
     }
 
     // =====================================================
@@ -356,7 +378,7 @@ public class StateInGame extends State {
                             = new EnemyInstance(base, scale);
 
                     enemies.add(enemy);
-                    
+
                     System.out.println(
                             "[ENEMY LOADED] "
                             + enemy.getInstanceId()
@@ -376,10 +398,22 @@ public class StateInGame extends State {
             game.broadcast(
                     new JSONMessage(
                             game.getId(),
-                            new Enemy_OUT(enemies, pis)
+                            new Enemy_OUT(enemies)
                     )
             );
+            List<Personaje> jugadors = new ArrayList<>();
 
+            for (Player a : game.getPlayers()) {
+                Personaje p = game.getSeleccionados().get(a.getId());
+                jugadors.add(p);
+            }
+
+            game.broadcast(
+                    new JSONMessage(
+                            game.getId(),
+                            new CharactersList_OUT(jugadors)
+                    )
+            );
             return new MapNode(pis, tipo, enemies);
 
         } catch (Exception e) {

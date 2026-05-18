@@ -15,12 +15,10 @@ import java.util.List;
 public class Enemy_OUT extends MessageBody {
 
     public static final String TYPE = "Enemies";
-    public int piso;
     public List<EnemyInstance> enemies;
 
-    public Enemy_OUT(List<EnemyInstance> enemies, int piso) {
+    public Enemy_OUT(List<EnemyInstance> enemies) {
         this.enemies = enemies;
-        this.piso = piso;
     }
 
     @Override
