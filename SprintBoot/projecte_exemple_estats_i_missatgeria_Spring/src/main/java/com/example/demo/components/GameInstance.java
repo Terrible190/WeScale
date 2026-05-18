@@ -165,9 +165,9 @@ public class GameInstance {
     }
 
     public boolean allPlayersHaveCharacter() {
-        if (players.size() < 2) {
-            return false;
-        }
+//        if (players.size() < 2) {
+//            return false;
+//        }
 
         return players.stream()
                 .allMatch(p -> seleccionados.containsKey(p.getId()));
