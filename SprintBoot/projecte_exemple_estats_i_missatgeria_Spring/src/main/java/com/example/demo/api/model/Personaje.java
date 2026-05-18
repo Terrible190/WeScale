@@ -2,6 +2,7 @@ package com.example.demo.api.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -15,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "seleccionable",
     "acciones",
     "armes",
-    "items"
+    "items",
+    "isAlive"
 })
 @Entity
 @Table(name = "PERSONATGE")
@@ -52,9 +54,12 @@ public class Personaje {
     @Column(name = "seleccionable")
     private boolean seleccionable;
 
+    // NO persistente combate runtime
+    @Transient
     private boolean isAlive = true;
 
-    public Personaje(int id,
+    public Personaje(
+            int id,
             String nombre,
             float hp,
             float danyoFisico,
@@ -63,21 +68,28 @@ public class Personaje {
             float defensaMagica,
             float critico,
             float multiplicadorCritico,
-            boolean seleccionable) {
+            boolean seleccionable
+    ) {
+
         this.id = id;
         this.nombre = nombre;
+
         this.hp = hp;
+
         this.danyoFisico = danyoFisico;
         this.danyoMagico = danyoMagico;
+
         this.defensaFisica = defensaFisica;
         this.defensaMagica = defensaMagica;
+
         this.critico = critico;
+
         this.multiplicadorCritico = multiplicadorCritico;
+
         this.seleccionable = seleccionable;
     }
 
     public Personaje() {
-        //
     }
 
     @JsonIgnore
@@ -89,6 +101,9 @@ public class Personaje {
     )
     private List<Accio> acciones;
 
+    // =========================
+    // GETTERS
+    // =========================
     public int getId() {
         return id;
     }
@@ -97,20 +112,8 @@ public class Personaje {
         return nombre;
     }
 
-    public boolean isIsAlive() {
-        return isAlive;
-    }
-
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-
     public float getHp() {
         return hp;
-    }
-
-    public void setHp(float hp) {
-        this.hp = hp;
     }
 
     public float getDanyoFisico() {
@@ -121,10 +124,79 @@ public class Personaje {
         return danyoMagico;
     }
 
+    public float getDefensaFisica() {
+        return defensaFisica;
+    }
+
+    public float getDefensaMagica() {
+        return defensaMagica;
+    }
+
+    public float getCritico() {
+        return critico;
+    }
+
+    public float getMultiplicadorCritico() {
+        return multiplicadorCritico;
+    }
+
     public boolean isSeleccionable() {
         return seleccionable;
     }
 
+    public boolean isIsAlive() {
+        return isAlive;
+    }
+
+    // =========================
+    // SETTERS
+    // =========================
+    public void setHp(float hp) {
+
+        this.hp = hp;
+
+        if (this.hp <= 0) {
+
+            this.hp = 0;
+            this.isAlive = false;
+        }
+    }
+
+    public void setDanyoFisico(float danyoFisico) {
+        this.danyoFisico = danyoFisico;
+    }
+
+    public void setDanyoMagico(float danyoMagico) {
+        this.danyoMagico = danyoMagico;
+    }
+
+    public void setDefensaFisica(float defensaFisica) {
+        this.defensaFisica = defensaFisica;
+    }
+
+    public void setDefensaMagica(float defensaMagica) {
+        this.defensaMagica = defensaMagica;
+    }
+
+    public void setCritico(float critico) {
+        this.critico = critico;
+    }
+
+    public void setMultiplicadorCritico(float multiplicadorCritico) {
+        this.multiplicadorCritico = multiplicadorCritico;
+    }
+
+    public void setSeleccionable(boolean seleccionable) {
+        this.seleccionable = seleccionable;
+    }
+
+    public void setIsAlive(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
+
+    // =========================
+    // JSON HELPERS
+    // =========================
     @JsonProperty("acciones")
     public List<Accio> getAcciones() {
 
@@ -149,15 +221,32 @@ public class Personaje {
                 .toList();
     }
 
-    float getDefensaFisica() {
-        return defensaFisica;
-    }
+    public Personaje copy() {
 
-    float getDefensaMagica() {
-        return defensaMagica;
-    }
+        Personaje p = new Personaje();
 
-    float getCritico() {
-        return critico;
+        p.id = this.id;
+        p.nombre = this.nombre;
+
+        p.hp = this.hp;
+        p.danyoFisico = this.danyoFisico;
+        p.danyoMagico = this.danyoMagico;
+
+        p.defensaFisica = this.defensaFisica;
+        p.defensaMagica = this.defensaMagica;
+
+        p.critico = this.critico;
+        p.multiplicadorCritico = this.multiplicadorCritico;
+
+        p.seleccionable = this.seleccionable;
+
+        p.isAlive = true;
+
+        // 🔥 IMPORTANTE: copiar lista (shallow copy)
+        if (this.acciones != null) {
+            p.acciones = new java.util.ArrayList<>(this.acciones);
+        }
+
+        return p;
     }
 }

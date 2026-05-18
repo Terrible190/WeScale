@@ -127,7 +127,7 @@ public class StateInGame extends State {
                     break;
                 }
 
-                if (!target.isAlive()) {
+                if (!target.getBase().isIsAlive()){
 
                     System.out.println("[INFO] enemigo ya muerto");
 
@@ -152,16 +152,16 @@ public class StateInGame extends State {
                         + " daño"
                 );
 
-                target.setHp(target.getHp() - damage);
+                target.getBase().setHp(target.getBase().getHp() - damage);
 
                 System.out.println(
                         "[ENEMY] "
                         + target.getBase().getNombre()
                         + " | HP restante: "
-                        + target.getHp()
+                        + target.getBase().getHp()
                 );
 
-                if (!target.isAlive()) {
+                if (!target.getBase().isIsAlive()) {
 
                     System.out.println(
                             "💀 Enemigo eliminado -> "
@@ -184,7 +184,25 @@ public class StateInGame extends State {
                         + getCurrentPlayer().getName()
                         + " ====="
                 );
+                game.broadcast(
+                        new JSONMessage(
+                                game.getId(),
+                                new Enemy_OUT(currentNode.enemics)
+                        )
+                );
+                List<Personaje> jugadors = new ArrayList<>();
 
+                for (Player a : game.getPlayers()) {
+                    Personaje p = game.getSeleccionados().get(a.getId());
+                    jugadors.add(p);
+                }
+
+                game.broadcast(
+                        new JSONMessage(
+                                game.getId(),
+                                new CharactersList_OUT(jugadors)
+                        )
+                );
                 break;
         }
     }
@@ -196,8 +214,8 @@ public class StateInGame extends State {
 
         // enemigos vivos
         List<EnemyInstance> aliveEnemies = currentNode.enemics.stream()
-                .filter(EnemyInstance::isAlive)
-                .toList();
+        .filter(e -> e.getBase().isIsAlive())
+        .toList();
 
         if (aliveEnemies.isEmpty()) {
 
@@ -229,7 +247,7 @@ public class StateInGame extends State {
             return;
         }
 
-        float damage = attacker.getDanyoFisico();
+        float damage = attacker.getBase().getDanyoFisico();
 
         System.out.println(
                 "\n[ENEMY TURN] "
@@ -375,7 +393,7 @@ public class StateInGame extends State {
                     }
 
                     EnemyInstance enemy
-                            = new EnemyInstance(base, scale);
+                            = new EnemyInstance(base.copy(), scale);
 
                     enemies.add(enemy);
 
@@ -414,6 +432,7 @@ public class StateInGame extends State {
                             new CharactersList_OUT(jugadors)
                     )
             );
+
             return new MapNode(pis, tipo, enemies);
 
         } catch (Exception e) {
