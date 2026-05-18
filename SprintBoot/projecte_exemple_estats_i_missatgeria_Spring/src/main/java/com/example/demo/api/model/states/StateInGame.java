@@ -4,6 +4,7 @@ import com.example.demo.api.model.*;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.UseActionMessage_IN;
 import com.example.demo.api.model.messages.out.CharactersList_OUT;
+import com.example.demo.api.model.messages.out.Dead_OUT;
 import com.example.demo.api.model.messages.out.Enemy_OUT;
 import com.example.demo.api.model.messages.out.GameStarted_OUT;
 import com.example.demo.components.GameInstance;
@@ -95,6 +96,18 @@ public class StateInGame extends State {
 
                     break;
                 }
+                if (game.getSeleccionados().get(msg.player().getId()).isIsAlive() == false) {
+
+                    System.out.println(
+                            "[TURNO] No es turno de "
+                            + msg.player().getName()
+                    );
+                    game.broadcast(new JSONMessage(game.getId(), 
+                    new Dead_OUT(game.getSeleccionados().get(msg.player().getId()).getId(), 
+                            game.getSeleccionados().get(msg.player().getId()).getNombre())));
+                    break;
+                }
+                
 
                 UseActionMessage_IN data
                         = mapper.treeToValue(json.data, UseActionMessage_IN.class);
@@ -167,6 +180,9 @@ public class StateInGame extends State {
                             "💀 Enemigo eliminado -> "
                             + target.getInstanceId()
                     );
+                    
+                    game.broadcast(new JSONMessage(game.getId(), 
+                    new Dead_OUT(target.getInstanceId(), target.getBase().getNombre())));
                 }
 
                 // =========================
@@ -190,19 +206,7 @@ public class StateInGame extends State {
                                 new Enemy_OUT(currentNode.enemics)
                         )
                 );
-                List<Personaje> jugadors = new ArrayList<>();
 
-                for (Player a : game.getPlayers()) {
-                    Personaje p = game.getSeleccionados().get(a.getId());
-                    jugadors.add(p);
-                }
-
-                game.broadcast(
-                        new JSONMessage(
-                                game.getId(),
-                                new CharactersList_OUT(jugadors)
-                        )
-                );
                 break;
         }
     }
@@ -275,6 +279,8 @@ public class StateInGame extends State {
                     + targetPlayer.getName()
                     + " ha muerto"
             );
+            game.broadcast(new JSONMessage(game.getId(), 
+                    new Dead_OUT(targetPlayer.getId(), targetPlayer.getName())));
 
         } else {
 
@@ -288,13 +294,6 @@ public class StateInGame extends State {
                     + " HP"
             );
         }
-        game.broadcast(
-                new JSONMessage(
-                        game.getId(),
-                        new Enemy_OUT(currentNode.enemics)
-                )
-        );
-
         List<Personaje> jugadors = new ArrayList<>();
 
         for (Player a : game.getPlayers()) {
@@ -308,7 +307,6 @@ public class StateInGame extends State {
                         new CharactersList_OUT(jugadors)
                 )
         );
-
     }
 
     // =====================================================
