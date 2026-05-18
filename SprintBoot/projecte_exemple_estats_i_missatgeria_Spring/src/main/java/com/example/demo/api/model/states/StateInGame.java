@@ -84,6 +84,11 @@ public class StateInGame extends State {
 
                 Player currentPlayer = getCurrentPlayer();
 
+                if (currentPlayer == null) {
+                    System.out.println("[GAME] No quedan jugadores vivos");
+                    return;
+                }
+
                 // =========================
                 // CHECK TURNO
                 // =========================
@@ -96,25 +101,32 @@ public class StateInGame extends State {
 
                     break;
                 }
-                if (game.getSeleccionados().get(msg.player().getId()).isIsAlive() == false) {
+
+                Personaje currentCharacter =
+                        game.getSeleccionados().get(msg.player().getId());
+
+                // =========================
+                // JUGADOR MUERTO
+                // =========================
+                if (currentCharacter == null || !currentCharacter.isIsAlive()) {
 
                     System.out.println(
-                            "[TURNO] No es turno de "
+                            "[INFO] jugador muerto: "
                             + msg.player().getName()
                     );
-                    game.broadcast(new JSONMessage(game.getId(), 
-                    new Dead_OUT(game.getSeleccionados().get(msg.player().getId()).getId(), 
-                            game.getSeleccionados().get(msg.player().getId()).getNombre())));
+
+                    nextTurn();
+
                     break;
                 }
-                
 
-                UseActionMessage_IN data
-                        = mapper.treeToValue(json.data, UseActionMessage_IN.class);
+                UseActionMessage_IN data =
+                        mapper.treeToValue(json.data, UseActionMessage_IN.class);
 
                 Player player = msg.player();
 
-                Personaje pj = game.getSeleccionados().get(player.getId());
+                Personaje pj =
+                        game.getSeleccionados().get(player.getId());
 
                 if (pj == null) {
 
@@ -140,9 +152,14 @@ public class StateInGame extends State {
                     break;
                 }
 
-                if (!target.getBase().isIsAlive()){
+                // =========================
+                // ENEMIGO MUERTO
+                // =========================
+                if (!target.getBase().isIsAlive()) {
 
-                    System.out.println("[INFO] enemigo ya muerto");
+                    System.out.println(
+                            "[INFO] enemigo ya muerto"
+                    );
 
                     break;
                 }
@@ -165,7 +182,33 @@ public class StateInGame extends State {
                         + " daño"
                 );
 
-                target.getBase().setHp(target.getBase().getHp() - damage);
+                float enemyHp = target.getBase().getHp() - damage;
+
+                target.getBase().setHp(enemyHp);
+
+                // =========================
+                // MUERTE ENEMIGO
+                // =========================
+                if (enemyHp <= 0) {
+
+                    target.getBase().setHp(0);
+                    target.getBase().setIsAlive(false);
+
+                    System.out.println(
+                            "💀 Enemigo eliminado -> "
+                            + target.getInstanceId()
+                    );
+
+                    game.broadcast(
+                            new JSONMessage(
+                                    game.getId(),
+                                    new Dead_OUT(
+                                            target.getInstanceId(),
+                                            target.getBase().getNombre()
+                                    )
+                            )
+                    );
+                }
 
                 System.out.println(
                         "[ENEMY] "
@@ -174,16 +217,15 @@ public class StateInGame extends State {
                         + target.getBase().getHp()
                 );
 
-                if (!target.getBase().isIsAlive()) {
-
-                    System.out.println(
-                            "💀 Enemigo eliminado -> "
-                            + target.getInstanceId()
-                    );
-                    
-                    game.broadcast(new JSONMessage(game.getId(), 
-                    new Dead_OUT(target.getInstanceId(), target.getBase().getNombre())));
-                }
+                // =========================
+                // UPDATE ENEMIES
+                // =========================
+                game.broadcast(
+                        new JSONMessage(
+                                game.getId(),
+                                new Enemy_OUT(currentNode.enemics)
+                        )
+                );
 
                 // =========================
                 // ATAQUE ENEMIGO
@@ -195,17 +237,16 @@ public class StateInGame extends State {
                 // =========================
                 nextTurn();
 
-                System.out.println(
-                        "\n===== TURNO DE "
-                        + getCurrentPlayer().getName()
-                        + " ====="
-                );
-                game.broadcast(
-                        new JSONMessage(
-                                game.getId(),
-                                new Enemy_OUT(currentNode.enemics)
-                        )
-                );
+                Player nextPlayer = getCurrentPlayer();
+
+                if (nextPlayer != null) {
+
+                    System.out.println(
+                            "\n===== TURNO DE "
+                            + nextPlayer.getName()
+                            + " ====="
+                    );
+                }
 
                 break;
         }
@@ -218,8 +259,8 @@ public class StateInGame extends State {
 
         // enemigos vivos
         List<EnemyInstance> aliveEnemies = currentNode.enemics.stream()
-        .filter(e -> e.getBase().isIsAlive())
-        .toList();
+                .filter(e -> e.getBase().isIsAlive())
+                .toList();
 
         if (aliveEnemies.isEmpty()) {
 
@@ -230,22 +271,35 @@ public class StateInGame extends State {
             return;
         }
 
-        // elegir enemigo aleatorio
-        EnemyInstance attacker
-                = aliveEnemies.get(random.nextInt(aliveEnemies.size()));
+        // jugadores vivos
+        List<Player> alivePlayers = game.getPlayers().stream()
+                .filter(p -> {
+                    Personaje pj =
+                            game.getSeleccionados().get(p.getId());
 
-        // elegir jugador aleatorio
-        List<Player> players = game.getPlayers();
+                    return pj != null && pj.isIsAlive();
+                })
+                .toList();
 
-        if (players.isEmpty()) {
+        if (alivePlayers.isEmpty()) {
+
+            System.out.println(
+                    "\n===== TODOS LOS JUGADORES MUERTOS ====="
+            );
+
             return;
         }
 
-        Player targetPlayer
-                = players.get(random.nextInt(players.size()));
+        // enemigo random
+        EnemyInstance attacker =
+                aliveEnemies.get(random.nextInt(aliveEnemies.size()));
 
-        Personaje playerCharacter
-                = game.getSeleccionados().get(targetPlayer.getId());
+        // jugador random vivo
+        Player targetPlayer =
+                alivePlayers.get(random.nextInt(alivePlayers.size()));
+
+        Personaje playerCharacter =
+                game.getSeleccionados().get(targetPlayer.getId());
 
         if (playerCharacter == null) {
             return;
@@ -270,17 +324,29 @@ public class StateInGame extends State {
 
         float newHp = playerCharacter.getHp() - damage;
 
+        // =========================
+        // MUERTE JUGADOR
+        // =========================
         if (newHp <= 0) {
 
             playerCharacter.setHp(0);
+            playerCharacter.setIsAlive(false);
 
             System.out.println(
                     "☠️ "
                     + targetPlayer.getName()
                     + " ha muerto"
             );
-            game.broadcast(new JSONMessage(game.getId(), 
-                    new Dead_OUT(targetPlayer.getId(), targetPlayer.getName())));
+
+            game.broadcast(
+                    new JSONMessage(
+                            game.getId(),
+                            new Dead_OUT(
+                                    targetPlayer.getId(),
+                                    targetPlayer.getName()
+                            )
+                    )
+            );
 
         } else {
 
@@ -294,10 +360,17 @@ public class StateInGame extends State {
                     + " HP"
             );
         }
+
+        // =========================
+        // UPDATE PLAYERS
+        // =========================
         List<Personaje> jugadors = new ArrayList<>();
 
         for (Player a : game.getPlayers()) {
-            Personaje p = game.getSeleccionados().get(a.getId());
+
+            Personaje p =
+                    game.getSeleccionados().get(a.getId());
+
             jugadors.add(p);
         }
 
@@ -313,16 +386,68 @@ public class StateInGame extends State {
     // TURNOS
     // =====================================================
     private Player getCurrentPlayer() {
-        return game.getPlayers().get(currentTurnIndex);
+
+        if (game.getPlayers().isEmpty()) {
+            return null;
+        }
+
+        int attempts = 0;
+
+        while (attempts < game.getPlayers().size()) {
+
+            Player player =
+                    game.getPlayers().get(currentTurnIndex);
+
+            Personaje pj =
+                    game.getSeleccionados().get(player.getId());
+
+            if (pj != null && pj.isIsAlive()) {
+                return player;
+            }
+
+            currentTurnIndex++;
+
+            if (currentTurnIndex >= game.getPlayers().size()) {
+                currentTurnIndex = 0;
+            }
+
+            attempts++;
+        }
+
+        return null;
     }
 
     private void nextTurn() {
 
-        currentTurnIndex++;
-
-        if (currentTurnIndex >= game.getPlayers().size()) {
-            currentTurnIndex = 0;
+        if (game.getPlayers().isEmpty()) {
+            return;
         }
+
+        int attempts = 0;
+
+        do {
+
+            currentTurnIndex++;
+
+            if (currentTurnIndex >= game.getPlayers().size()) {
+                currentTurnIndex = 0;
+            }
+
+            Player player =
+                    game.getPlayers().get(currentTurnIndex);
+
+            Personaje pj =
+                    game.getSeleccionados().get(player.getId());
+
+            if (pj != null && pj.isIsAlive()) {
+                return;
+            }
+
+            attempts++;
+
+        } while (attempts < game.getPlayers().size());
+
+        System.out.println("[GAME] No quedan jugadores vivos");
     }
 
     // =====================================================
@@ -331,7 +456,7 @@ public class StateInGame extends State {
     private MapNode loadFirstFloor() {
 
         try (java.io.InputStream is
-                = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
+                     = getClass().getClassLoader().getResourceAsStream("map_fixed.json")) {
 
             if (is == null) {
                 throw new RuntimeException("map_fixed.json no encontrado");
@@ -341,27 +466,16 @@ public class StateInGame extends State {
 
             JsonNode data = root.get("data");
 
-            if (data == null) {
-                throw new RuntimeException("JSON inválido: falta data");
-            }
-
             JsonNode mapas = data.get("mapas");
-
-            if (mapas == null || !mapas.isArray() || mapas.isEmpty()) {
-                throw new RuntimeException("JSON inválido: no hay mapas");
-            }
 
             JsonNode map = mapas.get(0);
 
             JsonNode nodes = map.get("nodes");
 
-            if (nodes == null || !nodes.isArray() || nodes.isEmpty()) {
-                throw new RuntimeException("JSON inválido: no hay nodes");
-            }
-
             JsonNode node = nodes.get(0);
 
             int pis = node.get("pis").asInt();
+
             String tipo = node.get("tipus").asText();
 
             List<EnemyInstance> enemies = new ArrayList<>();
@@ -372,26 +486,24 @@ public class StateInGame extends State {
 
                 for (JsonNode e : enemics) {
 
-                    long idPersonaje = e.get("id_personatge").asLong();
+                    long idPersonaje =
+                            e.get("id_personatge").asLong();
 
-                    JsonNode escala = e.get("escala");
+                    JsonNode escala =
+                            e.get("escala");
 
-                    float scale = (float) escala.get("hp").asDouble();
+                    float scale =
+                            (float) escala.get("hp").asDouble();
 
-                    Personaje base = game.getPersonajeById(idPersonaje);
+                    Personaje base =
+                            game.getPersonajeById(idPersonaje);
 
                     if (base == null) {
-
-                        System.out.println(
-                                "[WARN] Personaje no encontrado: "
-                                + idPersonaje
-                        );
-
                         continue;
                     }
 
-                    EnemyInstance enemy
-                            = new EnemyInstance(base.copy(), scale);
+                    EnemyInstance enemy =
+                            new EnemyInstance(base.copy(), scale);
 
                     enemies.add(enemy);
 
@@ -404,23 +516,20 @@ public class StateInGame extends State {
                 }
             }
 
-            System.out.println(
-                    "\nMapa cargado -> Piso "
-                    + pis
-                    + " | Tipo "
-                    + tipo
-            );
-
             game.broadcast(
                     new JSONMessage(
                             game.getId(),
                             new Enemy_OUT(enemies)
                     )
             );
+
             List<Personaje> jugadors = new ArrayList<>();
 
             for (Player a : game.getPlayers()) {
-                Personaje p = game.getSeleccionados().get(a.getId());
+
+                Personaje p =
+                        game.getSeleccionados().get(a.getId());
+
                 jugadors.add(p);
             }
 
