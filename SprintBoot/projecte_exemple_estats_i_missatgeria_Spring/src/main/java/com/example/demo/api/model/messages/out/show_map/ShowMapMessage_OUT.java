@@ -12,5 +12,5 @@ public class ShowMapMessage_OUT extends MessageBody{
         return TYPE;
     }
 
-    public String map="Aquí o en d'altres variables, haurieu de posar info del mapa i que es pot triar.";
+    public String map;
 }

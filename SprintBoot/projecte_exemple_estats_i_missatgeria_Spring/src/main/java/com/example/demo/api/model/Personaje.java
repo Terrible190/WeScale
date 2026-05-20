@@ -51,6 +51,9 @@ public class Personaje {
     @Column(name = "critic_multiplicador_base")
     private float multiplicadorCritico;
 
+    @Column(name = "velocitat")
+    private float velocidad;
+
     @Column(name = "seleccionable")
     private boolean seleccionable;
 
@@ -139,7 +142,9 @@ public class Personaje {
     public float getMultiplicadorCritico() {
         return multiplicadorCritico;
     }
-
+    public float getVelocidad() {
+        return velocidad;
+    }
     public boolean isSeleccionable() {
         return seleccionable;
     }
@@ -185,7 +190,9 @@ public class Personaje {
     public void setMultiplicadorCritico(float multiplicadorCritico) {
         this.multiplicadorCritico = multiplicadorCritico;
     }
-
+    public void setVelocidad( float velocidad  ) {
+        this.velocidad = velocidad;
+    }
     public void setSeleccionable(boolean seleccionable) {
         this.seleccionable = seleccionable;
     }
@@ -231,7 +238,7 @@ public class Personaje {
         p.hp = this.hp;
         p.danyoFisico = this.danyoFisico;
         p.danyoMagico = this.danyoMagico;
-
+        p.velocidad = this.velocidad;
         p.defensaFisica = this.defensaFisica;
         p.defensaMagica = this.defensaMagica;
 

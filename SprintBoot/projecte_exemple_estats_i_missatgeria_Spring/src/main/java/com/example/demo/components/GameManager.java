@@ -17,6 +17,8 @@ import com.example.demo.api.model.messages.out.GamesList_OUT;
 import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
 import com.example.demo.api.model.messages.out.characters_to_pick.PlayerInfo;
 import com.example.demo.api.model.messages.out.generic.ActionResult_OUT;
+import com.example.demo.api.model.messages.in.CLIENT_READY;
+import com.example.demo.api.model.messages.out.WAITING_CLIENT_READY;
 import com.example.demo.api.model.states.StateLobby;
 import com.example.demo.repository.PersonajeRepository;
 import java.io.IOException;
@@ -120,7 +122,7 @@ public class GameManager {
 
     private void createGame(WebSocketSession session) {
 
-        // 🔥 SI YA ESTÁ EN UNA PARTIDA → BLOQUEAR
+        //  SI YA ESTÁ EN UNA PARTIDA → BLOQUEAR
         if (sessionToGame.containsKey(session)) {
             GameInstance game = sessionToGame.get(session);
             game.send(session,
@@ -173,7 +175,7 @@ public class GameManager {
                     )
             );
 
-            return; // ❌ NO entra
+            return; //  NO entra
         }
         Player player = sessionToPlayer.get(session);
 
@@ -184,7 +186,7 @@ public class GameManager {
         sessionToGame.put(session, game);
 
         // =========================
-        // 📢 1. BROADCAST a todos
+        //  1. BROADCAST a todos
         // =========================
         game.broadcast(new JSONMessage(
                 game.getId(),
@@ -196,7 +198,7 @@ public class GameManager {
         ));
 
         // =========================
-        // 🎮 2. ENVIAR personajes SOLO al nuevo jugador
+        //  2. ENVIAR personajes SOLO al nuevo jugador
         // =========================
         game.send(session,
                 new JSONMessage(

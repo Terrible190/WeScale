@@ -6,7 +6,7 @@ public class EnemyInstance {
 
     private long instanceId; // 👈 ID único de combate
     private Personaje base;
-
+    private float velocidad;
     public EnemyInstance(Personaje base, float scale) {
 
         this.instanceId = NEXT_ID++;
@@ -20,7 +20,10 @@ public class EnemyInstance {
         this.base.setDefensaMagica(base.getDefensaMagica() * scale);
         this.base.setCritico(base.getCritico() * scale);
     }
-
+    public float getVelocidad()
+    {
+        return velocidad;
+    }
     public long getInstanceId() {
         return instanceId;
     }
