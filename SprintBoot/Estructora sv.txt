@@ -1,0 +1,161 @@
+//PARA CREAR UNA PARTIDA NUEVA :
+
+{
+    "messageType": "CREATE_GAME",
+    "data" : {}
+}
+
+// SALIDA: 
+
+{
+    "messageType": "PLAYERS_2_CHOOSE",
+    "gameId": "9a64a7ce-7a51-471e-835b-1c92c391044a",
+    "data": {
+        "characters": [
+            {
+                "name": "Guerrer",
+                "imageURL": "",
+                "selectedPlayerId": -1,
+                "isSelected": false,
+                "characterId": 1
+            },
+            {
+                "name": "Guerrer Oscur",
+                "imageURL": "",
+                "selectedPlayerId": -1,
+                "isSelected": false,
+                "characterId": 4
+            }
+        ],
+        "players": [
+            {
+                "id": 0,
+                "name": null,
+                "personajeSeleccionado": null
+            }
+        ]
+    }
+}
+
+//PARA METERSE A LA PARTIDA: 
+
+{
+  "messageType": "JOIN_GAME",
+  "data": {
+    "gameId": "1"
+  }
+}
+
+//SALIDA: 
+
+//BRODCAST
+{
+    "messageType": "PLAYER_JOINED",
+    "gameId": "9a64a7ce-7a51-471e-835b-1c92c391044a",
+    "data": {
+        "playerId": 1,
+        "playerName": null,
+        "totalPlayers": 2
+    }
+}
+//UNICAST
+
+{
+    "messageType": "CHARACTERS",
+    "gameId": "9a64a7ce-7a51-471e-835b-1c92c391044a",
+    "data": {
+        "characters": [
+            {
+                "id": 1,
+                "nombre": "Guerrer",
+                "hp": 120.0,
+                "acciones": null,
+                "seleccionable": true
+            },
+            {
+                "id": 4,
+                "nombre": "Guerrer Oscur",
+                "hp": 120.0,
+                "acciones": null,
+                "seleccionable": true
+            }
+        ]
+    }
+}
+
+
+//ELEGIR UN PERSONAJE: 
+{
+  "messageType": "PICK_CHARACTER",
+  "data": {
+    "characterId": 1
+  }
+}
+
+
+
+//SALIDA: 
+
+//BRODCAST
+
+{
+    "messageType": "PLAYERS_2_CHOOSE",
+    "gameId": "9a64a7ce-7a51-471e-835b-1c92c391044a",
+    "data": {
+        "characters": [
+            {
+                "name": "Guerrer Oscur",
+                "imageURL": "",
+                "selectedPlayerId": -1,
+                "isSelected": false,
+                "characterId": 4
+            }
+        ],
+        "players": [
+            {
+                "id": 0,
+                "name": null,
+                "personajeSeleccionado": null
+            },
+            {
+                "id": 1,
+                "name": null,
+                "personajeSeleccionado": {
+                    "id": 1,
+                    "nombre": "Guerrer",
+                    "hp": 120.0,
+                    "acciones": null,
+                    "seleccionable": true
+                }
+            }
+        ]
+    }
+}
+
+{
+  "messageType": "GET_GAMES_LIST",
+  "data": {}
+}
+
+{
+  "messageType": "LEAVE_GAME",
+  "data": {}
+}
+
+{
+  "messageType": "UNSELECT_CHARACTER",
+  "data": {}
+}
+
+{
+  "messageType": "USE_ACTION",
+  "data": {
+    "actionId": 5,
+    "targetId": 2
+  }
+}
+
+{
+  "messageType": "GameInfo",
+  "data": {}
+}

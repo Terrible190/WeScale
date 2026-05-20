@@ -1,0 +1,62 @@
+.root {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(26, 26, 26);
+    background-image: url("project://database/Assets/rpgimage.png");
+}
+
+
+.title {
+    font-size: 32px;
+    unity-font-style: bold;
+    color: rgb(245, 215, 122);
+    -unity-text-align: middle-center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0;
+}
+
+.menu {
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rpg-button {
+    height: 44px;
+
+    /* fondo tipo pergamino/dorado */
+    background-color: #e7d6a6;
+    
+
+    /* borde doble estilo RPG */
+    border-width: 3px;
+    border-color: #2b2b2b;
+
+    /* sensación de placa */
+    border-radius: 2px;
+
+    color: #1a1a1a;
+    font-size: 18px;
+    unity-font-style: bold;
+
+    -unity-text-align: middle-center;
+
+    /* espacio interno */
+    padding-left: 16px;
+    padding-right: 16px;
+
+    /* efecto de relieve */
+    box-shadow: inset 0 0 0 2px #f7edc9;
+}
+
+/* hover (ligero brillo RPG) */
+.rpg-button:hover {
+    background-image: linear-gradient(to bottom, #f6eac8, #e0cd95);
+    border-color: #000000;
+}
+
+/* click (hundido) */
+.rpg-button:active {
+    background-image: linear-gradient(to bottom, #cdb77f, #e0cc93);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+}

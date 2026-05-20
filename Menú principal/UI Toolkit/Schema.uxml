@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Style.uss?fileID=7433441132597879392&amp;guid=d5aa536aa60625c4ca6269d0e6a1292b&amp;type=3#Style" />
+    <ui:VisualElement class="root">
+        <ui:VisualElement class="frame" style="opacity: 0.79;">
+            <ui:Label text="WeScale" class="title" />
+            <ui:VisualElement class="menu">
+                <ui:Button name="btnStart" text="▶ Comenzar partida" class="rpg-button" />
+                <ui:Button name="btnJoin" text="Unirse a partida" class="rpg-button" />
+                <ui:Button name="btnSettings" text="Ajustes del reino" class="rpg-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
