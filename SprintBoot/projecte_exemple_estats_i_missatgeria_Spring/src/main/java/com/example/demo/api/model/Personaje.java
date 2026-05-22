@@ -206,25 +206,7 @@ public class Personaje {
     // =========================
     @JsonProperty("acciones")
     public List<Accio> getAcciones() {
-
         return acciones.stream()
-                .filter(a -> a.getTipo() == 2)
-                .toList();
-    }
-
-    @JsonProperty("armes")
-    public List<Accio> getArmes() {
-
-        return acciones.stream()
-                .filter(a -> a.getTipo() == 1)
-                .toList();
-    }
-
-    @JsonProperty("items")
-    public List<Accio> getItems() {
-
-        return acciones.stream()
-                .filter(a -> a.getTipo() == 3)
                 .toList();
     }
 

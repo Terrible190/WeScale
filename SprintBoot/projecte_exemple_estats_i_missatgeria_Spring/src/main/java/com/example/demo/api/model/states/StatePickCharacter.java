@@ -24,7 +24,9 @@ public class StatePickCharacter extends State {
     private final ObjectMapper mapper = new ObjectMapper();
 
     public StatePickCharacter(GameInstance game) {
+
         super(game);
+
         broadcastState();
     }
 
@@ -32,55 +34,144 @@ public class StatePickCharacter extends State {
     public void tick() {
 
         GameMessage message = game.pollMessage(5, TimeUnit.SECONDS);
+
         if (message == null) {
             return;
         }
 
-        JSONMessage gm = mapper.readValue(message.payload(), JSONMessage.class);
+        JSONMessage gm = mapper.readValue(
+                message.payload(),
+                JSONMessage.class
+        );
 
         switch (gm.messageType) {
 
+            // =====================================================
+            // PICK CHARACTER
+            // =====================================================
             case PickCharacterMessage_IN.TYPE: {
 
                 PickCharacterMessage_IN data
-                        = mapper.treeToValue(gm.data, PickCharacterMessage_IN.class);
+                        = mapper.treeToValue(
+                                gm.data,
+                                PickCharacterMessage_IN.class
+                        );
 
-                boolean ok = game.pickCharacter(message.player(), data.characterId);
-                PlayerInfo pf = new PlayerInfo(message.player().getId(), message.player().getName(), null);
-                game.send(
-                        message.player().getSession(),
-                        new JSONMessage(
-                                game.getId(),
-                                new PlayerInfo_OUT(pf)
-                        )
+                boolean ok = game.pickCharacter(
+                        message.player(),
+                        data.characterId
+                );
+
+                // =====================================================
+                // SI TODO OK
+                // =====================================================
+                if (ok) {
+
+                    Personaje pj = game.getSeleccionados()
+                            .get(message.player().getId());
+
+                    PlayerInfo pf = new PlayerInfo(
+                            message.player().getId(),
+                            message.player().getName(),
+                            pj
+                    );
+
+                    // enviar SOLO al jugador
+                    game.send(
+                            message.player().getSession(),
+                            new JSONMessage(
+                                    game.getId(),
+                                    new PlayerInfo_OUT(pf)
+                            )
+                    );
+
+                    broadcastState();
+
+                } else {
+
+                    // =====================================================
+                    // SI YA TENÍA PERSONAJE
+                    // =====================================================
+                    boolean ok1 = game.unselectCharacter(
+                            message.player()
+                    );
+
+                    if (ok1) {
+
+                        boolean ok2 = game.pickCharacter(
+                                message.player(),
+                                data.characterId
+                        );
+
+                        if (ok2) {
+
+                            Personaje pj = game.getSeleccionados()
+                                    .get(message.player().getId());
+
+                            PlayerInfo pf = new PlayerInfo(
+                                    message.player().getId(),
+                                    message.player().getName(),
+                                    pj
+                            );
+
+                            game.send(
+                                    message.player().getSession(),
+                                    new JSONMessage(
+                                            game.getId(),
+                                            new PlayerInfo_OUT(pf)
+                                    )
+                            );
+
+                            broadcastState();
+
+                        } else {
+
+                            game.send(
+                                    message.player().getSession(),
+                                    new JSONMessage(
+                                            game.getId(),
+                                            new ActionResult_OUT(false, 1)
+                                    )
+                            );
+                        }
+
+                    } else {
+
+                        game.send(
+                                message.player().getSession(),
+                                new JSONMessage(
+                                        game.getId(),
+                                        new ActionResult_OUT(false, 1)
+                                )
+                        );
+                    }
+                }
+
+                break;
+            }
+
+            // =====================================================
+            // UNSELECT CHARACTER
+            // =====================================================
+            case UnselectCharacterMessage_IN.TYPE: {
+
+                boolean ok = game.unselectCharacter(
+                        message.player()
                 );
 
                 if (ok) {
+
                     broadcastState();
+
                 } else {
-                    boolean ok1 = game.unselectCharacter(message.player());
-                    if (ok1) {
-                        game.pickCharacter(message.player(), data.characterId);
-                        broadcastState();
-                    } else {
-                        game.send(message.player().getSession(),
-                                new JSONMessage(game.getId(),
-                                        new ActionResult_OUT(false, 1)));
-                    }
-                }
-                break;
 
-            }
-            case UnselectCharacterMessage_IN.TYPE: {
-
-                boolean ok = game.unselectCharacter(message.player());
-
-                if (ok) {
-                    broadcastState(); // 🔥 actualizar a todos
-                } else {
-                    game.send(message.player().getSession(),
-                            new JSONMessage(game.getId(),
-                                    new ActionResult_OUT(false, 2)));
+                    game.send(
+                            message.player().getSession(),
+                            new JSONMessage(
+                                    game.getId(),
+                                    new ActionResult_OUT(false, 2)
+                            )
+                    );
                 }
 
                 break;
@@ -88,13 +179,17 @@ public class StatePickCharacter extends State {
         }
     }
 
+    // =====================================================
+    // BROADCAST STATE
+    // =====================================================
     private void broadcastState() {
 
         List<PlayerInfo> players = new ArrayList<>();
 
         for (Player p : game.getPlayers()) {
 
-            Personaje personaje = game.getSeleccionados().get(p.getId());
+            Personaje personaje = game.getSeleccionados()
+                    .get(p.getId());
 
             players.add(new PlayerInfo(
                     p.getId(),
@@ -102,15 +197,18 @@ public class StatePickCharacter extends State {
                     personaje
             ));
 
-            // 🔥 DEBUG
+            // DEBUG
             if (personaje != null) {
+
                 System.out.println(
                         "[DEBUG] Jugador "
                         + p.getName()
                         + " ha elegido "
                         + personaje.getNombre()
                 );
+
             } else {
+
                 System.out.println(
                         "[DEBUG] Jugador "
                         + p.getName()
@@ -119,9 +217,13 @@ public class StatePickCharacter extends State {
             }
         }
 
+        // =====================================================
+        // CHARACTERS DISPONIBLES
+        // =====================================================
         List<CharacterInfo> characters = new ArrayList<>();
 
         for (Personaje p : game.getPersonajesDisponibles()) {
+
             characters.add(new CharacterInfo(
                     p.getId(),
                     p.getNombre(),
@@ -131,15 +233,31 @@ public class StatePickCharacter extends State {
             ));
         }
 
-        Players2SelectMessage_OUT out = new Players2SelectMessage_OUT();
+        Players2SelectMessage_OUT out
+                = new Players2SelectMessage_OUT();
+
         out.players = players;
         out.characters = characters;
 
-        game.broadcast(new JSONMessage(game.getId(), out));
+        game.broadcast(
+                new JSONMessage(
+                        game.getId(),
+                        out
+                )
+        );
 
-        // 🔥 NUEVO: comprobar si todos han elegido
+        // =====================================================
+        // TODOS LISTOS
+        // =====================================================
         if (game.allPlayersHaveCharacter()) {
-            game.setState(new StateInGame(game));
+
+            System.out.println(
+                    "\n===== TODOS HAN ELEGIDO ====="
+            );
+
+            game.setState(
+                    new StateInGame(game)
+            );
         }
     }
 }

@@ -14,47 +14,43 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class StateInGame extends State
-{
-    private final ObjectMapper mapper =
-            new ObjectMapper();
+public class StateInGame extends State {
 
-    private final Random random =
-            new Random();
+    private final ObjectMapper mapper
+            = new ObjectMapper();
+
+    private final Random random
+            = new Random();
 
     // =========================
     // COMBAT
     // =========================
-
-    public enum CombatPhase
-    {
+    public enum CombatPhase {
         WAITING_ACTION,
         RESOLVING,
         WAITING_CLIENT_READY,
         GAME_OVER
     }
 
-    private CombatPhase phase =
-            CombatPhase.WAITING_ACTION;
+    private CombatPhase phase
+            = CombatPhase.WAITING_ACTION;
 
     // =========================
     // TURNOS
     // =========================
-
     private int currentTurnIndex = 0;
 
     private long turnStartTime;
 
-    private static final long TURN_TIMEOUT =
-            60000;
+    private static final long TURN_TIMEOUT
+            = 60000;
 
-    private final Set<Long> readyPlayers =
-            new HashSet<>();
+    private final Set<Long> readyPlayers
+            = new HashSet<>();
 
     // =========================
     // MAPA
     // =========================
-
     private int currentFloor = 1;
 
     private MapNode currentNode;
@@ -62,22 +58,18 @@ public class StateInGame extends State
     // =====================================================
     // INIT
     // =====================================================
-
-    public StateInGame(GameInstance game)
-    {
+    public StateInGame(GameInstance game) {
         super(game);
 
-        currentNode =
-                loadFirstFloor();
+        currentNode
+                = loadFirstFloor();
 
-        for (Player p : game.getPlayers())
-        {
-            Personaje pj =
-                    game.getSeleccionados()
-                    .get(p.getId());
+        for (Player p : game.getPlayers()) {
+            Personaje pj
+                    = game.getSeleccionados()
+                            .get(p.getId());
 
-            if (pj != null)
-            {
+            if (pj != null) {
                 pj.setIsAlive(true);
             }
         }
@@ -99,38 +91,31 @@ public class StateInGame extends State
     // =====================================================
     // LOOP
     // =====================================================
-
     @Override
-    public void tick()
-    {
-        if (
-                phase == CombatPhase.WAITING_ACTION
+    public void tick() {
+        if (phase == CombatPhase.WAITING_ACTION
                 && System.currentTimeMillis()
-                - turnStartTime >= TURN_TIMEOUT
-        )
-        {
+                - turnStartTime >= TURN_TIMEOUT) {
             resolveTurnTimeout();
         }
 
-        GameMessage msg =
-                game.pollMessage(
+        GameMessage msg
+                = game.pollMessage(
                         1,
                         TimeUnit.SECONDS
                 );
 
-        if (msg == null)
-        {
+        if (msg == null) {
             return;
         }
 
-        JSONMessage json =
-                mapper.readValue(
+        JSONMessage json
+                = mapper.readValue(
                         msg.payload(),
                         JSONMessage.class
                 );
 
-        switch (json.messageType)
-        {
+        switch (json.messageType) {
             case UseActionMessage_IN.TYPE:
 
                 handleUseAction(
@@ -151,32 +136,23 @@ public class StateInGame extends State
     // =====================================================
     // ACTIONS
     // =====================================================
-
     private void handleUseAction(
             GameMessage msg,
             JSONMessage json
-    )
-    {
-        if (
-                phase != CombatPhase.WAITING_ACTION
-        )
-        {
+    ) {
+        if (phase != CombatPhase.WAITING_ACTION) {
             return;
         }
 
-        Player currentPlayer =
-                getCurrentPlayer();
+        Player currentPlayer
+                = getCurrentPlayer();
 
-        if (currentPlayer == null)
-        {
+        if (currentPlayer == null) {
             return;
         }
 
-        if (
-                msg.player().getId()
-                != currentPlayer.getId()
-        )
-        {
+        if (msg.player().getId()
+                != currentPlayer.getId()) {
             System.out.println(
                     "[TURN] no es su turno"
             );
@@ -184,36 +160,32 @@ public class StateInGame extends State
             return;
         }
 
-        UseActionMessage_IN data =
-                mapper.treeToValue(
+        UseActionMessage_IN data
+                = mapper.treeToValue(
                         json.data,
                         UseActionMessage_IN.class
                 );
 
-        Personaje attacker =
-                game.getSeleccionados()
-                .get(msg.player().getId());
+        Personaje attacker
+                = game.getSeleccionados()
+                        .get(msg.player().getId());
 
-        if (
-                attacker == null
-                || !attacker.isIsAlive()
-        )
-        {
+        if (attacker == null
+                || !attacker.isIsAlive()) {
             return;
         }
 
-        Accio accion =
-                attacker.getAcciones()
-                .stream()
-                .filter(a ->
-                        a.getId()
+        Accio accion
+                = attacker.getAcciones()
+                        .stream()
+                        .filter(a
+                                -> a.getId()
                         == data.getActionId()
-                )
-                .findFirst()
-                .orElse(null);
+                        )
+                        .findFirst()
+                        .orElse(null);
 
-        if (accion == null)
-        {
+        if (accion == null) {
             System.out.println(
                     "[ERROR] accion null"
             );
@@ -221,37 +193,35 @@ public class StateInGame extends State
             return;
         }
 
-        EnemyInstance targetEnemy =
-                null;
+        EnemyInstance targetEnemy
+                = null;
 
-        Personaje targetAlly =
-                null;
+        Personaje targetAlly
+                = null;
 
-        switch (accion.getTargetType())
-        {
+        switch (accion.getTargetType()) {
             // self
             case 0:
 
-                targetAlly =
-                        attacker;
+                targetAlly
+                        = attacker;
 
                 break;
 
             // enemy
             case 1:
 
-                targetEnemy =
-                        currentNode.enemics
-                        .stream()
-                        .filter(e ->
-                                e.getInstanceId()
+                targetEnemy
+                        = currentNode.enemics
+                                .stream()
+                                .filter(e
+                                        -> e.getInstanceId()
                                 == data.getTargetId()
-                        )
-                        .findFirst()
-                        .orElse(null);
+                                )
+                                .findFirst()
+                                .orElse(null);
 
-                if (targetEnemy == null)
-                {
+                if (targetEnemy == null) {
                     System.out.println(
                             "[ERROR] enemigo no encontrado"
                     );
@@ -264,25 +234,23 @@ public class StateInGame extends State
             // ally
             case 2:
 
-                Player allyPlayer =
-                        game.getPlayers()
-                        .stream()
-                        .filter(p ->
-                                p.getId()
+                Player allyPlayer
+                        = game.getPlayers()
+                                .stream()
+                                .filter(p
+                                        -> p.getId()
                                 == data.getTargetId()
-                        )
-                        .findFirst()
-                        .orElse(null);
+                                )
+                                .findFirst()
+                                .orElse(null);
 
-                if (allyPlayer != null)
-                {
-                    targetAlly =
-                            game.getSeleccionados()
-                            .get(allyPlayer.getId());
+                if (allyPlayer != null) {
+                    targetAlly
+                            = game.getSeleccionados()
+                                    .get(allyPlayer.getId());
                 }
 
-                if (targetAlly == null)
-                {
+                if (targetAlly == null) {
                     System.out.println(
                             "[ERROR] aliado no encontrado"
                     );
@@ -305,8 +273,8 @@ public class StateInGame extends State
                 + accion.getNombre()
         );
 
-        phase =
-                CombatPhase.RESOLVING;
+        phase
+                = CombatPhase.RESOLVING;
 
         applyEffects(
                 accion,
@@ -323,8 +291,8 @@ public class StateInGame extends State
 
         enemyTurn();
 
-        phase =
-                CombatPhase.WAITING_CLIENT_READY;
+        phase
+                = CombatPhase.WAITING_CLIENT_READY;
 
         readyPlayers.clear();
 
@@ -339,16 +307,11 @@ public class StateInGame extends State
     // =====================================================
     // READY
     // =====================================================
-
     private void handleClientReady(
             GameMessage msg
-    )
-    {
-        if (
-                phase
-                != CombatPhase.WAITING_CLIENT_READY
-        )
-        {
+    ) {
+        if (phase
+                != CombatPhase.WAITING_CLIENT_READY) {
             return;
         }
 
@@ -356,28 +319,25 @@ public class StateInGame extends State
                 msg.player().getId()
         );
 
-        long alivePlayers =
-                game.getPlayers()
-                .stream()
-                .filter(p -> {
-                    Personaje pj =
-                            game.getSeleccionados()
-                            .get(p.getId());
+        long alivePlayers
+                = game.getPlayers()
+                        .stream()
+                        .filter(p -> {
+                            Personaje pj
+                                    = game.getSeleccionados()
+                                            .get(p.getId());
 
-                    return pj != null
-                            && pj.isIsAlive();
-                })
-                .count();
+                            return pj != null
+                                    && pj.isIsAlive();
+                        })
+                        .count();
 
-        if (
-                readyPlayers.size()
-                >= alivePlayers
-        )
-        {
+        if (readyPlayers.size()
+                >= alivePlayers) {
             readyPlayers.clear();
 
-            phase =
-                    CombatPhase.WAITING_ACTION;
+            phase
+                    = CombatPhase.WAITING_ACTION;
 
             nextTurn();
         }
@@ -386,22 +346,18 @@ public class StateInGame extends State
     // =====================================================
     // EFFECTS
     // =====================================================
-
     private void applyEffects(
             Accio accion,
             Personaje attacker,
             EnemyInstance targetEnemy,
             Personaje targetAlly
-    )
-    {
-        if (accion.getEfectos() == null)
-        {
+    ) {
+        if (accion.getEfectos() == null) {
             return;
         }
 
         for (Efecto efecto
-                : accion.getEfectos())
-        {
+                : accion.getEfectos()) {
             applyEffect(
                     efecto,
                     attacker,
@@ -416,15 +372,12 @@ public class StateInGame extends State
             Personaje attacker,
             EnemyInstance targetEnemy,
             Personaje targetAlly
-    )
-    {
-        switch (efecto.getTipo())
-        {
+    ) {
+        switch (efecto.getTipo()) {
             // damage
             case 0:
 
-                if (targetEnemy != null)
-                {
+                if (targetEnemy != null) {
                     applyDamageEffect(
                             efecto,
                             attacker,
@@ -437,8 +390,7 @@ public class StateInGame extends State
             // status
             case 1:
 
-                if (targetEnemy != null)
-                {
+                if (targetEnemy != null) {
                     applyStatusEffect(
                             efecto,
                             targetEnemy
@@ -457,6 +409,11 @@ public class StateInGame extends State
                 );
 
                 break;
+
+            case 3:
+                applyDefensaStats(efecto,
+                        targetAlly);
+                break;
         }
     }
 
@@ -464,17 +421,16 @@ public class StateInGame extends State
             Efecto efecto,
             Personaje attacker,
             EnemyInstance target
-    )
-    {
-        float damage =
-                calculateDamage(
+    ) {
+        float damage
+                = calculateDamage(
                         attacker,
                         target,
                         efecto
                 );
 
-        float hp =
-                target.getBase().getHp()
+        float hp
+                = target.getBase().getHp()
                 - damage;
 
         target.getBase().setHp(hp);
@@ -488,8 +444,7 @@ public class StateInGame extends State
     private void applyStatusEffect(
             Efecto efecto,
             EnemyInstance target
-    )
-    {
+    ) {
         System.out.println(
                 "[STATUS EFFECT]"
         );
@@ -499,34 +454,92 @@ public class StateInGame extends State
             Efecto efecto,
             EnemyInstance targetEnemy,
             Personaje targetAlly
-    )
-    {
-        System.out.println(
-                "[BUFF EFFECT]"
-        );
+    ) {
+        switch (efecto.getId()) {
+            case 9:
+                if (targetAlly == null) {
+                    return;
+                }
+                float multiplier = 1.5f;
+                float newVida
+                        = targetAlly.getHp()* multiplier;
+                targetAlly.setHp(newVida);
+                
+                System.out.println(
+                        "[BUFF] " + targetAlly.getNombre()
+                        + " aumenta un 50% de la vida"
+                );
+                break;
+            case 2:
+                //Ataca amb energia glacial aplicant Congelat durant 3 torns i reduint la velocitat un 30%.
+                break;
+            case 12:
+                //"Marca l enemic amb Black Flash i infligeix dany físic extra."
+                break;
+        }
+    }
+
+    private void applyDefensaStats(
+            Efecto efecto,
+            Personaje targetAlly
+    ) {
+        switch (efecto.getId()) {
+            case 4:
+                if (targetAlly == null) {
+                    return;
+                }
+
+                float multiplier = 1.7f;
+
+                float newDefFisica
+                        = targetAlly.getDefensaFisica() * multiplier;
+
+                float newDefMagica
+                        = targetAlly.getDefensaMagica() * multiplier;
+
+                targetAlly.setDefensaFisica(newDefFisica);
+                targetAlly.setDefensaMagica(newDefMagica);
+
+                System.out.println(
+                        "[BUFF] " + targetAlly.getNombre()
+                        + " aumenta defensa 70% por 1 turno"
+                );
+                break;
+            case 18:
+                if (targetAlly == null) {
+                    return;
+                }
+
+                float multiplier2 = 2.0f;
+                float newDefMagica2
+                        = targetAlly.getDefensaMagica() * multiplier2;
+                targetAlly.setDefensaMagica(newDefMagica2);
+                System.out.println(
+                        "[BUFF] " + targetAlly.getNombre()
+                        + " aumenta defensa magina x2"
+                );
+                break;
+        }
+
     }
 
     private float calculateDamage(
             Personaje attacker,
             EnemyInstance target,
             Efecto efecto
-    )
-    {
+    ) {
         float damage;
 
-        if (efecto.getTipoDanyo() == 1)
-        {
-            damage =
-                    attacker.getDanyoMagico()
+        if (efecto.getTipoDanyo() == 1) {
+            damage
+                    = attacker.getDanyoMagico()
                     - target.getBase()
-                    .getDefensaMagica();
-        }
-        else
-        {
-            damage =
-                    attacker.getDanyoFisico()
+                            .getDefensaMagica();
+        } else {
+            damage
+                    = attacker.getDanyoFisico()
                     - target.getBase()
-                    .getDefensaFisica();
+                            .getDefensaFisica();
         }
 
         return Math.max(1, damage);
@@ -535,19 +548,16 @@ public class StateInGame extends State
     // =====================================================
     // ENEMY TURN
     // =====================================================
+    private void enemyTurn() {
+        List<EnemyInstance> aliveEnemies
+                = currentNode.enemics
+                        .stream()
+                        .filter(e
+                                -> e.getBase().isIsAlive()
+                        )
+                        .toList();
 
-    private void enemyTurn()
-    {
-        List<EnemyInstance> aliveEnemies =
-                currentNode.enemics
-                .stream()
-                .filter(e ->
-                        e.getBase().isIsAlive()
-                )
-                .toList();
-
-        if (aliveEnemies.isEmpty())
-        {
+        if (aliveEnemies.isEmpty()) {
             System.out.println(
                     "\n===== TODOS LOS ENEMIGOS MUERTOS ====="
             );
@@ -555,21 +565,20 @@ public class StateInGame extends State
             return;
         }
 
-        List<Player> alivePlayers =
-                game.getPlayers()
-                .stream()
-                .filter(p -> {
-                    Personaje pj =
-                            game.getSeleccionados()
-                            .get(p.getId());
+        List<Player> alivePlayers
+                = game.getPlayers()
+                        .stream()
+                        .filter(p -> {
+                            Personaje pj
+                                    = game.getSeleccionados()
+                                            .get(p.getId());
 
-                    return pj != null
-                            && pj.isIsAlive();
-                })
-                .toList();
+                            return pj != null
+                                    && pj.isIsAlive();
+                        })
+                        .toList();
 
-        if (alivePlayers.isEmpty())
-        {
+        if (alivePlayers.isEmpty()) {
             System.out.println(
                     "\n===== TODOS LOS JUGADORES MUERTOS ====="
             );
@@ -577,39 +586,37 @@ public class StateInGame extends State
             return;
         }
 
-        EnemyInstance attacker =
-                aliveEnemies.get(
+        EnemyInstance attacker
+                = aliveEnemies.get(
                         random.nextInt(
                                 aliveEnemies.size()
                         )
                 );
 
-        Player targetPlayer =
-                alivePlayers.get(
+        Player targetPlayer
+                = alivePlayers.get(
                         random.nextInt(
                                 alivePlayers.size()
                         )
                 );
 
-        Personaje playerCharacter =
-                game.getSeleccionados()
-                .get(targetPlayer.getId());
+        Personaje playerCharacter
+                = game.getSeleccionados()
+                        .get(targetPlayer.getId());
 
-        if (playerCharacter == null)
-        {
+        if (playerCharacter == null) {
             return;
         }
 
-        float damage =
-                attacker.getBase()
-                .getDanyoFisico();
+        float damage
+                = attacker.getBase()
+                        .getDanyoFisico();
 
-        float newHp =
-                playerCharacter.getHp()
+        float newHp
+                = playerCharacter.getHp()
                 - damage;
 
-        if (newHp <= 0)
-        {
+        if (newHp <= 0) {
             playerCharacter.setHp(0);
 
             playerCharacter.setIsAlive(false);
@@ -623,9 +630,7 @@ public class StateInGame extends State
                             )
                     )
             );
-        }
-        else
-        {
+        } else {
             playerCharacter.setHp(newHp);
         }
 
@@ -635,23 +640,19 @@ public class StateInGame extends State
     // =====================================================
     // TURNOS
     // =====================================================
+    private void startCurrentTurn() {
+        Player currentPlayer
+                = getCurrentPlayer();
 
-    private void startCurrentTurn()
-    {
-        Player currentPlayer =
-                getCurrentPlayer();
-
-        if (currentPlayer == null)
-        {
+        if (currentPlayer == null) {
             return;
         }
 
-        Personaje pj =
-                game.getSeleccionados()
-                .get(currentPlayer.getId());
+        Personaje pj
+                = game.getSeleccionados()
+                        .get(currentPlayer.getId());
 
-        if (pj == null)
-        {
+        if (pj == null) {
             return;
         }
 
@@ -669,44 +670,35 @@ public class StateInGame extends State
                 )
         );
 
-        turnStartTime =
-                System.currentTimeMillis();
+        turnStartTime
+                = System.currentTimeMillis();
     }
 
-    private void nextTurn()
-    {
-        if (game.getPlayers().isEmpty())
-        {
+    private void nextTurn() {
+        if (game.getPlayers().isEmpty()) {
             return;
         }
 
         int attempts = 0;
 
-        do
-        {
+        do {
             currentTurnIndex++;
 
-            if (
-                    currentTurnIndex
-                    >= game.getPlayers().size()
-            )
-            {
+            if (currentTurnIndex
+                    >= game.getPlayers().size()) {
                 currentTurnIndex = 0;
             }
 
-            Player player =
-                    game.getPlayers()
-                    .get(currentTurnIndex);
+            Player player
+                    = game.getPlayers()
+                            .get(currentTurnIndex);
 
-            Personaje pj =
-                    game.getSeleccionados()
-                    .get(player.getId());
+            Personaje pj
+                    = game.getSeleccionados()
+                            .get(player.getId());
 
-            if (
-                    pj != null
-                    && pj.isIsAlive()
-            )
-            {
+            if (pj != null
+                    && pj.isIsAlive()) {
                 startCurrentTurn();
 
                 return;
@@ -714,19 +706,15 @@ public class StateInGame extends State
 
             attempts++;
 
-        } while (
-                attempts
-                < game.getPlayers().size()
-        );
+        } while (attempts
+                < game.getPlayers().size());
     }
 
-    private void resolveTurnTimeout()
-    {
-        Player player =
-                getCurrentPlayer();
+    private void resolveTurnTimeout() {
+        Player player
+                = getCurrentPlayer();
 
-        if (player == null)
-        {
+        if (player == null) {
             return;
         }
 
@@ -737,43 +725,32 @@ public class StateInGame extends State
         nextTurn();
     }
 
-    private Player getCurrentPlayer()
-    {
-        if (game.getPlayers().isEmpty())
-        {
+    private Player getCurrentPlayer() {
+        if (game.getPlayers().isEmpty()) {
             return null;
         }
 
         int attempts = 0;
 
-        while (
-                attempts
-                < game.getPlayers().size()
-        )
-        {
-            Player player =
-                    game.getPlayers()
-                    .get(currentTurnIndex);
+        while (attempts
+                < game.getPlayers().size()) {
+            Player player
+                    = game.getPlayers()
+                            .get(currentTurnIndex);
 
-            Personaje pj =
-                    game.getSeleccionados()
-                    .get(player.getId());
+            Personaje pj
+                    = game.getSeleccionados()
+                            .get(player.getId());
 
-            if (
-                    pj != null
-                    && pj.isIsAlive()
-            )
-            {
+            if (pj != null
+                    && pj.isIsAlive()) {
                 return player;
             }
 
             currentTurnIndex++;
 
-            if (
-                    currentTurnIndex
-                    >= game.getPlayers().size()
-            )
-            {
+            if (currentTurnIndex
+                    >= game.getPlayers().size()) {
                 currentTurnIndex = 0;
             }
 
@@ -786,17 +763,14 @@ public class StateInGame extends State
     // =====================================================
     // BROADCAST
     // =====================================================
+    private void broadcastPlayers() {
+        List<Personaje> players
+                = new ArrayList<>();
 
-    private void broadcastPlayers()
-    {
-        List<Personaje> players =
-                new ArrayList<>();
-
-        for (Player p : game.getPlayers())
-        {
-            Personaje pj =
-                    game.getSeleccionados()
-                    .get(p.getId());
+        for (Player p : game.getPlayers()) {
+            Personaje pj
+                    = game.getSeleccionados()
+                            .get(p.getId());
 
             players.add(pj);
         }
@@ -809,8 +783,7 @@ public class StateInGame extends State
         );
     }
 
-    private void broadcastEnemies()
-    {
+    private void broadcastEnemies() {
         game.broadcast(
                 new JSONMessage(
                         game.getId(),
@@ -823,15 +796,12 @@ public class StateInGame extends State
 
     private void checkEnemyDeath(
             EnemyInstance enemy
-    )
-    {
-        if (enemy == null)
-        {
+    ) {
+        if (enemy == null) {
             return;
         }
 
-        if (enemy.getBase().getHp() > 0)
-        {
+        if (enemy.getBase().getHp() > 0) {
             return;
         }
 
@@ -845,7 +815,7 @@ public class StateInGame extends State
                         new Dead_OUT(
                                 enemy.getInstanceId(),
                                 enemy.getBase()
-                                .getNombre()
+                                        .getNombre()
                         )
                 )
         );
@@ -854,109 +824,100 @@ public class StateInGame extends State
     // =====================================================
     // MAPA
     // =====================================================
-
-    private MapNode loadFirstFloor()
-    {
+    private MapNode loadFirstFloor() {
         try (
-                java.io.InputStream is =
-                getClass()
-                .getClassLoader()
-                .getResourceAsStream(
-                        "map_fixed.json"
-                )
-        )
-        {
-            if (is == null)
-            {
-                throw new RuntimeException(
-                        "map_fixed.json no encontrado"
-                );
-            }
-
-            JsonNode root =
-                    mapper.readTree(is);
-
-            JsonNode node =
-                    root.get("data")
-                    .get("mapas")
-                    .get(0)
-                    .get("nodes")
-                    .get(0);
-
-            int pis =
-                    node.get("pis")
-                    .asInt();
-
-            String tipo =
-                    node.get("tipus")
-                    .asText();
-
-            List<EnemyInstance> enemies =
-                    new ArrayList<>();
-
-            JsonNode enemics =
-                    node.get("enemics");
-
-            if (
-                    enemics != null
-                    && enemics.isArray()
-            )
-            {
-                for (JsonNode e : enemics)
-                {
-                    long idPersonatge =
-                            e.get("id_personatge")
-                            .asLong();
-
-                    float scale =
-                            (float)
-                            e.get("escala")
-                            .get("hp")
-                            .asDouble();
-
-                    Personaje base =
-                            game.getPersonajeById(
-                                    idPersonatge
-                            );
-
-                    if (base == null)
-                    {
-                        continue;
+                java.io.InputStream is
+                = getClass()
+                        .getClassLoader()
+                        .getResourceAsStream(
+                                "map_fixed.json"
+                        )) {
+                    if (is == null) {
+                        throw new RuntimeException(
+                                "map_fixed.json no encontrado"
+                        );
                     }
 
-                    EnemyInstance enemy =
-                            new EnemyInstance(
-                                    base.copy(),
-                                    scale
+                    JsonNode root
+                            = mapper.readTree(is);
+
+                    JsonNode node
+                            = root.get("data")
+                                    .get("mapas")
+                                    .get(0)
+                                    .get("nodes")
+                                    .get(0);
+
+                    int pis
+                            = node.get("pis")
+                                    .asInt();
+
+                    String tipo
+                            = node.get("tipus")
+                                    .asText();
+
+                    List<EnemyInstance> enemies
+                            = new ArrayList<>();
+
+                    JsonNode enemics
+                            = node.get("enemics");
+
+                    if (enemics != null
+                            && enemics.isArray()) {
+                        for (JsonNode e : enemics) {
+                            long idPersonatge
+                                    = e.get("id_personatge")
+                                            .asLong();
+
+                            float scale
+                                    = (float) e.get("escala")
+                                            .get("hp")
+                                            .asDouble();
+
+                            Personaje base
+                                    = game.getPersonajeById(
+                                            idPersonatge
+                                    );
+
+                            if (base == null) {
+                                continue;
+                            }
+
+                            EnemyInstance enemy
+                                    = new EnemyInstance(
+                                            base.copy(),
+                                            scale
+                                    );
+
+                            enemies.add(enemy);
+
+                            System.out.println(
+                                    "[ENEMY LOADED] "
+                                    + enemy.getInstanceId()
+                                    + " -> "
+                                    + base.getNombre()
                             );
+                        }
+                    }
 
-                    enemies.add(enemy);
+                    MapNode mapNode = new MapNode(
+                            pis,
+                            tipo,
+                            enemies
+                    );
 
-                    System.out.println(
-                            "[ENEMY LOADED] "
-                            + enemy.getInstanceId()
-                            + " -> "
-                            + base.getNombre()
+                    this.currentNode = mapNode;
+
+                    broadcastPlayers();
+                    broadcastEnemies();
+
+                    return mapNode;
+
+                } catch (Exception e) {
+                    throw new RuntimeException(
+                            "Error cargando mapa",
+                            e
                     );
                 }
-            }
-
-            broadcastEnemies();
-
-            broadcastPlayers();
-
-            return new MapNode(
-                    pis,
-                    tipo,
-                    enemies
-            );
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(
-                    "Error cargando mapa",
-                    e
-            );
-        }
     }
 }
