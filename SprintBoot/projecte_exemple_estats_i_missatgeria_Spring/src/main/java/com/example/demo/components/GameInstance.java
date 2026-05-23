@@ -12,6 +12,7 @@ import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.states.State;
 import com.example.demo.api.model.states.StateLobby;
 import com.example.demo.api.model.states.StatePickCharacter;
+import com.example.demo.api.model.combat.CombatLogDTO;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
@@ -28,10 +29,27 @@ public class GameInstance {
     private final String id;
     private State currentState;
 
-    // 🔥 LÓGICA NUEVA
     private List<Personaje> personajesDisponibles = new ArrayList<>();
     private List<Personaje> todosLosPersonajes = new ArrayList<>();
     private Map<Long, Personaje> seleccionados = new HashMap<>();
+    private final List<CombatLogDTO> combatLogs = new ArrayList<>();
+
+    public synchronized void addCombatLog(
+    CombatLogDTO log
+    )
+    {
+        combatLogs.add(log);
+    }
+
+    public synchronized List<CombatLogDTO> consumeCombatLogs()
+    {
+        List<CombatLogDTO> copy =
+            new ArrayList<>(combatLogs);
+
+        combatLogs.clear();
+
+        return copy;
+    }
 
     public GameInstance(List<Player> players,
             ExecutorService executor,
@@ -41,7 +59,6 @@ public class GameInstance {
         this.executor = executor;
         this.id = String.valueOf(idCounter++);
 
-        // 🔥 COPIAS DISTINTAS
         this.personajesDisponibles = new ArrayList<>(personajes);
         this.todosLosPersonajes = new ArrayList<>(personajes);
 
@@ -109,10 +126,8 @@ public class GameInstance {
         // obtener personaje
         Personaje character = seleccionados.get(player.getId());
 
-        // 🔥 quitar de seleccionados
         seleccionados.remove(player.getId());
 
-        // 🔥 volver a disponibles
         personajesDisponibles.add(character);
 
         return true;
@@ -140,10 +155,8 @@ public class GameInstance {
             return false;
         }
 
-        // 🔥 reservar personaje
         seleccionados.put(player.getId(), character);
 
-        // 🔥 quitar de disponibles
         personajesDisponibles.remove(character);
 
         return true;

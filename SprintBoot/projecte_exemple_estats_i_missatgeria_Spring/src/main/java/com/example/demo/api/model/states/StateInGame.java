@@ -1,6 +1,7 @@
 package com.example.demo.api.model.states;
 
 import com.example.demo.api.model.*;
+import com.example.demo.api.model.combat.CombatLogDTO;
 import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.CLIENT_READY;
 import com.example.demo.api.model.messages.in.UseActionMessage_IN;
@@ -285,12 +286,21 @@ public class StateInGame extends State {
 
         checkEnemyDeath(targetEnemy);
 
-        broadcastEnemies();
+       broadcastEnemies();
 
         broadcastPlayers();
 
-        enemyTurn();
+        game.broadcast(
+        new JSONMessage(
+                game.getId(),
+                new CombatLog_OUT(
+                game.consumeCombatLogs()
+                )
+        )
+        );
 
+        enemyTurn();
+        
         phase
                 = CombatPhase.WAITING_CLIENT_READY;
 
@@ -417,11 +427,7 @@ public class StateInGame extends State {
         }
     }
 
-    private void applyDamageEffect(
-            Efecto efecto,
-            Personaje attacker,
-            EnemyInstance target
-    ) {
+    private void applyDamageEffect(  Efecto efecto,    Personaje attacker,    EnemyInstance target ) {
         float damage
                 = calculateDamage(
                         attacker,
@@ -434,13 +440,34 @@ public class StateInGame extends State {
                 - damage;
 
         target.getBase().setHp(hp);
+        CombatLogDTO log =
+                new CombatLogDTO();
+
+        log.type = "damage";
+
+        log.source =
+                attacker.getNombre();
+
+        log.target =
+                target.getBase().getNombre();
+
+        log.value =
+                damage;
+
+        log.text =
+                attacker.getNombre()
+                + " fa "
+                + damage
+                + " de mal a "
+                + target.getBase().getNombre();
+
+        game.addCombatLog(log);
 
         System.out.println(
                 "[DAMAGE] "
                 + damage
         );
-    }
-
+        }
     private void applyStatusEffect(
             Efecto efecto,
             EnemyInstance target
