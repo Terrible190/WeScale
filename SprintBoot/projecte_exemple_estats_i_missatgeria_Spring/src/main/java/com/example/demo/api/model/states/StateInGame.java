@@ -40,7 +40,7 @@ public class StateInGame extends State {
     // TURNOS
     // =========================
     private int currentTurnIndex = 0;
-
+    private int selectedPis;
     private long turnStartTime;
 
     private static final long TURN_TIMEOUT
@@ -59,11 +59,11 @@ public class StateInGame extends State {
     // =====================================================
     // INIT
     // =====================================================
-    public StateInGame(GameInstance game) {
+    public StateInGame(GameInstance game, int selectedPis) {
         super(game);
-
+        this.selectedPis = selectedPis;
         currentNode
-                = loadFirstFloor();
+                = loadSelectedFloor();
 
         for (Player p : game.getPlayers()) {
             Personaje pj
@@ -99,7 +99,15 @@ public class StateInGame extends State {
                 - turnStartTime >= TURN_TIMEOUT) {
             resolveTurnTimeout();
         }
+        if (areAllEnemiesDead()) {
 
+            System.out.println(
+                    "\n===== GG ====="
+            );
+            game.resetCharacterSelection();
+            game.setState(new StatePickCharacter(game));
+            return;
+        }
         GameMessage msg
                 = game.pollMessage(
                         1,
@@ -286,21 +294,21 @@ public class StateInGame extends State {
 
         checkEnemyDeath(targetEnemy);
 
-       broadcastEnemies();
+        broadcastEnemies();
 
         broadcastPlayers();
 
         game.broadcast(
-        new JSONMessage(
-                game.getId(),
-                new CombatLog_OUT(
-                game.consumeCombatLogs()
+                new JSONMessage(
+                        game.getId(),
+                        new CombatLog_OUT(
+                                game.consumeCombatLogs()
+                        )
                 )
-        )
         );
 
         enemyTurn();
-        
+
         phase
                 = CombatPhase.WAITING_CLIENT_READY;
 
@@ -311,6 +319,42 @@ public class StateInGame extends State {
                         game.getId(),
                         new WAITING_CLIENT_READY()
                 )
+        );
+    }
+
+    private void killAllEnemies() {
+
+        for (EnemyInstance enemy : currentNode.enemics) {
+
+            if (enemy == null
+                    || enemy.getBase() == null) {
+                continue;
+            }
+
+            enemy.getBase().setHp(0);
+
+            enemy.getBase().setIsAlive(false);
+
+            game.broadcast(
+                    new JSONMessage(
+                            game.getId(),
+                            new Dead_OUT(
+                                    enemy.getInstanceId(),
+                                    enemy.getBase().getNombre()
+                            )
+                    )
+            );
+
+            System.out.println(
+                    "[ENEMY DEAD] "
+                    + enemy.getBase().getNombre()
+            );
+        }
+
+        broadcastEnemies();
+
+        System.out.println(
+                "\n===== TODOS LOS ENEMIGOS MUERTOS kae ====="
         );
     }
 
@@ -351,6 +395,15 @@ public class StateInGame extends State {
 
             nextTurn();
         }
+    }
+
+    private boolean areAllEnemiesDead() {
+
+        return currentNode.enemics
+                .stream()
+                .noneMatch(e
+                        -> e.getBase().isIsAlive()
+                );
     }
 
     // =====================================================
@@ -427,7 +480,7 @@ public class StateInGame extends State {
         }
     }
 
-    private void applyDamageEffect(  Efecto efecto,    Personaje attacker,    EnemyInstance target ) {
+    private void applyDamageEffect(Efecto efecto, Personaje attacker, EnemyInstance target) {
         float damage
                 = calculateDamage(
                         attacker,
@@ -440,22 +493,22 @@ public class StateInGame extends State {
                 - damage;
 
         target.getBase().setHp(hp);
-        CombatLogDTO log =
-                new CombatLogDTO();
+        CombatLogDTO log
+                = new CombatLogDTO();
 
         log.type = "damage";
 
-        log.source =
-                attacker.getNombre();
+        log.source
+                = attacker.getNombre();
 
-        log.target =
-                target.getBase().getNombre();
+        log.target
+                = target.getBase().getNombre();
 
-        log.value =
-                damage;
+        log.value
+                = damage;
 
-        log.text =
-                attacker.getNombre()
+        log.text
+                = attacker.getNombre()
                 + " fa "
                 + damage
                 + " de mal a "
@@ -467,7 +520,8 @@ public class StateInGame extends State {
                 "[DAMAGE] "
                 + damage
         );
-        }
+    }
+
     private void applyStatusEffect(
             Efecto efecto,
             EnemyInstance target
@@ -489,9 +543,9 @@ public class StateInGame extends State {
                 }
                 float multiplier = 1.5f;
                 float newVida
-                        = targetAlly.getHp()* multiplier;
+                        = targetAlly.getHp() * multiplier;
                 targetAlly.setHp(newVida);
-                
+
                 System.out.println(
                         "[BUFF] " + targetAlly.getNombre()
                         + " aumenta un 50% de la vida"
@@ -696,7 +750,7 @@ public class StateInGame extends State {
                         new TURN_START_OUT()
                 )
         );
-
+        killAllEnemies();
         turnStartTime
                 = System.currentTimeMillis();
     }
@@ -851,7 +905,8 @@ public class StateInGame extends State {
     // =====================================================
     // MAPA
     // =====================================================
-    private MapNode loadFirstFloor() {
+    private MapNode loadSelectedFloor() {
+
         try (
                 java.io.InputStream is
                 = getClass()
@@ -859,6 +914,7 @@ public class StateInGame extends State {
                         .getResourceAsStream(
                                 "map_fixed.json"
                         )) {
+
                     if (is == null) {
                         throw new RuntimeException(
                                 "map_fixed.json no encontrado"
@@ -868,38 +924,98 @@ public class StateInGame extends State {
                     JsonNode root
                             = mapper.readTree(is);
 
-                    JsonNode node
+                    JsonNode mapas
                             = root.get("data")
-                                    .get("mapas")
-                                    .get(0)
-                                    .get("nodes")
-                                    .get(0);
+                                    .get("mapas");
 
+                    if (mapas == null
+                            || !mapas.isArray()) {
+
+                        throw new RuntimeException(
+                                "No hay mapas"
+                        );
+                    }
+
+                    JsonNode selectedNode = null;
+
+                    // =========================================
+                    // BUSCAR EL PISO
+                    // =========================================
+                    outer:
+                    for (JsonNode mapa : mapas) {
+
+                        JsonNode nodes
+                                = mapa.get("nodes");
+
+                        if (nodes == null
+                                || !nodes.isArray()) {
+                            continue;
+                        }
+
+                        for (JsonNode node : nodes) {
+
+                            int pis
+                                    = node.get("pis")
+                                            .asInt();
+
+                            if (pis == selectedPis) {
+
+                                selectedNode = node;
+
+                                break outer;
+                            }
+                        }
+                    }
+
+                    if (selectedNode == null) {
+
+                        throw new RuntimeException(
+                                "Piso no encontrado: "
+                                + selectedPis
+                        );
+                    }
+
+                    // =========================================
+                    // DATOS DEL NODE
+                    // =========================================
                     int pis
-                            = node.get("pis")
+                            = selectedNode.get("pis")
                                     .asInt();
 
                     String tipo
-                            = node.get("tipus")
+                            = selectedNode.get("tipus")
                                     .asText();
 
                     List<EnemyInstance> enemies
                             = new ArrayList<>();
 
                     JsonNode enemics
-                            = node.get("enemics");
+                            = selectedNode.get("enemics");
 
+                    // =========================================
+                    // ENEMIGOS
+                    // =========================================
                     if (enemics != null
                             && enemics.isArray()) {
+
                         for (JsonNode e : enemics) {
+
                             long idPersonatge
                                     = e.get("id_personatge")
                                             .asLong();
 
-                            float scale
-                                    = (float) e.get("escala")
-                                            .get("hp")
-                                            .asDouble();
+                            JsonNode escala
+                                    = e.get("escala");
+
+                            float hpScale = 1f;
+
+                            if (escala != null) {
+
+                                hpScale
+                                        = (float) escala
+                                                .get("hp")
+                                                .asDouble();
+                            }
 
                             Personaje base
                                     = game.getPersonajeById(
@@ -913,7 +1029,7 @@ public class StateInGame extends State {
                             EnemyInstance enemy
                                     = new EnemyInstance(
                                             base.copy(),
-                                            scale
+                                            hpScale
                                     );
 
                             enemies.add(enemy);
@@ -927,20 +1043,32 @@ public class StateInGame extends State {
                         }
                     }
 
-                    MapNode mapNode = new MapNode(
-                            pis,
-                            tipo,
-                            enemies
-                    );
+                    // =========================================
+                    // CREAR MAPNODE
+                    // =========================================
+                    MapNode mapNode
+                            = new MapNode(
+                                    pis,
+                                    tipo,
+                                    enemies
+                            );
 
-                    this.currentNode = mapNode;
+                    this.currentNode
+                            = mapNode;
 
                     broadcastPlayers();
+
                     broadcastEnemies();
+
+                    System.out.println(
+                            "[MAP] piso cargado -> "
+                            + selectedPis
+                    );
 
                     return mapNode;
 
                 } catch (Exception e) {
+
                     throw new RuntimeException(
                             "Error cargando mapa",
                             e

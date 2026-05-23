@@ -254,9 +254,11 @@ public class StatePickCharacter extends State {
             System.out.println(
                     "\n===== TODOS HAN ELEGIDO ====="
             );
-
+            
+            
+            
             game.setState(
-                    new StateInGame(game)
+                    new StateMap(game)
             );
         }
     }

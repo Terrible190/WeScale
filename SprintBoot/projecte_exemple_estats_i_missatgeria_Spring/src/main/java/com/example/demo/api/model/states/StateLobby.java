@@ -7,6 +7,7 @@ import com.example.demo.api.model.messages.JSONMessage;
 import com.example.demo.api.model.messages.in.LeaveGame_IN;
 import com.example.demo.api.model.messages.in.PlayerReadyMessage_IN;
 import com.example.demo.api.model.messages.in.pick_characters.PickCharacterMessage_IN;
+import com.example.demo.api.model.messages.in.selectPis_IN;
 import com.example.demo.api.model.messages.out.CharactersList_OUT;
 import com.example.demo.api.model.messages.out.GameInfo_OUT;
 import com.example.demo.api.model.messages.out.PlayerJoined_OUT;
@@ -46,7 +47,8 @@ public class StateLobby extends State {
             case PickCharacterMessage_IN.TYPE:
                 StatePickCharacter newState = new StatePickCharacter(game);
                 game.setState(newState);
-
+//                StateMap newState = new StateMap(game);
+//                game.setState(newState);
                 game.enqueue(msg);
 
                 break;

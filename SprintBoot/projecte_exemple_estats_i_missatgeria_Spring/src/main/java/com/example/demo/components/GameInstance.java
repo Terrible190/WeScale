@@ -35,16 +35,14 @@ public class GameInstance {
     private final List<CombatLogDTO> combatLogs = new ArrayList<>();
 
     public synchronized void addCombatLog(
-    CombatLogDTO log
-    )
-    {
+            CombatLogDTO log
+    ) {
         combatLogs.add(log);
     }
 
-    public synchronized List<CombatLogDTO> consumeCombatLogs()
-    {
-        List<CombatLogDTO> copy =
-            new ArrayList<>(combatLogs);
+    public synchronized List<CombatLogDTO> consumeCombatLogs() {
+        List<CombatLogDTO> copy
+                = new ArrayList<>(combatLogs);
 
         combatLogs.clear();
 
@@ -160,6 +158,32 @@ public class GameInstance {
         personajesDisponibles.remove(character);
 
         return true;
+    }
+
+    public synchronized void resetCharacterSelection() {
+
+        // 1. devolver todos los personajes seleccionados a disponibles
+        for (Personaje p : seleccionados.values()) {
+            personajesDisponibles.add(p);
+        }
+
+        // 2. limpiar selección
+        seleccionados.clear();
+        personajesDisponibles.clear();
+        
+        for(Personaje p : todosLosPersonajes){
+            personajesDisponibles.add(p);
+        }
+        System.out.println(
+                "\n===== RESET CHARACTER SELECTION ====="
+        );
+//
+//        // 3. opcional: reset de estado de los personajes (vida, alive, etc.)
+//        for (Personaje p : todosLosPersonajes) {
+//            p.setIsAlive(true);
+//            // si quieres reset completo:
+//            //p.setHp(p.getHpBase());  <-- si tienes base guardada
+//        }
     }
 
     public void removePlayer(Player player) {
