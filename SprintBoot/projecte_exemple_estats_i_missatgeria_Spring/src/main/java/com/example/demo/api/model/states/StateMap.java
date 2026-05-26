@@ -49,13 +49,8 @@ public class StateMap extends State {
                             JSONMessage.class
                     );
 
-           selectPis_IN data =
-           mapper.treeToValue(
-                json.data,
-                selectPis_IN.class
-            );
-
-            int pis = data.roomId;
+            int pis
+                    = json.data.asInt();
 
             selectedPis = pis;
 

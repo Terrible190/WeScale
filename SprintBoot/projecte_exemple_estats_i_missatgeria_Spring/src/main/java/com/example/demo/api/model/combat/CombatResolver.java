@@ -19,8 +19,6 @@ public class CombatResolver
 
         public boolean enemy;
 
-        public List<EnemyInstance> allEnemyTargets;
-
         public int speed;
 
         public Accio action;
@@ -147,16 +145,15 @@ public class CombatResolver
     // =====================================
 
     public static List<CombatEvent> resolveTurn(
-    List<CombatAction> actions
+        List<CombatAction> actions
     )
     {
         List<CombatEvent> events =
             new ArrayList<>();
 
-        System.out.println(
-            "[TOTAL ACTIONS] "
-            + actions.size()
-        );
+        // =========================
+        // SPEED ORDER
+        // =========================
 
         actions.sort(
             Comparator.comparingInt(
@@ -164,131 +161,56 @@ public class CombatResolver
             )
         );
 
+        // =========================
+        // RESOLVE
+        // =========================
+
         for (CombatAction action : actions)
         {
-            System.out.println(
-                "[ACTION LOOP]"
+            resolveAction(
+                action,
+                events
             );
-
-            System.out.println(
-                "[RESOLVE TURN] enemy="
-                + action.enemy
-                + " caster="
-                + action.casterId
-            );
-
-            try
-            {
-                resolveAction(action, events);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
         }
 
         return events;
     }
+
     // =====================================
     // RESOLVE ACTION
     // =====================================
 
     private static void resolveAction(
-    CombatAction action,
-    List<CombatEvent> events
+        CombatAction action,
+        List<CombatEvent> events
     )
     {
-        System.out.println(
-            "[ENTER resolveAction]"
-        );
-        if (action.action == null)
-        {
-            return;
-        }
-
         // =========================
         // PLAYER ACTION
         // =========================
-        System.out.println(
-            "[ACTION ENEMY FLAG] "
-            + action.enemy
-        );
+
         if (!action.enemy)
         {
-            // PLAYER ACTION
-
-            if (action.casterPlayer == null)
-                return;
-
-            if (!action.casterPlayer.isIsAlive())
-                return;
-
-            System.out.println(
-                "[TARGET TYPE] "
-                + action.action.getTargetType()
-            );
-
-            // =========================
-            // ALL ENEMIES (AOE)
-            // =========================
-
-            if (action.enemyTarget == null)
+            if (
+                action.casterPlayer == null
+            )
             {
-                if (action.allEnemyTargets == null)
-                    return;
-
-                for (EnemyInstance enemy : action.allEnemyTargets)
-                {
-                    if (
-                        enemy == null
-                        ||
-                        !enemy.getBase().isIsAlive()
-                    )
-                    {
-                        continue;
-                    }
-
-                    CombatAction copy =
-                        new CombatAction();
-
-                    copy.enemy = false;
-                    copy.casterId = action.casterId;
-                    copy.casterPlayer = action.casterPlayer;
-                    copy.enemyTarget = enemy;
-                    copy.action = action.action;
-
-                    events.add(
-                        new ActionEvent(
-                            copy.casterId,
-                            enemy.getInstanceId(),
-                            copy.action.getId()
-                        )
-                    );
-
-                    System.out.println(
-                        "[APPLY EFFECTS ENEMY] "
-                        + enemy.getInstanceId()
-                    );
-
-                    applyEffectsToEnemy(
-                        copy,
-                        events
-                    );
-                }
-                if (action.action == null)
-                {
-                    System.out.println(
-                        "[ACTION NULL]"
-                    );
-
-                    return;
-                }
                 return;
             }
 
-            // =========================
-            // SINGLE TARGET
-            // =========================
+            if (
+                !action.casterPlayer.isIsAlive()
+            )
+            {
+                return;
+            }
+
+            if (
+                action.enemyTarget == null
+            )
+            {
+                return;
+            }
 
             if (
                 !action.enemyTarget
@@ -299,21 +221,13 @@ public class CombatResolver
                 return;
             }
 
-            System.out.println(
-                "[TARGET ENEMY] "
-                + action.enemyTarget.getInstanceId()
-            );
-
             events.add(
                 new ActionEvent(
                     action.casterId,
-                    action.enemyTarget.getInstanceId(),
+                    action.enemyTarget
+                        .getInstanceId(),
                     action.action.getId()
                 )
-            );
-
-            System.out.println(
-                "[APPLY EFFECTS ENEMY]"
             );
 
             applyEffectsToEnemy(
@@ -321,12 +235,19 @@ public class CombatResolver
                 events
             );
         }
+
+        // =========================
+        // ENEMY ACTION
+        // =========================
+
         else
         {
-            // ENEMY ACTION
-
-            if (action.casterEnemy == null)
+            if (
+                action.casterEnemy == null
+            )
+            {
                 return;
+            }
 
             if (
                 !action.casterEnemy
@@ -337,16 +258,29 @@ public class CombatResolver
                 return;
             }
 
-            if (action.playerTarget == null)
+            if (
+                action.playerTarget == null
+            )
+            {
                 return;
+            }
 
-            if (!action.playerTarget.isIsAlive())
+            if (
+                !action.playerTarget
+                    .isIsAlive()
+            )
+            {
                 return;
+            }
 
             events.add(
                 new ActionEvent(
-                    action.casterEnemy.getInstanceId(),
-                    action.playerTarget.getId(),
+                    action.casterEnemy
+                        .getInstanceId(),
+
+                    action.playerTarget
+                        .getId(),
+
                     action.action.getId()
                 )
             );
@@ -357,6 +291,7 @@ public class CombatResolver
             );
         }
     }
+
     // =====================================
     // PLAYER -> ENEMY
     // =====================================
@@ -374,7 +309,10 @@ public class CombatResolver
             return;
         }
 
-        for (Efecto efecto :  action.action.getEfectos() )
+        for (
+            Efecto efecto :
+            action.action.getEfectos()
+        )
         {
             switch (efecto.getTipo())
             {
@@ -439,10 +377,10 @@ public class CombatResolver
             );
 
         float hp =
-            action.playerTarget.getCurrentHp()
+            action.playerTarget.getHp()
             - damage;
 
-        action.playerTarget.setCurrentHp(hp);
+        action.playerTarget.setHp(hp);
 
         events.add(
             new DamageEvent(
@@ -464,12 +402,13 @@ public class CombatResolver
         // DEATH
         // =========================
 
-       if (
-            action.playerTarget.getCurrentHp()
+        if (
+            action.playerTarget.getHp()
             <= 0
         )
         {
-           action.playerTarget.setCurrentHp(0);
+            action.playerTarget
+                .setHp(0);
 
             action.playerTarget
                 .setIsAlive(false);
@@ -488,9 +427,9 @@ public class CombatResolver
     // =====================================
 
     private static void applyDamageToEnemy(
-    CombatAction action,
-    Efecto efecto,
-    List<CombatEvent> events
+        CombatAction action,
+        Efecto efecto,
+        List<CombatEvent> events
     )
     {
         float damage =
@@ -503,17 +442,12 @@ public class CombatResolver
         float hp =
             action.enemyTarget
                 .getBase()
-                .getCurrentHp()
+                .getHp()
             - damage;
- System.out.println(
-            "[PLAYER HIT] target="
-            + action.enemyTarget.getInstanceId()
-            + " hpBefore="
-            + action.enemyTarget.getBase().getCurrentHp()
-        );
+
         action.enemyTarget
             .getBase()
-            .setCurrentHp(hp);
+            .setHp(hp);
 
         events.add(
             new DamageEvent(
@@ -529,12 +463,7 @@ public class CombatResolver
                 efecto.getTipoDanyo()
             )
         );
-System.out.println(
-    "[PLAYER HIT DONE] target="
-    + action.enemyTarget.getInstanceId()
-    + " hpAfter="
-    + action.enemyTarget.getBase().getCurrentHp()
-);       
+
         // =========================
         // DEATH
         // =========================
@@ -542,13 +471,13 @@ System.out.println(
         if (
             action.enemyTarget
                 .getBase()
-                .getCurrentHp()
+                .getHp()
             <= 0
         )
         {
             action.enemyTarget
                 .getBase()
-                .setCurrentHp(0);
+                .setHp(0);
 
             action.enemyTarget
                 .getBase()
@@ -562,6 +491,7 @@ System.out.println(
             );
         }
     }
+
     // =====================================
     // STATUS
     // =====================================
@@ -598,8 +528,8 @@ System.out.println(
     }
 
     // =====================================
-// DAMAGE CALC PLAYER
-// =====================================
+    // DAMAGE CALC
+    // =====================================
 
     private static float calculatePlayerDamage(
         Personaje attacker,
@@ -609,12 +539,9 @@ System.out.println(
     {
         float damage;
 
-        // =========================
-        // MAGIC DAMAGE
-        // =========================
-
         if (
-            efecto.getTipoDanyo() != null
+            efecto.getTipoDanyo()
+            != null
             &&
             efecto.getTipoDanyo() == 1
         )
@@ -623,32 +550,13 @@ System.out.println(
                 attacker.getDanyoMagico()
                 - target.getBase()
                     .getDefensaMagica();
-
-            System.out.println(
-                "[MAGIC DAMAGE] "
-                + attacker.getNombre()
-                + " -> "
-                + damage
-            );
         }
-
-        // =========================
-        // PHYSICAL DAMAGE
-        // =========================
-
         else
         {
             damage =
                 attacker.getDanyoFisico()
                 - target.getBase()
                     .getDefensaFisica();
-
-            System.out.println(
-                "[PHYSICAL DAMAGE] "
-                + attacker.getNombre()
-                + " -> "
-                + damage
-            );
         }
 
         return Math.max(
@@ -657,8 +565,6 @@ System.out.println(
         );
     }
 
-    // =====================================
-    // DAMAGE CALC ENEMY
     // =====================================
 
     private static float calculateEnemyDamage(
@@ -671,21 +577,12 @@ System.out.println(
                 .getDanyoFisico()
             - target.getDefensaFisica();
 
-        System.out.println(
-            "[ENEMY DAMAGE] "
-            + attacker.getBase().getNombre()
-            + " -> "
-            + damage
-        );
-
         return Math.max(
             1,
             damage
         );
     }
-    // =====================================
 
-   
     // =====================================
     // ENEMY AI
     // =====================================
@@ -749,8 +646,9 @@ System.out.println(
                         targetPlayer.getId()
                     );
 
-            CombatAction action = new CombatAction();
-             
+            CombatAction action =
+                new CombatAction();
+
             action.enemy = true;
 
             action.casterId =
@@ -762,18 +660,7 @@ System.out.println(
             action.playerTarget =
                 target;
 
-            action.speed =
-                (int) enemy.getBase().getVelocidad();
-
-            if (enemy.getBase().getAcciones() == null || enemy.getBase().getAcciones().isEmpty()  )
-            {
-                continue;
-            }
-
-            action.action =
-                enemy.getBase()
-                    .getAcciones()
-                    .get(0);
+            action.speed =  (int)  enemy.getBase().getVelocidad();
 
             actions.add(action);
         }

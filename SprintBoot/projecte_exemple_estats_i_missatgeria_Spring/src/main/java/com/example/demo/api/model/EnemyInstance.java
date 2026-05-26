@@ -13,10 +13,7 @@ public class EnemyInstance {
 
         this.base = base;
 
-        float scaledHp = base.getCurrentHp() * scale;
-
-        this.base.setHp(scaledHp);
-        this.base.setCurrentHp(scaledHp);
+        this.base.setHp(base.getHp() * scale);
         this.base.setDanyoFisico(base.getDanyoFisico() * scale);
         this.base.setDanyoMagico(base.getDanyoMagico() * scale);
         this.base.setDefensaFisica(base.getDefensaFisica() * scale);
@@ -33,9 +30,5 @@ public class EnemyInstance {
 
     public Personaje getBase() {
         return base;
-    }
-    public static void resetIds()
-    {
-        NEXT_ID = 1;
     }
 }

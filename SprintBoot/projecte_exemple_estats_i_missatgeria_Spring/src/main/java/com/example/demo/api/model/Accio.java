@@ -51,9 +51,7 @@ public class Accio {
     public List<Efecto> getEfectos() {
         return efectos;
     }
-    public void setTargetType(int targetType) {
-        this.targetType = targetType;
-    }
+
     public int getTargetType() {
         return targetType;
     }   
