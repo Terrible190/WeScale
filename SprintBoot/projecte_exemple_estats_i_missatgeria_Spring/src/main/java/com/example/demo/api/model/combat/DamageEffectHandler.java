@@ -3,10 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.example.demo.api.model.combat;
+
 import com.example.demo.api.model.*;
 import com.example.demo.components.*;
+
 /**
-/**
+ * /**
  *
  * @author Anas
  */
@@ -26,17 +28,21 @@ public class DamageEffectHandler
             return;
         }
 
-        float damage =
-                attacker.getDanyoFisico()
+        float damage
+                = attacker.getDanyoFisico()
                 - targetEnemy.getBase()
                         .getDefensaFisica();
 
         damage = Math.max(1, damage);
 
-        float hp =
-                targetEnemy.getBase().getHp()
+        float hp
+                = targetEnemy.getBase().getHp()
                 - damage;
 
         targetEnemy.getBase().setHp(hp);
+
+        targetEnemy.getBase().setVelocidad(
+                targetEnemy.getBase().getVelocidad() * 0.7f
+        );
     }
 }

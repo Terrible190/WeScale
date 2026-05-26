@@ -31,4 +31,5 @@ public class EnemyInstance {
     public Personaje getBase() {
         return base;
     }
+
 }

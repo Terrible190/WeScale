@@ -16,8 +16,10 @@ public class EffectHandlerRegistry {
     private final Map<Integer, EffectHandler> handlers = new HashMap<>();
 
     public EffectHandlerRegistry() {
-        register(2, new DefenseBuffHandler());
-        register(1, new DamageEffectHandler());
+        register(2, new DamageEffectHandler());
+        register(4, new DefenseBuffHandler());
+        register(9, new Angel_Custodi());
+        register(18, new Escut_Arca());
     }
 
     public void register(int tipo, EffectHandler handler) {

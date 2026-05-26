@@ -438,7 +438,7 @@ public class StateInGame extends State {
             Personaje targetAlly
     ) {
 
-        EffectHandler handler = registry.get(efecto.getTipo());
+        EffectHandler handler = registry.get(efecto.getId());
 
         if (handler == null) {
             System.out.println("[WARN] no handler for type " + efecto.getTipo());
