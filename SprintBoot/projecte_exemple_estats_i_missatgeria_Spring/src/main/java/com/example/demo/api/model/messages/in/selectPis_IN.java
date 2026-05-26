@@ -12,6 +12,8 @@ import com.example.demo.api.model.messages.MessageBody;
  */
 public class selectPis_IN extends MessageBody {
     public static final String TYPE = "selectPis";
+    
+    public int roomId;
 
     @Override
     public String getMessageType() {

@@ -32,6 +32,8 @@ public class Personaje {
 
     @Column(name = "hp_base")
     private float hp;
+    @Transient
+    private float currentHp;
 
     @Column(name = "dany_fisic_base")
     private float danyoFisico;
@@ -78,6 +80,7 @@ public class Personaje {
         this.nombre = nombre;
 
         this.hp = hp;
+        this.currentHp = hp;
 
         this.danyoFisico = danyoFisico;
         this.danyoMagico = danyoMagico;
@@ -93,6 +96,7 @@ public class Personaje {
     }
 
     public Personaje() {
+        this.isAlive = true;
     }
 
     @JsonIgnore
@@ -121,6 +125,10 @@ public class Personaje {
 
     public float getDanyoFisico() {
         return danyoFisico;
+    }
+    @JsonProperty("currentHp")
+    public float getCurrentHp(){
+        return currentHp;
     }
 
     public float getDanyoMagico() {
@@ -186,7 +194,16 @@ public class Personaje {
     public void setCritico(float critico) {
         this.critico = critico;
     }
+    public void setCurrentHp(float hp) {
 
+        this.currentHp = hp;
+
+        if (this.currentHp <= 0) {
+
+            this.currentHp = 0;
+            this.isAlive = false;
+        }
+    }
     public void setMultiplicadorCritico(float multiplicadorCritico) {
         this.multiplicadorCritico = multiplicadorCritico;
     }
@@ -218,6 +235,8 @@ public class Personaje {
         p.nombre = this.nombre;
 
         p.hp = this.hp;
+        p.currentHp =
+        p.currentHp > 0 ? this.currentHp : this.hp;
         p.danyoFisico = this.danyoFisico;
         p.danyoMagico = this.danyoMagico;
         p.velocidad = this.velocidad;

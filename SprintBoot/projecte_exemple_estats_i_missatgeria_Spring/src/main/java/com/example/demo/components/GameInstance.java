@@ -62,6 +62,8 @@ public class GameInstance {
 
         for (Personaje p : todosLosPersonajes) {
             System.out.println(p.getNombre() + " - " + p.getId());
+            System.out.println(p.getHp());
+            System.out.println(p.getVelocidad());
         }
 
         currentState = new StateLobby(this);
