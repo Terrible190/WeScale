@@ -1,6 +1,9 @@
 package com.example.demo.api.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Transient;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +59,13 @@ public class Personaje {
 
     @Column(name = "seleccionable")
     private boolean seleccionable;
+    @Transient
+    private List<ActiveEffect> activeEffects =
+        new ArrayList<>();
+
+public List<ActiveEffect> getActiveEffects() {
+    return activeEffects;
+}
 
     // NO persistente combate runtime
     @Transient

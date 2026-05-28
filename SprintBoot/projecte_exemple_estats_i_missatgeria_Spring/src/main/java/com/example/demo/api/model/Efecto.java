@@ -25,6 +25,14 @@ public class Efecto {
     @Column(name = "duracio")
     private Integer duracion;
 
+    @Column(name = "valor")
+    private Float valor;
+
+    @Column(name = "operacio")
+    private Integer operacion;
+
+    @Column(name = "nom_stat")
+    private Integer stat;
     public Efecto()
     {
 
@@ -59,7 +67,17 @@ public class Efecto {
     public Integer getRango() {
         return rango;
     }
+    public Float getValor() {
+        return valor;
+    }
 
+    public Integer getOperacion() {
+        return operacion;
+    }
+
+    public Integer getStat() {
+        return stat;
+    }
     public Integer getDuracion() {
         return duracion;
     }

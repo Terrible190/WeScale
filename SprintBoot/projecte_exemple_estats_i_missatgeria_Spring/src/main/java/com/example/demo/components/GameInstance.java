@@ -28,18 +28,30 @@ public class GameInstance {
     private static long idCounter = 1;
     private final String id;
     private State currentState;
-
+    private int currentRoomId = -1;
+    
     private List<Personaje> personajesDisponibles = new ArrayList<>();
     private List<Personaje> todosLosPersonajes = new ArrayList<>();
     private Map<Long, Personaje> seleccionados = new HashMap<>();
     private final List<CombatLogDTO> combatLogs = new ArrayList<>();
+    private Set<Integer> completedFloors =
+        new HashSet<>();
 
+    public Set<Integer> getCompletedFloors() {
+        return completedFloors;
+    }
     public synchronized void addCombatLog(
             CombatLogDTO log
     ) {
         combatLogs.add(log);
     }
+    public int getSelectedPis() {
+    return currentRoomId;
+    }
 
+    public void setSelectedPis(int selectedPis) {
+        this.currentRoomId = selectedPis;
+    }
     public synchronized List<CombatLogDTO> consumeCombatLogs() {
         List<CombatLogDTO> copy
                 = new ArrayList<>(combatLogs);

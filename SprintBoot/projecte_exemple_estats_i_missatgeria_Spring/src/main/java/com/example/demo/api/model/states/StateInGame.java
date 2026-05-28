@@ -24,7 +24,6 @@ public class StateInGame extends State {
 
     private final Random random
             = new Random();
-
     // =========================
     // COMBAT
     // =========================
@@ -105,9 +104,41 @@ public class StateInGame extends State {
             System.out.println(
                     "\n===== GG ====="
             );
+
+            game.getCompletedFloors().add(game.getSelectedPis());
+
+            game.broadcast(
+                new JSONMessage(
+                        game.getId(),
+                        new GAME_WIN_OUT()
+                )
+                );
             game.resetCharacterSelection();
-            game.setState(new StatePickCharacter(game));
-            return;
+                game.setState(
+                new StatePickCharacter(game)
+                );           
+                 return;
+        }
+        if (areAllPlayersDead()) {
+
+        System.out.println(
+                "\n===== GAME OVER ====="
+        );
+
+        game.broadcast(
+                new JSONMessage(
+                        game.getId(),
+                        new GAME_LOSE_OUT()
+                )
+        );
+
+        game.resetCharacterSelection();
+
+        game.setState(
+                new StatePickCharacter(game)
+        );
+
+        return;
         }
         GameMessage msg
                 = game.pollMessage(
@@ -142,7 +173,20 @@ public class StateInGame extends State {
                 break;
         }
     }
+private boolean areAllPlayersDead() {
 
+    return game.getPlayers()
+            .stream()
+            .noneMatch(p -> {
+
+                Personaje pj =
+                        game.getSeleccionados()
+                                .get(p.getId());
+
+                return pj != null
+                        && pj.isIsAlive();
+            });
+}
     // =====================================================
     // ACTIONS
     // =====================================================
@@ -194,7 +238,23 @@ public class StateInGame extends State {
                         )
                         .findFirst()
                         .orElse(null);
+System.out.println(
+    "[ACCION] "
+    + accion.getNombre()
+);
 
+System.out.println(
+    "[EFECTOS NULL] "
+    + (accion.getEfectos() == null)
+);
+
+if (accion.getEfectos() != null) {
+
+    System.out.println(
+        "[EFECTOS SIZE] "
+        + accion.getEfectos().size()
+    );
+}
         if (accion == null) {
             System.out.println(
                     "[ERROR] accion null"
@@ -208,7 +268,10 @@ public class StateInGame extends State {
 
         Personaje targetAlly
                 = null;
-
+        System.out.println(
+        "[TARGET TYPE] "
+        + accion.getTargetType()
+        );
         switch (accion.getTargetType()) {
             // self
             case 0:
@@ -219,27 +282,43 @@ public class StateInGame extends State {
                 break;
 
             // enemy
-            case 1:
+           // enemy
+case 1:
 
-                targetEnemy
-                        = currentNode.enemics
-                                .stream()
-                                .filter(e
-                                        -> e.getInstanceId()
-                                == data.getTargetId()
-                                )
-                                .findFirst()
-                                .orElse(null);
+    System.out.println(
+        "[TARGET ID RECIBIDO] "
+        + data.getTargetId()
+    );
 
-                if (targetEnemy == null) {
-                    System.out.println(
-                            "[ERROR] enemigo no encontrado"
-                    );
+    for (EnemyInstance e : currentNode.enemics) {
 
-                    return;
-                }
+        System.out.println(
+            "[ENEMY INSTANCE] "
+            + e.getInstanceId()
+        );
+    }
 
-                break;
+        targetEnemy
+            = currentNode.enemics
+                    .stream()
+                    .filter(e
+                            -> e.getInstanceId()
+                    == data.getTargetId()
+                    )
+                    .findFirst()
+                    .orElse(null);
+
+/*targetEnemy =
+    currentNode.enemics.get(0);*/
+    if (targetEnemy == null) {
+        System.out.println(
+                "[ERROR] enemigo no encontrado"
+        );
+
+        return;
+    }
+
+    break;
 
             // ally
             case 2:
@@ -438,8 +517,16 @@ public class StateInGame extends State {
             Personaje targetAlly
     ) {
 
-        EffectHandler handler = registry.get(efecto.getId());
+        System.out.println("enemic dins applyeffect " + targetEnemy);
 
+        System.out.println(
+        "[EFFECT] id="
+        + efecto.getId()
+        + " tipo="
+        + efecto.getTipo()
+        );
+        EffectHandler handler = registry.get(efecto.getTipo());
+        
         if (handler == null) {
             System.out.println("[WARN] no handler for type " + efecto.getTipo());
             return;
@@ -466,10 +553,15 @@ public class StateInGame extends State {
                 = target.getBase().getHp()
                 - damage;
 
-        target.getBase().setHp(hp);
+        
+
+                target.getBase().setHp(hp);
         CombatLogDTO log
                 = new CombatLogDTO();
-
+                System.out.println("Daño " + damage );
+                System.out.println("Vida " + target.getBase().getHp() );
+                System.out.println("Perosnaje herido " + target.getBase().getNombre());
+                System.out.println("Daño desde" + attacker.getNombre());
         log.type = "damage";
 
         log.source
@@ -496,182 +588,107 @@ public class StateInGame extends State {
         );
     }
 
-    private void applyStatusEffect(
-            Efecto efecto,
-            EnemyInstance target
-    ) {
-        System.out.println(
-                "[STATUS EFFECT]"
-        );
-    }
-
-    private void applyBuffEffect(
-            Efecto efecto,
-            EnemyInstance targetEnemy,
-            Personaje targetAlly
-    ) {
-        switch (efecto.getId()) {
-            case 9:
-                if (targetAlly == null) {
-                    return;
-                }
-                float multiplier = 1.5f;
-                float newVida
-                        = targetAlly.getHp() * multiplier;
-                targetAlly.setHp(newVida);
-
-                System.out.println(
-                        "[BUFF] " + targetAlly.getNombre()
-                        + " aumenta un 50% de la vida"
-                );
-                break;
-            case 2:
-                //Ataca amb energia glacial aplicant Congelat durant 3 torns i reduint la velocitat un 30%.
-                break;
-            case 12:
-                //"Marca l enemic amb Black Flash i infligeix dany físic extra."
-                break;
-        }
-    }
-
-    private void applyDefensaStats(
-            Efecto efecto,
-            Personaje targetAlly
-    ) {
-        switch (efecto.getId()) {
-            case 4:
-                if (targetAlly == null) {
-                    return;
-                }
-
-                float multiplier = 1.7f;
-
-                float newDefFisica
-                        = targetAlly.getDefensaFisica() * multiplier;
-
-                float newDefMagica
-                        = targetAlly.getDefensaMagica() * multiplier;
-
-                targetAlly.setDefensaFisica(newDefFisica);
-                targetAlly.setDefensaMagica(newDefMagica);
-
-                System.out.println(
-                        "[BUFF] " + targetAlly.getNombre()
-                        + " aumenta defensa 70% por 1 turno"
-                );
-                break;
-            case 18:
-                if (targetAlly == null) {
-                    return;
-                }
-
-                float multiplier2 = 2.0f;
-                float newDefMagica2
-                        = targetAlly.getDefensaMagica() * multiplier2;
-                targetAlly.setDefensaMagica(newDefMagica2);
-                System.out.println(
-                        "[BUFF] " + targetAlly.getNombre()
-                        + " aumenta defensa magina x2"
-                );
-                break;
-        }
-
-    }
 
     private float calculateDamage(
-            Personaje attacker,
-            EnemyInstance target,
-            Efecto efecto
-    ) {
-        float damage;
-
-        if (efecto.getTipoDanyo() == 1) {
-            damage
-                    = attacker.getDanyoMagico()
-                    - target.getBase()
-                            .getDefensaMagica();
-        } else {
-            damage
-                    = attacker.getDanyoFisico()
-                    - target.getBase()
-                            .getDefensaFisica();
+        Personaje attacker,
+        EnemyInstance target,
+        Efecto efecto
+        ) {
+                return attacker.getDanyoFisico();
         }
-
-        return Math.max(1, damage);
-    }
-
     // =====================================================
-    // ENEMY TURN
+    // ENEMY TURN 
     // =====================================================
     private void enemyTurn() {
-        List<EnemyInstance> aliveEnemies
-                = currentNode.enemics
-                        .stream()
-                        .filter(e
-                                -> e.getBase().isIsAlive()
-                        )
-                        .toList();
 
-        if (aliveEnemies.isEmpty()) {
-            System.out.println(
-                    "\n===== TODOS LOS ENEMIGOS MUERTOS ====="
-            );
+    List<EnemyInstance> aliveEnemies =
+            currentNode.enemics
+                    .stream()
+                    .filter(e -> e.getBase().isIsAlive())
+                    .toList();
 
-            return;
-        }
+    if (aliveEnemies.isEmpty()) {
 
-        List<Player> alivePlayers
-                = game.getPlayers()
-                        .stream()
-                        .filter(p -> {
-                            Personaje pj
-                                    = game.getSeleccionados()
-                                            .get(p.getId());
+        System.out.println(
+                "\n===== TODOS LOS ENEMIGOS MUERTOS ====="
+        );
 
-                            return pj != null
-                                    && pj.isIsAlive();
-                        })
-                        .toList();
+        return;
+    }
 
-        if (alivePlayers.isEmpty()) {
-            System.out.println(
-                    "\n===== TODOS LOS JUGADORES MUERTOS ====="
-            );
+    List<Player> alivePlayers =
+            game.getPlayers()
+                    .stream()
+                    .filter(p -> {
 
-            return;
-        }
+                        Personaje pj =
+                                game.getSeleccionados()
+                                        .get(p.getId());
 
-        EnemyInstance attacker
-                = aliveEnemies.get(
-                        random.nextInt(
-                                aliveEnemies.size()
-                        )
-                );
+                        return pj != null
+                                && pj.isIsAlive();
+                    })
+                    .toList();
 
-        Player targetPlayer
-                = alivePlayers.get(
+    if (alivePlayers.isEmpty()) {
+
+        System.out.println(
+                "\n===== TODOS LOS JUGADORES MUERTOS ====="
+        );
+
+        return;
+    }
+
+    for (EnemyInstance attacker : aliveEnemies) {
+
+        Player targetPlayer =
+                alivePlayers.get(
                         random.nextInt(
                                 alivePlayers.size()
                         )
                 );
 
-        Personaje playerCharacter
-                = game.getSeleccionados()
+        Personaje playerCharacter =
+                game.getSeleccionados()
                         .get(targetPlayer.getId());
 
-        if (playerCharacter == null) {
-            return;
+        if (playerCharacter == null
+                || !playerCharacter.isIsAlive()) {
+            continue;
         }
 
-        float damage
-                = attacker.getBase()
+        float damage =
+                attacker.getBase()
                         .getDanyoFisico();
 
-        float newHp
-                = playerCharacter.getHp()
+        System.out.println(
+                "[ENEMY ATTACK] "
+                + attacker.getBase().getNombre()
+                + " -> "
+                + playerCharacter.getNombre()
+        );
+
+        System.out.println(
+                "[HP BEFORE] "
+                + playerCharacter.getHp()
+        );
+
+        float newHp =
+                playerCharacter.getHp()
                 - damage;
 
+        System.out.println(
+                "[DAMAGE] "
+                + damage
+        );
+
+        System.out.println(
+                "[HP AFTER] "
+                + newHp
+        );
+
         if (newHp <= 0) {
+
             playerCharacter.setHp(0);
 
             playerCharacter.setIsAlive(false);
@@ -685,13 +702,40 @@ public class StateInGame extends State {
                             )
                     )
             );
+
+            System.out.println(
+                    "[PLAYER DEAD] "
+                    + playerCharacter.getNombre()
+            );
+
         } else {
+
             playerCharacter.setHp(newHp);
         }
-
-        broadcastPlayers();
     }
 
+    System.out.println(
+            "[BROADCAST PLAYERS]"
+    );
+
+    for (Player p : game.getPlayers()) {
+
+        Personaje pj =
+                game.getSeleccionados()
+                        .get(p.getId());
+
+        if (pj == null)
+            continue;
+
+        System.out.println(
+                pj.getNombre()
+                + " HP="
+                + pj.getHp()
+        );
+    }
+
+    broadcastPlayers();
+}
     // =====================================================
     // TURNOS
     // =====================================================
@@ -710,7 +754,7 @@ public class StateInGame extends State {
         if (pj == null) {
             return;
         }
-
+        processEffects(pj);
         System.out.println(
                 "\n===== TURNO DE "
                 + pj.getNombre()
@@ -1048,4 +1092,112 @@ public class StateInGame extends State {
                     );
                 }
     }
+
+
+    private void processEffects(
+        Personaje pj)
+{
+    Iterator<ActiveEffect> it =
+        pj.getActiveEffects().iterator();
+
+    while(it.hasNext())
+    {
+        ActiveEffect active =
+            it.next();
+
+        Efecto efecto =
+            active.getEfecto();
+        System.out.println(
+        efecto.getClass().getName()
+        );
+       
+       if(
+        efecto.getStat() != null
+        )
+        {
+        aplicarModificador(
+                pj,
+                efecto
+        );
+        }
+        active.reduceTurn();
+
+        if(active.getTurns() <= 0)
+        {
+            it.remove();
+        }
+    }
+}
+private void aplicarModificador(
+    Personaje pj,
+    Efecto efecto
+)
+{
+    System.out.println(
+        "[MOD] stat="
+        + efecto.getStat()
+        + " valor="
+        + efecto.getValor()
+    );
+
+    if(efecto.getStat() == null)
+        return;
+
+    switch(efecto.getStat())
+    {
+        case 1:
+
+            pj.setHp(
+                pj.getHp()
+                + efecto.getValor()
+            );
+
+            break;
+
+        case 2:
+
+            pj.setDanyoFisico(
+                pj.getDanyoFisico()
+                + efecto.getValor()
+            );
+
+            break;
+
+        case 3:
+
+            pj.setDanyoMagico(
+                pj.getDanyoMagico()
+                + efecto.getValor()
+            );
+
+            break;
+
+        case 4:
+
+            pj.setDefensaFisica(
+                pj.getDefensaFisica()
+                + efecto.getValor()
+            );
+
+            break;
+
+        case 5:
+
+            pj.setDefensaMagica(
+                pj.getDefensaMagica()
+                + efecto.getValor()
+            );
+
+            break;
+
+        case 6:
+
+            pj.setVelocidad(
+                pj.getVelocidad()
+                + efecto.getValor()
+            );
+
+            break;
+    }
+} 
 }

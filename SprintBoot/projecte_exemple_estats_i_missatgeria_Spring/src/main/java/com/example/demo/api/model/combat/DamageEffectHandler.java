@@ -13,36 +13,39 @@ import com.example.demo.components.*;
  * @author Anas
  */
 public class DamageEffectHandler
-        implements EffectHandler {
+    implements EffectHandler
+{
 
     @Override
     public void apply(
-            Efecto efecto,
-            Personaje attacker,
-            EnemyInstance targetEnemy,
-            Personaje targetAlly,
-            GameInstance game
-    ) {
-
+        Efecto efecto,
+        Personaje attacker,
+        EnemyInstance targetEnemy,
+        Personaje targetAlly,
+        GameInstance game
+    )
+    {
         if (targetEnemy == null) {
+            System.out.println("[ERROR] targetEnemy null");
             return;
         }
 
-        float damage
-                = attacker.getDanyoFisico()
-                - targetEnemy.getBase()
-                        .getDefensaFisica();
+        float damage =
+            attacker.getDanyoFisico();
 
-        damage = Math.max(1, damage);
-
-        float hp
-                = targetEnemy.getBase().getHp()
-                - damage;
+        float hp =
+            targetEnemy.getBase().getHp()
+            - damage;
 
         targetEnemy.getBase().setHp(hp);
 
-        targetEnemy.getBase().setVelocidad(
-                targetEnemy.getBase().getVelocidad() * 0.7f
+        System.out.println(
+            "[DAMAGE] "
+            + attacker.getNombre()
+            + " -> "
+            + targetEnemy.getBase().getNombre()
+            + " : "
+            + damage
         );
     }
 }

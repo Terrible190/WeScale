@@ -12,7 +12,7 @@
             "tipus": "combat",
             "enemics": [
               {
-                "id_personatge": 1,
+                "id_personatge": 3,
                 "nivell": 4,
                 "escala": {
                   "hp": 1.15,
@@ -38,7 +38,7 @@
                 }
               },
               {
-                "id_personatge": 1,
+                "id_personatge": 5,
                 "nivell": 4,
                 "escala": {
                   "hp": 1.15,
@@ -71,7 +71,7 @@
             "tipus": "combat",
             "enemics": [
               {
-                "id_personatge": 1,
+                "id_personatge": 7,
                 "nivell": 5,
                 "escala": {
                   "hp": 1.2,
@@ -84,7 +84,7 @@
                 }
               },
               {
-                "id_personatge": 2,
+                "id_personatge": 5,
                 "nivell": 5,
                 "escala": {
                   "hp": 1.2,
@@ -97,7 +97,7 @@
                 }
               },
               {
-                "id_personatge": 1,
+                "id_personatge": 4,
                 "nivell": 5,
                 "escala": {
                   "hp": 1.2,
@@ -130,7 +130,7 @@
             "tipus": "combat",
             "enemics": [
               {
-                "id_personatge": 1,
+                "id_personatge": 3,
                 "nivell": 6,
                 "escala": {
                   "hp": 1.25,
@@ -189,19 +189,6 @@
             "tipus": "combat",
             "enemics": [
               {
-                "id_personatge": 1,
-                "nivell": 7,
-                "escala": {
-                  "hp": 1.3,
-                  "dany_fisic": 1.3,
-                  "dany_magic": 1.3,
-                  "defensa_fisica": 1.3,
-                  "defensa_magica": 1.3,
-                  "velocitat": 1.26,
-                  "critic": 1.13
-                }
-              },
-              {
                 "id_personatge": 2,
                 "nivell": 7,
                 "escala": {
@@ -215,7 +202,20 @@
                 }
               },
               {
-                "id_personatge": 1,
+                "id_personatge": 4,
+                "nivell": 7,
+                "escala": {
+                  "hp": 1.3,
+                  "dany_fisic": 1.3,
+                  "dany_magic": 1.3,
+                  "defensa_fisica": 1.3,
+                  "defensa_magica": 1.3,
+                  "velocitat": 1.26,
+                  "critic": 1.13
+                }
+              },
+              {
+                "id_personatge": 4,
                 "nivell": 7,
                 "escala": {
                   "hp": 1.3,

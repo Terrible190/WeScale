@@ -22,4 +22,5 @@ public class EfectoModEstadistica extends Efecto {
         this.operacion = operacion;
         this.valor = valor;
     }
+    
 }

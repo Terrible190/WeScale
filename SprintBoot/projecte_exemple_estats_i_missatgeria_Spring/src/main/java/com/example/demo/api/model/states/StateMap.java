@@ -20,11 +20,13 @@ public class StateMap extends State {
     public StateMap(GameInstance game) {
         super(game);
 
-        game.broadcast(
-                new JSONMessage(
-                        game.getId(),
-                        new ShowMapMessage_OUT()
+      game.broadcast(
+        new JSONMessage(
+                game.getId(),
+                new ShowMapMessage_OUT(
+                game.getCompletedFloors()
                 )
+        )
         );
     }
 
@@ -49,18 +51,37 @@ public class StateMap extends State {
                             JSONMessage.class
                     );
 
-            int pis
-                    = json.data.asInt();
+                int pis = json.data.asInt();
+                System.out.println(
+                "[COMPLETED FLOORS] "
+                + game.getCompletedFloors()
+                );
+                if(
+                game.getCompletedFloors()
+                        .contains(pis)
+                )
+                {
+                System.out.println(
+                        "[MAP] Piso ya completado: "
+                        + pis
+                );
 
-            selectedPis = pis;
+                return;
+                }
 
-            System.out.println(
-                    "[MAP] piso seleccionado: "
-                    + selectedPis
-            );
-            
-            game.setState(new StateInGame(game, selectedPis));
-            
+                selectedPis = pis;
+
+                System.out.println(
+                        "[MAP] piso seleccionado: "
+                        + selectedPis
+                );
+
+                game.setState(
+                new StateInGame(
+                        game,
+                        selectedPis
+                )
+                );          
         } catch (Exception e) {
             e.printStackTrace();
         }
